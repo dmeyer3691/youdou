@@ -5,6 +5,8 @@ gem 'rails', '4.0.2'
 
 gem 'pg'
 
+gem 'rails_12factor', group: :production # precompiling assets on Heroku
+
 # Bootstrap assets
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'sass-rails', '>= 3.2'
