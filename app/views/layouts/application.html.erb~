@@ -30,10 +30,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body background="./../../assets/images/oval.jpg">
+      <%= render "home/nav" %> 
   <div class="container">
     <div class="row">
-      <%= render "home/nav" %>
+
 
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>

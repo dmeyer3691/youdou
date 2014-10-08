@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">YouDoU</a>
+          <a class="navbar-brand" href="#"><img src="./../../assets/images/logoWh.png" alt="logo" \>YouDoU</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
