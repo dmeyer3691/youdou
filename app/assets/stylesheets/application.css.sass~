@@ -12,7 +12,13 @@
  *= require_tree .
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import "bootstrap-sprockets"
+@import "bootstrap"
 
-@import "style";
+@import "style"
+
+body
+	background: #CC0000
+
+p
+	color: #FFFFFF
