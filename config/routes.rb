@@ -1,4 +1,6 @@
 Youdou::Application.routes.draw do
+  get "academic/index"
+  get "social/index"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   root 'home#index'
 
@@ -14,6 +16,11 @@ Youdou::Application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
+  resources :profile, :only => [:show, :new, :create, :edit]
+  resources :answer, :only => [:show]
+  resources :social, :only => [:show, :edit]
+  resources :academic, :only => [:show, :edit]
+  resources :event, :only => [:show, :new, :create, :edit]
 
   # Example resource route with options:
   #   resources :products do
