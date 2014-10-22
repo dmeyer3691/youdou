@@ -1,5 +1,4 @@
 class AboutController < ApplicationController
-  def show
-    render params[:page]
+  def index
   end
 end
