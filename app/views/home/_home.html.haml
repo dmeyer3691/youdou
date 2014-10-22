@@ -1,0 +1,43 @@
+.oval-wrapper.clearfix
+  .nav-flex-container
+    .logo
+      = image_tag "logoWh.png", title: "You Do U"
+    .link
+      = link_to 'Home', root_path
+    .link
+      Social
+    .link
+      Academic
+    .link
+      Events
+    .link
+      = link_to 'About', '/about'
+
+  %h2.slogan Your university, your way.
+
+.red-wrapper.clearfix
+  %h3.text-center What is You Do U?
+  .block-container
+    .block
+      .iconmelon
+        %svg{:viewbox => "0 0 32 32"}
+          %use{"xlink:href" => "#user"}
+      %h4 Interests
+      %p Sign up and<br>specify your interests
+    .block
+      .iconmelon
+        %svg{:viewbox => "0 0 32 32"}
+          %use{"xlink:href" => "#search"}
+      %h4 Search
+      %p Find clubs and academic<br>activities based on your interests
+    .block
+      .iconmelon
+        %svg{:viewbox => "0 0 32 32"}
+          %use{"xlink:href" => "#star"}
+      %h4 Participate
+      %p Go out and enjoy the club or<br>activity recommended by You Do U
+
+%footer
+  .footer-container
+    &copy; 2014 You Do U
+

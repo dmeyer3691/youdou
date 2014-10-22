@@ -1,0 +1,132 @@
+// colors
+$red: #900;
+$gray: #666;
+
+// media-query sizes
+$media-large: 1170px;
+
+// fonts
+@mixin sans-serif {
+  font-family: 'proximanova',Arial,sans-serif;
+}
+
+@mixin sans-serif-regular {
+  @include sans-serif;
+  font-weight: 400;
+}
+
+@mixin sans-serif-bold {
+  @include sans-serif;
+  font-weight: 700;
+}
+
+@mixin serif {
+  font-family:'capita','Times New Roman',serif;
+  font-weight:300;
+}
+
+h1, h2, h3, h4, h5, h6 { @include sans-serif-bold; }
+
+p,
+footer { @include serif; }
+
+// styles
+body {
+  a { color: $red; }
+}
+
+.oval-wrapper {
+  background: url(asset-path('seal_oval_0418.png', image));
+  background-size: cover;
+  padding: 0 0 3em;
+
+  .slogan {
+    text-align: center;
+    color: white;
+    font-size: 500%;
+  }
+}
+
+.red-wrapper {
+  background: $red;
+  color: white;
+  padding: 2em 0;
+
+  .block-container {
+    max-width: 1170px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .block {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 33%;
+      text-align: center;
+    }
+  }
+
+  .iconmelon,
+  .im {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    display: block;
+    fill: white;
+  }
+  .iconmelon:after,
+  .im:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nav-flex-container {
+  max-width: 1170px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    padding-top: 1em;
+    img {
+      width: 80px;
+    }
+  }
+
+  .link {
+    color: white;
+    font-size: 150%;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 4px black;
+    letter-spacing: 1px;
+    @include sans-serif-regular;
+    
+    a {
+      color: white;
+      text-shadow: 3px 3px 4px black;
+    }
+  }
+}
+
+// footer
+footer {
+  background: $gray;
+  color: white;
+  padding: 2em 0;
+
+  .footer-container {
+    max-width: $media-large;
+    margin: 0 auto;
+  }
+}
