@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="column">
+  <div class="col-md-12">
     <h2>Mission Statement</h3>
     <p>We strive to make students’ transition to OSU as painless as possible by connecting new students to resources that allow them to become more involved in campus life at Ohio State. We believe that college is a time and place for individuals to explore themselves and connect with others who share similar interests. This objective is tackled from two angles: academic involvement and social involvement. These two domains of college life are integral to a fulfilling experience because in the end, college is about learning and enjoying your time here. The You Do U team strives to facilitate campus involvement in order to let you, the student, do what you want to do.</p>
   </div>
-  <div class="column">
+  <div class="col-md-12">
     <h3>Management Team</h3>
     <p>Our core team consists of five Ohio State University students which are listed below along with their skills and roles within the team.</p>
     <ul>
