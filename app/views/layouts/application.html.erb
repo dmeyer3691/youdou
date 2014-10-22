@@ -49,7 +49,11 @@
   <%= yield %>
 
   <footer>
-    <div class="footer-container">&copy; 2014 You Do U</div>
+    <div class="footer-container">
+      &copy; 2014 You Do U &middot;
+      <%= link_to "Licensing", '/licensing' %> &middot;
+      <%= link_to "Feedback", '/feedback' %>
+    </div>
   </footer>
 <!-- Bootstrap core JavaScript
     ================================================== -->
