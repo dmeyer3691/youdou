@@ -35,10 +35,16 @@ body {
   a { color: $red; }
 }
 
+ul,
+ol {
+  margin-left: 1.1em;
+  @include serif;
+}
+
 .oval-wrapper {
   background: url(asset-path('seal_oval_0418.png', image));
   background-size: cover;
-  padding: 0 0 3em;
+  padding: 0 20px 3em;
 
   .slogan {
     text-align: center;
@@ -50,7 +56,7 @@ body {
 .red-wrapper {
   background: $red;
   color: white;
-  padding: 2em 0;
+  padding: 2em 20px;
 
   .block-container {
     max-width: 1170px;
