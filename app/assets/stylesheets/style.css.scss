@@ -15,6 +15,13 @@ $media-large: 1170px;
   }
 }
 
+// horizontal unordered lists
+@mixin horizontal-ul {
+  list-style-type: none;
+
+  li { float: left; }
+}
+
 // fonts
 @mixin sans-serif {
   font-family: 'proximanova',Arial,sans-serif;
@@ -37,8 +44,8 @@ $media-large: 1170px;
 
 h1, h2, h3, h4, h5, h6 { @include sans-serif-bold; }
 
-p,
-footer { @include serif; }
+p { @include serif; }
+footer { @include sans-serif-regular; }
 
 // styles
 body {
@@ -138,9 +145,12 @@ ol {
 footer {
   background: $gray;
   color: white;
-  padding: 2em 0;
 
-  .footer-container {
-    margin: 0 auto;
+  ul {
+    @include sans-serif-regular;
+    @include horizontal-ul;
+
+    li a { color: white; }
+    li + li { margin-left: 1em; }
   }
 }

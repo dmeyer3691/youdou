@@ -50,11 +50,15 @@
 
   <%= yield %>
 
-  <footer>
-    <div class="footer-container">
-      &copy; 2014 You Do U &middot;
-      <%= link_to "Licensing", '/licensing' %> &middot;
-      <%= link_to "Feedback", '/feedback' %>
+  <footer class="clearfix">
+    <div class="container">
+      <ul>
+        <li>&copy; 2014 You Do U</li>
+        <div class="pull-right">
+          <li><%= link_to "Licensing", '/licensing' %></li>
+          <li><%= link_to "Feedback", '/feedback' %></li>
+        </div>
+      </ul>
     </div>
   </footer>
 <!-- Bootstrap core JavaScript
