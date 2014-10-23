@@ -7,6 +7,7 @@ Youdou::Application.routes.draw do
   get "about" => "about#index"
   get "licensing" => "about#licensing"
   get "feedback" => "about#feedback"
+  get "profile" => "profile#index"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -16,7 +17,6 @@ Youdou::Application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :profile, :only => [:show, :new, :create, :edit]
   resources :answer, :only => [:show]
   resources :social, :only => [:show, :edit]
   resources :academic, :only => [:show, :edit]
