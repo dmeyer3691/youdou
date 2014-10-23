@@ -5,6 +5,8 @@ Youdou::Application.routes.draw do
   root 'home#index'
 
   get "about" => "about#index"
+  get "licensing" => "about#licensing"
+  get "feedback" => "about#feedback"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
