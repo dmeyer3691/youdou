@@ -18,6 +18,7 @@ $media-large: 1170px;
 // horizontal unordered lists
 @mixin horizontal-ul {
   list-style-type: none;
+  margin: 0;
 
   li { float: left; }
 }
@@ -145,6 +146,7 @@ ol {
 footer {
   background: $gray;
   color: white;
+  padding: 2em 0;
 
   ul {
     @include sans-serif-regular;
