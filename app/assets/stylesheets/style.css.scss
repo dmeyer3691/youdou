@@ -72,6 +72,12 @@ ol {
 }
 
 .red-wrapper {
+  h3 {
+    margin: 0 0 1em;
+    font-size: 2.5em;
+    font-weight: 500;
+  }
+
   background: $red;
   color: white;
   padding: 2em 20px;
