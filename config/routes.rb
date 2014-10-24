@@ -8,6 +8,7 @@ Youdou::Application.routes.draw do
   get "licensing" => "about#licensing"
   get "feedback" => "about#feedback"
   get "profile" => "profile#index"
+  get "profile/edit" => "profile#edit"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
