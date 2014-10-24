@@ -5,8 +5,9 @@ Youdou::Application.routes.draw do
   root 'home#index'
 
   get "about" => "about#index"
-  get "licensing" => "about#licensing"
+  get "events" => "event#index"
   get "feedback" => "about#feedback"
+  get "licensing" => "about#licensing"
   get "profile" => "profile#index"
 
   # Example of regular route:
@@ -20,7 +21,6 @@ Youdou::Application.routes.draw do
   resources :answer, :only => [:show]
   resources :social, :only => [:show, :edit]
   resources :academic, :only => [:show, :edit]
-  resources :event, :only => [:show, :new, :create, :edit]
 
   # Example resource route with options:
   #   resources :products do
