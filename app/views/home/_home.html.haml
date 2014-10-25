@@ -13,14 +13,15 @@
     .link
       = link_to 'About', '/about'
 
-  %h2.slogan Your university, your way.
+  .container
+    %h2.slogan Your university, your&nbsp;way.
 
-  .text-center
-    .btn-group
-      = link_to "Sign Up", new_user_registration_path,
-        class: "btn btn-primary btn-lg"
-      = link_to "Log In", new_user_session_path,
-        class: "btn btn-primary btn-lg"
+    .text-center
+      .btn-group
+        = link_to "Sign Up", new_user_registration_path,
+          class: "btn btn-primary btn-lg"
+        = link_to "Log In", new_user_session_path,
+          class: "btn btn-primary btn-lg"
 
 .red-wrapper.clearfix
   %h3.text-center What is You Do U?
