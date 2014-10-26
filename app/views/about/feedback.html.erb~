@@ -1,0 +1,8 @@
+<div class="col-md-12">
+  <div class="row">
+    <h3>Feedback</h3>
+    <p>If you have any suggestions for how to improve this site, or general feedback please supply it below</p>
+    <textarea class="form-control" rows="3"></textarea>
+    <button class="btn btn-default">Send Feedback</button>
+  </div>
+</div>
