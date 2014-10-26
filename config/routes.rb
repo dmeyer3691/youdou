@@ -1,4 +1,5 @@
 Youdou::Application.routes.draw do
+  get "question/index"
   get "academic/index"
   get "social/index"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
@@ -11,6 +12,7 @@ Youdou::Application.routes.draw do
   get "profile" => "profile#index"
   get "profile/edit" => "profile#edit"
   get "answer" => "answer#index"
+  get "question" => "question#index"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

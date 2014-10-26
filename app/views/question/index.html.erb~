@@ -1,0 +1,2 @@
+%h1 Question#index
+%p Find me in app/views/question/index.html.haml
