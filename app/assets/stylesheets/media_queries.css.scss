@@ -1,0 +1,35 @@
+// media-query sizes
+$media-large: 1170px;
+
+@mixin max-container-width($width) {
+  max-width: $width;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  .block-container,
+  .nav-flex-container { @include max-container-width(750px); }
+
+  .block-container {
+    flex-direction: row !important;
+
+    .block + .block {
+      margin-top: 0 !important;
+    }
+  }
+
+  .slogan {
+    font-size: 500% !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .block-container,
+  .nav-flex-container { @include max-container-width(970px); }
+}
+
+@media (min-width: 1200px) {
+  .block-container,
+  .nav-flex-container { @include max-container-width(1170px); }
+}
+

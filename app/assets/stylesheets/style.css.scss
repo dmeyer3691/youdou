@@ -5,29 +5,6 @@ $gray: #666;
 // helper classes
 .margin-top { margin-top: 80px; }
 
-// media-query sizes
-$media-large: 1170px;
-
-@mixin max-container-width($width) {
-  max-width: $width;
-  padding: 0 15px;
-}
-
-@media (min-width: 768px) {
-  .block-container,
-  .nav-flex-container { @include max-container-width(750px); }
-}
-
-@media (min-width: 992px) {
-  .block-container,
-  .nav-flex-container { @include max-container-width(970px); }
-}
-
-@media (min-width: 1200px) {
-  .block-container,
-  .nav-flex-container { @include max-container-width(1170px); }
-}
-
 // horizontal unordered lists
 @mixin horizontal-ul {
   list-style-type: none;
@@ -36,40 +13,22 @@ $media-large: 1170px;
   li { float: left; }
 }
 
-// fonts
-@mixin sans-serif {
-  font-family: 'proximanova',Arial,sans-serif;
-}
-
-@mixin sans-serif-regular {
-  @include sans-serif;
-  font-weight: 400;
-}
-
-@mixin sans-serif-bold {
-  @include sans-serif;
-  font-weight: 700;
-}
-
-@mixin serif {
-  font-family:'capita','Times New Roman',serif;
-  font-weight:300;
-}
-
-h1, h2, h3, h4, h5, h6 { @include sans-serif-bold; }
-
-p { @include serif; }
-footer { @include sans-serif-regular; }
-
 // styles
 body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
   a { color: $red; }
+
+  .site-content {
+    flex: 1;
+  }
 }
 
 ul,
 ol {
   margin-left: 1.1em;
-  @include serif;
 }
 
 .oval-wrapper {
@@ -80,7 +39,7 @@ ol {
   .slogan {
     text-align: center;
     color: white;
-    font-size: 500%;
+    font-size: 400%;
   }
 }
 
@@ -98,7 +57,7 @@ ol {
   .block-container {
     margin: 0 auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
 
     .block {
@@ -106,6 +65,10 @@ ol {
       flex-shrink: 0;
       flex-basis: 33%;
       text-align: center;
+    }
+
+    .block + .block {
+      margin-top: 2em;
     }
   }
 
@@ -150,8 +113,7 @@ ol {
     text-transform: uppercase;
     text-shadow: 3px 3px 4px black;
     letter-spacing: 1px;
-    @include sans-serif-regular;
-    
+
     a {
       color: white;
       text-shadow: 3px 3px 4px black;
@@ -166,7 +128,6 @@ footer {
   padding: 2em 0;
 
   ul {
-    @include sans-serif-regular;
     @include horizontal-ul;
 
     li a { color: white; }

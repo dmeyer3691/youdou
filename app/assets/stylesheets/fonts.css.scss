@@ -1,0 +1,36 @@
+// mixins
+@mixin sans-serif {
+  font-family: 'proximanova',Arial,sans-serif;
+}
+
+@mixin sans-serif-regular {
+  @include sans-serif;
+  font-weight: 400;
+}
+
+@mixin sans-serif-bold {
+  @include sans-serif;
+  font-weight: 700;
+}
+
+@mixin serif {
+  font-family:'capita','Times New Roman',serif;
+  font-weight:300;
+}
+
+// fonts
+h1, h2, h3, h4, h5, h6 { @include sans-serif-bold; }
+
+p { @include serif; }
+
+footer,
+footer li,
+.navbar,
+.navbar a,
+.nav-flex-container .link { @include sans-serif-regular; }
+
+ul,
+ol {
+  @include serif;
+}
+
