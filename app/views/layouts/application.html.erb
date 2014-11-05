@@ -48,7 +48,7 @@
   </div>
   <% end %>
 
-  <main class="site-content">
+  <main class="site-content <% if !current_page? root_path %>margin-top<% end%>">
     <%= yield %>
   </main>
 

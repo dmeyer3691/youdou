@@ -12,7 +12,11 @@
  *= require_tree .
  */
 
-$btn-primary-bg: #b00;
+// Bootstrap default changes
+$btn-primary-bg: #900;
+$navbar-default-bg: #900;
+$navbar-default-link-color: white;
+$navbar-default-link-active-color: white;
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
