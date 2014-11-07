@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day, at: '2:02 pm' do
+every 1.day, at: '3:05 pm' do
   runner "EventWorker.grab_events"
 end
