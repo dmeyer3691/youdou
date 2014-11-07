@@ -1,4 +1,5 @@
 # app/workers/event_worker.rb
+require 'open-uri'
 class EventWorker
   include Sidekiq::Worker
 
