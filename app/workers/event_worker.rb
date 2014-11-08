@@ -13,9 +13,14 @@ class EventWorker
       doc = Nokogiri::HTML(open(url))
       name = entry.title
       date = Date.parse(doc.css(".date")[0].text)
+      categoryLinks = doc.css("div.sidebar a")
+      keywords = []
+      for category in categoryLinks do 
+        keywords.push(category.text)
+      end
 
       if (Event.where(name: name, date: date).empty?)
-        Event.create(name: name, date: date, url: url)
+        Event.create(name: name, date: date, url: url, keywords: keywords)
       end
     end
 
