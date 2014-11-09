@@ -7,7 +7,9 @@ gem 'pg'
 
 gem 'binding_of_caller'
 gem 'feedjira' # feed parsing
+gem 'nokogiri'
 gem 'rails_12factor', group: :production # precompiling assets on Heroku
+gem 'sidekiq'
 
 # Bootstrap assets
 gem 'bootstrap-sass', '~> 3.2.0'
