@@ -75,12 +75,14 @@ for event in currentEvents:
 		events.append(event)
 
 ret =	{
-			'title'					: title,
-			'blurb'					: blurb,
-			'recommendedResults'	: recommendedResults,
-			'possibleResults'		: possibleResults,
-			'otherResults'			: otherResults,
-			'events'				: events
+			'title'		: title,
+			'blurb'		: blurb,
+			'results'	:	{
+								'recommended'	: recommendedResults,
+								'possible'		: possibleResults,
+								'other'			: otherResults
+							},
+			'events'	: events
 		}
 
 print(json.dumps(ret, indent=4))
