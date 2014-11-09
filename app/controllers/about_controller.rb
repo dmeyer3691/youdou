@@ -7,4 +7,7 @@ class AboutController < ApplicationController
 
   def feedback
   end
+
+  def privacy
+  end
 end
