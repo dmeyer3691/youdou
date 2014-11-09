@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  has_many :event_relationships, class_name: "EventRelationship",
+    foreign_key: "follower_id", dependent: :destroy
+  has_many :following_events, through: :event_relationships, source: :followed
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -20,5 +24,17 @@ class User < ActiveRecord::Base
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  def follow_event(event)
+    event_relationships.create(followed_id: event.id)
+  end
+
+  def unfollow_event(event)
+    event_relationships.find_by(followed_id: event.id).destroy
+  end
+
+  def following_event?(event)
+    following_events.include?(event)
   end
 end

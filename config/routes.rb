@@ -15,6 +15,8 @@ Youdou::Application.routes.draw do
   get "question" => "question#index"
   get "privacy" => "about#privacy"
 
+  resources :event_relationships, only: [:create, :destroy]
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
