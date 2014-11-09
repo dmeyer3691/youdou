@@ -2,34 +2,59 @@ import nltk
 from nltk import tokenize, grammar, parse, chunk, pos_tag
 from nltk.corpus import stopwords
 
-##########
+#text = """The Buddha, the Godhead, resides quite as comfortably in the circuits of a digital
+#computer or the gears of a cycle transmission as he does at the top of a mountain
+#or in the petals of a flower. To think otherwise is to demean the Buddha...which is
+#to demean oneself."""
 
+#text = 'where can i get training for a marathon'
+#text = 'i made the girl a cake'
+#text = 'tell me some places i can play video games'
+#text = 'How can I contact health services?'
+text = 'clubs about cats'
+
+# Used when tokenizing words
+#sentence_re = r'''(?x)      # set flag to allow verbose regexps
+#      ([A-Z])(\.[A-Z])+\.?  # abbreviations, e.g. U.S.A.
+#    | \w+(-\w+)*            # words with optional internal hyphens
+#    | \$?\d+(\.\d+)?%?      # currency and percentages, e.g. $12.40, 82%
+#    | \.\.\.                # ellipsis
+#    | [][.,;"'?():-_`]      # these are separate tokens
+#'''
+ 
+#lemmatizer = nltk.WordNetLemmatizer()
+#stemmer = nltk.stem.porter.PorterStemmer()
+ 
+#Taken from Su Nam Kim Paper...
 grammar = r"""
     NBAR:
-        {<DT>?<NN.*|JJ>*<NN.*>}
+        {<DT>?<NN.*|JJ>*<NN.*>}  # Nouns and Adjectives, terminated with Nouns
         
     NPP:
-        {<NBAR><IN><NBAR>}
+        {<NBAR><IN><NBAR>}  # Above, connected with in/of/etc...
 
 	NP:
         {<NBAR>}
 """
 
-stopwords = stopwords.words('english')
-#stemmer = nltk.stem.porter.PorterStemmer()
-#lemmatizer = nltk.WordNetLemmatizer()
+#toks = nltk.regexp_tokenize(text, sentence_re)
+toks = tokenize.word_tokenize(text)
+#postoks = nltk.tag.pos_tag(toks)
+postoks = pos_tag(toks)
  
-def NPleaves(tree):
+print(postoks)
+ 
+chunker = nltk.RegexpParser(grammar)
+tree = chunker.parse(postoks)
+ 
+stopwords = stopwords.words('english')
+ 
+def leaves(tree):
     """Finds NP (nounphrase) leaf nodes of a chunk tree."""
     for subtree in tree.subtrees(filter = lambda t: t.label()=='NP'):
         yield subtree.leaves()
  
-def NPPleaves(tree):
-    """Finds NP (nounphrase) leaf nodes of a chunk tree."""
-    for subtree in tree.subtrees(filter = lambda t: t.label()=='NPP'):
-        yield subtree.leaves()
- 
-def norm(word):
+def normalise(word):
     """Normalises words to lowercase and stems and lemmatizes it."""
     word = word.lower()
     #word = stemmer.stem_word(word)
@@ -43,42 +68,18 @@ def acceptable_word(word):
     return accepted
  
  
-def getNPterms(tree):
-    for leaf in NPleaves(tree):
-        term = [ norm(w) for w,t in leaf if acceptable_word(w) ]
+def get_terms(tree):
+    for leaf in leaves(tree):
+        term = [ normalise(w) for w,t in leaf if acceptable_word(w) ]
         yield term
-
-def getNPPterms(tree):
-    for leaf in NPPleaves(tree):
-        term = [ norm(w) for w,t in leaf if acceptable_word(w) ]
-        yield term
-
-def nps(txt):
-	toks = tokenize.word_tokenize(text)
-	postoks = pos_tag(toks)
-	print(postoks)
  
-	chunker = nltk.RegexpParser(grammar)
-	tree = chunker.parse(postoks)
-	print(tree)
+terms = get_terms(tree)
 
-	terms = list(getNPPterms(tree))
-	#terms = list(getNPPterms(tree)).reverse()
-	return terms
-	#return terms[::-1]
- 
-
-##########
- 
-#text = 'where can i get training for a marathon'
-#text = 'i made the girl a cake'
-#text = 'tell me some places i can play video games'
-#text = 'How can I contact health services?'
-text = 'clubs about cats'
-
-for term in nps(text):
+print(tree) 
+for term in terms:
 	print(' '.join(term))
-	#print(term)
+#    for word in term:
+#        print(word)
 
 print('')
 

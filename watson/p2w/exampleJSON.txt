@@ -1,0 +1,79 @@
+{
+    "recommendedResults": [
+        {
+            "content": "Intent: This focus area is intended for students who are interested in game design and development. Courses: The central courses for this area are the project course on interactive systems (3902), the course on game and animation techniques (3541), and the capstone course on game design (5912). The main directly related courses are the AI 1 course (3521), and the course on real-time rendering (5542).", 
+            "also": [
+                "animation"
+            ], 
+            "relevantTo": [
+                "system", 
+                "computer game", 
+                "game"
+            ], 
+            "title": "Focus Areas | Computer Science and Engineering : Focus Areas : Computer Games", 
+            "entity": "Focus Areas | Computer Science and Engineering : Focus Areas : Computer Games"
+        }, 
+        {
+            "content": "During every meeting we will also engage in team building activities that help us become a stronger group. Some of these activities could include things like playing video games together, watching movies or sports, engaging in card or board games or sharing hobbies or skills we have developed over the years. This is not your traditional therapy group and we hope you can join us! Please, call 614.292.5766, speak with your counselor or email Kipp for more information.", 
+            "also": [
+                "board games"
+            ], 
+            "relevantTo": [
+                "video games", 
+                "group", 
+                "man", 
+                "video game", 
+                "game"
+            ], 
+            "title": "The Mancave: Undergraduate Men's Group : Counseling and Consultation Service : The Mancave: Undergraduate Men's Group", 
+            "entity": "The Mancave: Undergraduate Men's Group : Counseling and Consultation Service : The Mancave: Undergraduate Men's Group"
+        }
+    ], 
+    "otherResults": [], 
+    "title": "Q: groups that involve board games and video games", 
+    "possibleResults": [
+        {
+            "content": "'80, is Chairman and CEO of iridium Satellite LLC in Washington, D.C. The company provides voice and data services to ships, corporate aircraft, the U.S. military and for machine-to-machine applications like asset tracking. Prior to joining Iridium in 2006, Matt served as CEO of Telcordia Technologies in New Jersey, a supplier of software and services to the telecommunications industry. Matt has served on a number of boards in the high tech and telecom industry; he is currently Chairman of the Board of Airspan Networks (a public supplier of WiMAX infrastructure) and is a board member of Starent Networks (a supplier of intelligent wireless gateways). An active pilot and small airplane owner, he is a member of the Board of Visitors of the Aircraft Owners and Pilots Association Air Saftey Foundation.", 
+            "also": [], 
+            "relevantTo": [
+                "association", 
+                "man", 
+                "set"
+            ], 
+            "title": "Industrial Advisory Board | Computer Science and Engineering : Industrial Advisory Board", 
+            "entity": "Industrial Advisory Board | Computer Science and Engineering : Industrial Advisory Board"
+        }, 
+        {
+            "content": "September.", 
+            "also": [], 
+            "relevantTo": [
+                "game"
+            ], 
+            "title": "ARC Home Game Altered Hours : Recreational Sports : ARC Home Game Altered Hours : ARC Altered Home Game Hours : During home football games, the ARC has altered hours.", 
+            "entity": "ARC Home Game Altered Hours : Recreational Sports : ARC Home Game Altered Hours : ARC Altered Home Game Hours : During home football games, the ARC has altered hours."
+        }, 
+        {
+            "content": "Computer Science and Engineering : Student Involvement Fair : Event Highlight .               Sun, August 24, 2014 4:00 pm to 8:00 pm Columbus Main CampusColumbus, OH 43210United States See map: Google Maps Share this event on: Facebook.", 
+            "also": [], 
+            "relevantTo": [
+                "unit"
+            ], 
+            "title": "Student Involvement Fair | Computer Science and Engineering : Student Involvement Fair : Event Highlight", 
+            "entity": "Student Involvement Fair | Computer Science and Engineering : Student Involvement Fair : Event Highlight"
+        }
+    ], 
+    "events": [
+        {
+            "date": "November 18, 2014", 
+            "also": [], 
+            "relevantTo": [
+                "video games", 
+                "video game", 
+                "game"
+            ], 
+            "name": "LAN PARTY!!!", 
+            "description": "Come play video games and eat Cheetos all fukken night!"
+        }
+    ], 
+    "blurb": "Here are some resources you might look into."
+}

@@ -31,7 +31,7 @@ def queryWatson(query):
 	########## post request
 
 	r = requests.post(url, data=json.dumps(data), headers=headers)
-	testPrint(r.json())
+	#testPrint(r.json())
 	return r.json()
 
 ### test by printing stuff (if called as main)
@@ -55,6 +55,7 @@ def testPrint(j):
 	for i in range(0, len(j['question']['answers'])):
 		print('\nTITLE:\t', 	j['question']['evidencelist'][i]['title'])
 		print('\tTEXT1:\t', 	j['question']['evidencelist'][i]['text'])
+		#print('\tTEXT2:\t', 	j['question']['answers'][i]['text'])
 		print('\tCONF:\t',		j['question']['answers'][i]['confidence'])
 
 	print('\n----------\n')
