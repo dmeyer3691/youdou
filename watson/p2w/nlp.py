@@ -77,12 +77,12 @@ def addSyns(l):
 		if morph:
 			for ss in wn.synsets(morph, pos=wn.NOUN):
 				for lem in ss.lemmas():
-					if not lem.name() in ret and not lem.name() in stopwords:
+					if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
 						ret.append(lem.name().replace('_', ' '))
 				rels = ss.hypernyms() + ss.instance_hypernyms() + ss.hyponyms() + ss.instance_hyponyms() + ss.member_holonyms() + ss.substance_holonyms() + ss.part_holonyms() + ss.member_meronyms() + ss.substance_meronyms() + ss.part_meronyms() + ss.also_sees()
 				for rel in rels:
 					for lem in rel.lemmas():
-						if not lem.name() in ret:
+						if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
 							ret.append(lem.name().replace('_', ' '))
 	if not ret:
 		for item in l:
@@ -91,12 +91,12 @@ def addSyns(l):
 				if morph:
 					for ss in wn.synsets(morph, pos=wn.NOUN):
 						for lem in ss.lemmas():
-							if not lem.name() in ret and not lem.name() in stopwords:
+							if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
 								ret.append(lem.name().replace('_', ' '))
 						rels = ss.hypernyms() + ss.instance_hypernyms() + ss.hyponyms() + ss.instance_hyponyms() + ss.member_holonyms() + ss.substance_holonyms() + ss.part_holonyms() + ss.member_meronyms() + ss.substance_meronyms() + ss.part_meronyms() + ss.also_sees()
 						for rel in rels:
 							for lem in rel.lemmas():
-								if not lem.name() in ret and not lem.name() in stopwords:
+								if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
 									ret.append(lem.name().replace('_', ' '))
 	return l+ret
 

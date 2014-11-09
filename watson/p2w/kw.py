@@ -6,14 +6,14 @@ import re
 
 def containsKeywords(s, l):
 	for item in l:
-		if item.lower().strip() in s.lower().strip():
+		if item.lower().strip() in s.lower().strip() and len(item.lower().strip())>2:
 			return True
 	return False
 
 def onlyKeywordsIn(s, l):
 	ret = []
 	for item in l:
-		if item.lower().strip() in s.lower().strip() and not item.lower().strip() in ret:
+		if item.lower().strip() in s.lower().strip() and not item.lower().strip() in ret and len(item.lower().strip())>2:
 			ret.append(item.lower().strip())
 	return ret
 

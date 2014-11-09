@@ -10,7 +10,8 @@ from nltk import tokenize, grammar, parse, chunk, pos_tag
 #query = 'classes about video games'
 #query = 'how can i contact health services'
 #query = 'when is health services open'
-query = 'groups that involve board games and video games'
+#query = 'groups that involve board games and video games'
+query = 'clubs about cats'
 j = wapi.queryWatson(query)
 
 ########## do the magic
@@ -86,5 +87,5 @@ ret =	{
 		}
 
 print(json.dumps(ret, indent=4))
-with open('exampleJSON.txt', 'w') as outfile:
-	outfile.write(json.dumps(ret, outfile, indent=4))
+#with open('exampleJSON.txt', 'w') as outfile:
+#	outfile.write(json.dumps(ret, outfile, indent=4))
