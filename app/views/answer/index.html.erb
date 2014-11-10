@@ -1,31 +1,99 @@
 <div class="row">
-<div class="col-md-2">
-</div>
-<div class="col-md-8">
-  <div class="row">
-    <p><%= @jsonData["title"] %></p>
+  <div class="col-md-2">
   </div>
-  <div class="row">  
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-      Similar Questions
-      <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link to similar question 1</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link to similar question 2</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Link to similar question 3</a></li>
-      </ul>
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row">
+          <h3><%= @jsonData["title"] %></h3>
+        </div>
+        <div class="row">
+          <p><%= @jsonData["blurb"] %></p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row">  
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+            Narrow Down Your Search
+            <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Related Events</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Related Users</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Related Searches</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <% @events.each do |event| %>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-10">
+            <h2><%= event["name"] %></h2>
+            <h4><%= event["date"] %></h4>
+          </div>
+          <div class="col-md-2">
+            <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
+          </div>
+        </div>
+        <div class="row">
+          <p><%= event["description"] %></p>
+        </div>
+        <div class="row" >
+          <p><strong>Related Topics</strong></p>
+          <ul>
+            <% event["relevantTo"].each do |topic| %>
+              <li>
+                <p><a href="#"><%= topic %></a></p>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <% @recommended.each do |recommendation| %>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-10">
+            <h2><%= recommendation["title"] %></h2>
+          </div>
+          <div class="col-md-2">
+            <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
+          </div>
+        </div>
+        <div class="row">
+          <p><%= recommendation["content"] %></p>
+        </div>
+        <div class="row" >
+          <p><strong>Related Topics</strong></p>
+          <ul>
+            <% recommendation["relevantTo"].each do |topic| %>
+              <li>
+                <p><a href="#"><%= topic %></a></p>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="row">
+      <div class="jumbotron">
+        <h3>Ask a Question!</h3>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Ask a Question">
+        </div>
+        <p><a class="btn btn-default" role="button">Ask</a></p>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="jumbotron">
-      <h2>Answer</h2>
-      <p>Answer text </p>
-      <p><a class="btn btn-default" role="button">Save</a></p>
-    </div>
+  <div class="col-md-2">
   </div>
-</div>
-<div class="col-md-2">
-</div>
 </div>
