@@ -5,6 +5,12 @@ task :update_events => :environment do
   puts "done."
 end
 
+task :delete_old_events => :environment do
+  puts "Deleting old events..."
+  Event.old.delete_all
+  puts "done."
+end
+
 # task :send_reminders => :environment do
   # User.send_reminders
 # end
