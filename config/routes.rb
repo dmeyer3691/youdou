@@ -13,6 +13,9 @@ Youdou::Application.routes.draw do
   get "profile/edit" => "profile#edit"
   get "answer" => "answer#index"
   get "question" => "question#index"
+  get "privacy" => "about#privacy"
+
+  resources :event_relationships, only: [:create, :destroy]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

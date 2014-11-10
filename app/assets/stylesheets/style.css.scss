@@ -28,13 +28,19 @@ body {
   }
 }
 
+.navbar-text { color: white !important; }
+.navbar-brand img {
+  height: 40px !important;
+  margin-top: -10px !important;
+}
+
 ul,
 ol {
   margin-left: 1.1em;
 }
 
 .oval-wrapper {
-  background: url(asset-path('seal_oval_0418.png', image));
+  background: url(asset-path('revised_oval.jpg', image));
   background-size: cover;
   padding: 0 20px 3em;
 

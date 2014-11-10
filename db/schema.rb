@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106232348) do
+ActiveRecord::Schema.define(version: 20141109235746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "event_relationships", force: true do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_relationships", ["followed_id"], name: "index_event_relationships_on_followed_id", using: :btree
+  add_index "event_relationships", ["follower_id", "followed_id"], name: "index_event_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+  add_index "event_relationships", ["follower_id"], name: "index_event_relationships_on_follower_id", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -39,6 +50,7 @@ ActiveRecord::Schema.define(version: 20141106232348) do
     t.datetime "updated_at"
     t.string   "provider"
     t.string   "uid"
+    t.string   "name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

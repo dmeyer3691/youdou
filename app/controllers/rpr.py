@@ -11,8 +11,7 @@ from nltk import tokenize, grammar, parse, chunk, pos_tag
 #query = 'how can i contact health services'
 #query = 'when is health services open'
 #query = 'groups that involve board games and video games'
-#query = 'clubs about cats'
-query = 'computer science scholarships'
+query = 'clubs about cats'
 j = wapi.queryWatson(query)
 
 ########## do the magic

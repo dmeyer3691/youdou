@@ -8,21 +8,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= root_path %>">YouDoU</a>
+      <a class="navbar-brand" href="<%= root_path %>">
+        <%= image_tag "logoW.png", title: "You Do U" %>
+      </a>
     </div>
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="<% if current_page? root_path %>active<% end %>">
+        <li class="<% if (current_page? root_path) || (current_page? profile_path)  %>active<% end %>">
           <%= link_to 'Home', root_path %>
         </li>
 
         <li class="<% if current_page? root_path %>active<% end %>">
-          <%= link_to 'Social', '/social/index' %>
-        </li>
-
-        <li class="<% if current_page? root_path %>active<% end %>">
-          <%= link_to 'Academic', '/academic/index' %>
+          <%= link_to 'Search', root_path %>
         </li>
 
         <li class="<% if current_page? events_path %>active<% end %>">
@@ -36,7 +34,8 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li>Logged in as <%= current_user.email %></li>
+          <li><%= link_to "Logged in as #{current_user.email}", root_path %></li>
+          <li><%= link_to "Log Out", destroy_user_session_path, method: :delete %></li>
         <% else %>
           <li><%= link_to "Sign Up", new_user_registration_path %></li>
           <li><%= link_to "Sign In", new_user_session_path %></li>
