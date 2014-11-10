@@ -10,7 +10,10 @@ class AnswerController < ApplicationController
 		end
 
 		@jsonData = JSON.parse(string)
+		@recommended = @jsonData["results"]["recommended"]
+		@possible = @jsonData["results"]["possible"]
+		@other = @jsonData["results"]["other"]
+		@events = @jsonData["events"]
 
-		print @jsonData["title"]
 	end
 end
