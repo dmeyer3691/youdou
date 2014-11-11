@@ -5,10 +5,10 @@
   <h3>Ask a Question!</h3>
   <div class="row">
     <div class="jumbotron">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Ask a Question">
-      </div>
-      <p><a class="btn btn-default" role="button">Ask</a></p>
+    	<%= form_tag({:controller=>"answer", :action=>"index"}, method: :get) do %>
+ 			<%= text_field_tag :query %>
+  			<%= submit_tag 'Ask', name: nil , :class => "btn btn-default" %>
+		<% end %>
     </div>
   </div>
 </div>
