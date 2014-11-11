@@ -1,7 +1,8 @@
 ### USAGE: python3 rpr.py
 
+import sys
 import wapi, kw, nlp
-import json, sys
+import json
 #import nltk
 from nltk import tokenize, grammar, parse, chunk, pos_tag
 
@@ -11,7 +12,8 @@ from nltk import tokenize, grammar, parse, chunk, pos_tag
 #query = 'how can i contact health services'
 #query = 'when is health services open'
 #query = 'groups that involve board games and video games'
-#query = 'groups that involve board games and video games'
+#query = 'clubs about cats'
+#query = 'computer science scholarships'
 query = sys.argv[1]
 j = wapi.queryWatson(query)
 
@@ -27,6 +29,7 @@ blurb = 'Here are some resources you might look into.'
 
 kws = nlp.nps(query)
 syns = nlp.addSyns(kws)
+print(syns)
 
 recommendedResults = []
 possibleResults = []
@@ -41,7 +44,7 @@ for i in range(0, len(j['question']['answers'])):
 	#also = ', '.join(alsolist)
 	also = alsolist
 
-	relevantTo = kw.onlyKeywordsIn(fullAnswer, syns)
+	relevantTo = nlp.removeRedundant(kw.onlyKeywordsIn(fullAnswer, syns))
 
 	dic =	{	
 				'entity'		: j['question']['evidencelist'][i]['title'],
@@ -64,7 +67,7 @@ for i in range(0, len(j['question']['answers'])):
 events = []
 for event in currentEvents:
 	fullEvent = event['name'].strip()+' '+event['description'].strip()
-	relevantTo = kw.onlyKeywordsIn(fullEvent, syns)
+	relevantTo = nlp.removeRedundant(kw.onlyKeywordsIn(fullEvent, syns))
 	if relevantTo:
 		event['relevantTo'] = relevantTo
 		alsolist = []
