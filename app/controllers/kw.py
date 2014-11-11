@@ -1,6 +1,7 @@
 ### USAGE: python3 nlp.py
 
 import re
+import nlp
 
 ##########
 
@@ -112,6 +113,7 @@ def hasLocation(s):
 
 def answersQuestion(q, r):
 	ret = False
+	qclasses = nlp.getQClass(q)
 	if hasAcademics(q):
 		if hasAcademics(r):
 			ret = True
@@ -121,13 +123,13 @@ def answersQuestion(q, r):
 	if hasSocial(q):
 		if hasSocial(r):
 			ret = True
-	if hasTime(q):
+	if hasTime(q) or 'TIM' in qclasses:
 		if hasTime(r):
 			ret = True
 	if hasContactInfo(q):
 		if hasContactInfo(r):
 			ret = True
-	if hasLocation(q):
+	if hasLocation(q) or 'LOC' in qclasses:
 		if hasLocation(r):
 			ret = True
 	return ret
