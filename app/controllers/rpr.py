@@ -1,7 +1,7 @@
 ### USAGE: python3 rpr.py
 
 import wapi, kw, nlp
-import json
+import json, sys
 #import nltk
 from nltk import tokenize, grammar, parse, chunk, pos_tag
 
@@ -11,7 +11,8 @@ from nltk import tokenize, grammar, parse, chunk, pos_tag
 #query = 'how can i contact health services'
 #query = 'when is health services open'
 #query = 'groups that involve board games and video games'
-query = 'groups that involve board games and video games'
+#query = 'groups that involve board games and video games'
+query = sys.argv[1]
 j = wapi.queryWatson(query)
 
 ########## do the magic
