@@ -29,7 +29,7 @@ blurb = 'Here are some resources you might look into.'
 
 kws = nlp.nps(query)
 syns = nlp.addSyns(kws)
-print(syns)
+#print(syns)
 
 recommendedResults = []
 possibleResults = []
