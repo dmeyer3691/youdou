@@ -1,6 +1,7 @@
 <div class="container">
 <div class="row">
-  <div class="col-md-4">
+
+  <div class="col-sm-3">
     <img class="img-responsive" src="" alt="User's Picture"/>
     <h3>User's Name</h3>
     <button type="button" class="btn btn-default">Edit Profile</button>
@@ -25,33 +26,27 @@
       <li>Movies</li>
       <li>Oceanography</li>
     </ul>
-  </div>
-  <div class="col-md-8">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="input-group">
-          <input type="text" class="form-control">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Search</button>
-          </span>
-        </div><!-- /input-group -->
-      </div><!-- /.col-md-4 -->
-    </div><!-- /.row -->
-    <div class="row"
-	<!-- Nav tabs -->
-	<ul class="nav nav-tabs" role="tablist">
-	  <li class="active"><a href="#social" role="tab" data-toggle="tab">Social</a></li>
-	  <li><a href="#academic" role="tab" data-toggle="tab">Academic</a></li>
-	  <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
-	</ul>
+  </div><%# col-sm-3 %>
 
-	<!-- Tab panes -->
-	<div class="tab-content">
-	  <div class="tab-pane" id="social">social</div>
-	  <div class="tab-pane" id="academic">academic</div>
-	  <div class="tab-pane" id="events">events</div>
-	</div>
+  <div class="col-sm-9">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+      <li class="active">
+        <a href="#recommendations" role="tab" data-toggle="tab">
+          Recommendations
+        </a>
+      </li>
+      <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="active tab-pane" id="recommendations">Recommendations</div>
+      <div class="tab-pane" id="events">
+        <%= render "events" %>
+      </div>
     </div>
-  </div>
-</div>
-</div>
+  </div><%# ./col-sm-9 %>
+
+</div><%# /.row %>
+</div><%# /.container %>

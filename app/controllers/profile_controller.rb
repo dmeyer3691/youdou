@@ -3,6 +3,8 @@ class ProfileController < ApplicationController
     unless user_signed_in?
       redirect_to root_path
     end
+
+    @my_events = current_user.following_events
   end
 
   def edit
