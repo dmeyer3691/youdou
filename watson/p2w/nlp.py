@@ -8,26 +8,67 @@ from nltk.corpus import wordnet as wn
 ##########
 
 grammar = r"""
-
+	JP:
+		{<RB>*<JJ.*>}
 	NP:
-		{<DT|PRP\$>?<CD>?<NN.*|JJ>*<NN.*>}
-
+		{<DT|PRP\$>?<CD>?(<NN.*>|<JP>|<VB[GN]>)*<NN.*>}
 	NP:
 		{(<NP><,>)*<NP><,>?<CC><NP>}
-
 	PP:
-		{<IN><NP>}
-
+		{<IN|TO|RP><NP>}
+	PP:
+		{<RB.*>*<IN><RB|EX>}
+	VP:
+		{<MD>?<RB.*>*<VB[DPZ]?>+<RB.*>*<VB.*>*<EX>?<RB.*>*<IN|TO|RP>?}
+	VP:
+		{(<VP><,>)*<VP><,>?<CC><VP>}
+	NP:
+		{<RB.*>*<TO><RB.*>*<VB.*><RB.*>*<VB[GN]>*<RB.*>*}
+	NP:
+		{<RB.*>*<VB[GN]><RB.*>*}
 	NP:
 		{<NP><PP>}
-
+	RV:
+		{<WP|WDT|IN><VP>}
+	NX:
+		{<PRP|DT>}
+	REL:
+		{<RV><NP|NX>}
+	NP:
+		{<NP|NX><REL>}
+	PRED:
+		{<VP><PP>*<NP|NX|JP>*<PP>*}
+	PROP:
+		{<NP|NX><PRED>}
+	REL:
+		{<WP|WDT|WRB|IN><PROP>}
+	NP:
+		{<NP|NX><REL>}
+	QUES:
+		{<W.*><MD|VP>*<PRED|PROP><\.>*}
+	QUES:
+		{^<PRED|PROP><.*>*<\.>*}
+	IMP:
+		{<PRED>}
+	VOC:
+		{<,>?<NP><,>?}
+	PHR:
+		{<CC>*<PROP|IMP|QUES|VOC>}
+	PHR:
+		{(<PHR><,>)*<PHR><,>?<CC><PHR>}
+	SENT:
+		{^<PHR><.>*}
 """
 
 #stopwords = stopwords.words('english')
-stopwords = [line.strip() for line in open('stopwords.txt', 'r').readlines()]
+#stopwords = [line.strip() for line in open('stopwords.txt', 'r').readlines()]
+stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now', 'let', 'go', 'none']
+
 #stemmer = nltk.stem.porter.PorterStemmer()
 #lemmatizer = nltk.WordNetLemmatizer()
- 
+
+########## functions related to parsing/chunking
+
 def leaves(tree):
 	"""Finds NP (nounphrase) leaf nodes of a chunk tree."""
 	for subtree in tree.subtrees(filter = lambda t: t.label()=='NP'):
@@ -70,35 +111,127 @@ def nps(s):
 
 	return ret
 
+def getQClass(s):
+	classfeats = []
+	toks = tokenize.word_tokenize(s)
+	postoks = pos_tag(toks)
+	for i in range(0, len(postoks)):
+		word, pos = postoks[i]
+		if word.lower() == 'how':
+			if i < len(postoks)-1 and postoks[i+1][0] == 'come':
+				classfeats.append('CAU')
+			elif i < len(postoks)-1 and ('VB' in postoks[i+1][1] or 'MD' in postoks[i+1][1]):
+				classfeats.append('MAN')
+			elif i < len(postoks)-1 and 'JJ' in postoks[i+1][1]:
+				classfeats.append('MEA')
+		if word.lower() == 'why':
+			classfeats.append('CAU')
+		if word.lower() == 'which':
+			classfeats.append('INS')
+		if word.lower() == 'who' or word.lower() == 'whom' or word.lower() == 'whose':
+			classfeats.append('PER')
+		if word.lower() == 'where':
+			classfeats.append('LOC')
+		if word.lower() == 'when':
+			classfeats.append('TIM')
+		#if word.lower() == 'what':
+	if not classfeats:
+		classfeats.append('GEN')
+	return classfeats
+
+########## functions for getting/cleaning lists of relations and keywords
+
+def getRels(base):
+	sss = []
+	sss += [base]
+#	sss += base.hypernyms()
+#	sss += base.instance_hypernyms()
+#	#sss += base.hyponyms()
+#	#sss += base.instance_hyponyms()
+#	sss += base.member_holonyms()
+#	sss += base.substance_holonyms()
+#	sss += base.part_holonyms()
+#	sss += base.member_meronyms()
+#	sss += base.substance_meronyms()
+#	sss += base.part_meronyms()
+	sss += base.also_sees()
+
+	ret = []
+	for ss in sss:
+		for lemma in ss.lemmas():
+			ret.append(lemma)
+			ret += lemma.derivationally_related_forms()
+	return ret
+
+def ngrams(s):
+	m = 5
+	punc = (',', ';', ':', '.', '!', '?', '(', ')', '[', ']', '{', '}', '\"', '_', '*')
+	ret = []
+	s = s.replace('--', ' ')
+	for c in punc:
+		s = s.replace(c, ' '+c+' ')
+
+	tokens = s.split()
+	for n in range(1, min(len(tokens), m)+1):
+		thisn = []
+		for i in range(0, len(tokens)):
+			gram = ''
+			if i <= (len(tokens)-n):
+				for j in range(0, n):
+					tokens[i+j] = tokens[i+j].strip().lower()
+					if (tokens[i+j]).startswith('\''):
+						tokens[i+j] = tokens[i+j][1:]
+					if (tokens[i+j]).endswith('\''):
+						tokens[i+j] = tokens[i+j][0:(len(tokens[i+j])-1)]
+					#print(tokens[i+j])
+					gram = gram + ' ' + tokens[i+j]
+				gram = gram.strip()
+				if not gram in thisn:
+					thisn.append(gram)
+		ret = [thisn] + ret
+	return ret
+ 
 def addSyns(l):
 	ret = []
 	for item in l:
 		morph = wn.morphy('_'.join(item.split(' ')))
 		if morph:
 			for ss in wn.synsets(morph, pos=wn.NOUN):
-				for lem in ss.lemmas():
-					if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
-						ret.append(lem.name().replace('_', ' '))
-				rels = ss.hypernyms() + ss.instance_hypernyms() + ss.hyponyms() + ss.instance_hyponyms() + ss.member_holonyms() + ss.substance_holonyms() + ss.part_holonyms() + ss.member_meronyms() + ss.substance_meronyms() + ss.part_meronyms() + ss.also_sees()
-				for rel in rels:
-					for lem in rel.lemmas():
-						if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
-							ret.append(lem.name().replace('_', ' '))
-	if not ret:
-		for item in l:
-			for tok in item.split(' '):
-				morph = wn.morphy('_'.join(tok.split(' ')))
-				if morph:
-					for ss in wn.synsets(morph, pos=wn.NOUN):
-						for lem in ss.lemmas():
-							if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
-								ret.append(lem.name().replace('_', ' '))
-						rels = ss.hypernyms() + ss.instance_hypernyms() + ss.hyponyms() + ss.instance_hyponyms() + ss.member_holonyms() + ss.substance_holonyms() + ss.part_holonyms() + ss.member_meronyms() + ss.substance_meronyms() + ss.part_meronyms() + ss.also_sees()
-						for rel in rels:
-							for lem in rel.lemmas():
-								if not lem.name() in ret and not lem.name() in stopwords and len(lem.name())>2:
-									ret.append(lem.name().replace('_', ' '))
+				for lem in getRels(ss):
+					name = lem.name().replace('_', ' ')
+					if not name in ret and not name in l and not name in stopwords and len(name)>2:
+						ret.append(name)
+		else:
+			for n in ngrams(item):
+				for gram in n:
+					morph = wn.morphy('_'.join(gram.split(' ')))
+					if morph:
+						if not gram in ret and not gram in l:
+							ret.append(gram)
+						for ss in wn.synsets(morph, pos=wn.NOUN):
+							for lem in getRels(ss):
+								name = lem.name().replace('_', ' ')
+								if not name in ret and not name in l and not name in stopwords and len(name)>2:
+									ret.append(name)
+#						break
+#				else:
+#					continue
+#				break
+
 	return l+ret
+
+def removeRedundant(l):
+	ret = []
+	for i, a in enumerate(l):
+		redundant = False
+		for j, b in enumerate(l):
+			if a in b and not a == b:
+				#print(a, b)
+				redundant = True
+				break
+		if not redundant:
+			ret.append(a)
+	return ret
 
 ##########
  
@@ -115,20 +248,17 @@ def addSyns(l):
 #text = 'what time is LING5601'
 #text = 'the courses are on Wednesdays at twelve PM.'
 #text = 'you can reach me at 16144788550'
+#text = 'computer science scholarships'
+#text = 'Which club is the coolest?'
+#text = 'Which is the coolest club?'
+#text = 'How come there is no swim team?'
+#text = 'computer science scholarships available to grad students'
+#text = 'clubs where I can play video games and board games'
+#text = 'How will we get through this?'
 
+#print(ngrams(text))
+#print(getQClass(text))
 #for term in nps(text):
-#	print(term)
-
-#print('')
-
-#sents = tokenize.sent_tokenize(text)
-#chunks = [chunk.ne_chunk(pos_tag(tokenize.word_tokenize(s))) for s in sents]
-
-#entities = []
-#for chunk in chunks[0][2]:
-#	if chunk != '':
-#		item = chunk
-#		entities.append(item)
-
-#print(chunks)
-#print(entities)
+#	print('>>>>', term)
+#for syn in addSyns(nps(text)):
+#	print('>>>', syn)

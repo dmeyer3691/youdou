@@ -4,12 +4,16 @@ import re
 
 ##########
 
+########## general tools
+
+# returns true if string s contains any of the items in list l
 def containsKeywords(s, l):
 	for item in l:
 		if item.lower().strip() in s.lower().strip() and len(item.lower().strip())>2:
 			return True
 	return False
 
+# returns a list containing only those items from list l which are contained in string s
 def onlyKeywordsIn(s, l):
 	ret = []
 	for item in l:
@@ -17,6 +21,7 @@ def onlyKeywordsIn(s, l):
 			ret.append(item.lower().strip())
 	return ret
 
+# returns true if string s contains patterns or words indicating an academic topic
 def hasAcademics(s):
 	courseRE = r'[A-Z]{3,4}[\s-]?[0-9]{3,4}'
 
@@ -29,6 +34,7 @@ def hasAcademics(s):
 	
 	return (mentionsCourse or containsKeywords(s, academicWords))
 
+# returns true if string s contains patterns or words indicating a coursework topic
 def hasCourse(s):
 	courseRE = r'[A-Z]{3,4}[\s-]?[0-9]{3,4}'
 
@@ -38,11 +44,13 @@ def hasCourse(s):
 	
 	return (mentionsCourse or containsKeywords(s, courseWords))
 
+# returns true if s contains patterns or words indicating a social domain
 def hasSocial(s):
 	socialWords = ['group', 'club']
 
 	return (containsKeywords(s, socialWords))
 
+# returns true if s contains patterns or words indicating a time class
 def hasTime(s):
 	exactMTimeRE = r'((([2][0-3])|([0-1]?[0-9]))((:[0-5][0-9])|\so\'clock))|(((([2][0-3])|([0-1][0-9]))((:)?[0-5][0-9]))((\s)hours))'
 	exactCTimeRE = r'((([1][0-2])|([0]?[0-9]))(:[0-5][0-9])?)(((\s?)o\'clock)|((\s?)[ap](\.)?(m)(\.)?)){1,2}'
@@ -77,6 +85,7 @@ def hasTime(s):
 
 	return (mentionsTime or mentionsDay or containsKeywords(s, timeWords))
 
+# returns true if s contains patterns or words indicating a contact class
 def hasContactInfo(s):
 	phoneNumberRE = r'(\+?)(([0-9]([\s-]?))?((\(?)[0-9]{3}(\)?)([\s-]?)))?([0-9]{3}([\s-]?))([0-9]{4})'
 	emailRE = r'(\w+)(\s?)(@|([\(\[\{]at[\)\]\}]))((\s?)(\S+)(\s?)(\.|([\(\[\{]?dot[\)\]\}]?)))+(\s?)(com|edu|gov|me)'
