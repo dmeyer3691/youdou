@@ -7,6 +7,8 @@ gem 'pg'
 
 gem 'binding_of_caller'
 gem 'feedjira' # feed parsing
+gem 'kaminari'
+gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'nokogiri'
 gem 'rails_12factor', group: :production # precompiling assets on Heroku
 gem 'sidekiq'

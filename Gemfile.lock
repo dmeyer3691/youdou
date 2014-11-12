@@ -105,6 +105,12 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.1)
     jwt (1.0.0)
+    kaminari (0.16.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -241,6 +247,8 @@ DEPENDENCIES
   haml-rails
   jbuilder (~> 1.2)
   jquery-rails
+  kaminari
+  kaminari-bootstrap (~> 3.0.1)
   nokogiri
   omniauth-facebook
   pg
