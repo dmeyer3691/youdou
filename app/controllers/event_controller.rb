@@ -1,4 +1,6 @@
 class EventController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @events = Event.current.order('date ASC').page params[:page]
 
