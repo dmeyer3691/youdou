@@ -1,7 +1,7 @@
 ### USAGE: python3 nlp.py
 
 import nltk
-nltk.data.path.append('../../nltk_data/')
+nltk.data.path.append('/app/nltk_data')
 from nltk import tokenize, grammar, parse, chunk, pos_tag
 #from nltk.corpus import stopwords
 from nltk.corpus import wordnet as wn

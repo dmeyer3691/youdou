@@ -4,7 +4,7 @@ import sys
 import wapi, kw, nlp
 import json
 #import nltk
-nltk.data.path.append('../../nltk_data/')
+nltk.data.path.append('/app/nltk_data')
 from nltk import tokenize, grammar, parse, chunk, pos_tag
 
 ########## get watson's stuff
