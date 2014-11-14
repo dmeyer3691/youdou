@@ -1,6 +1,7 @@
 ### USAGE: python3 rpr.py
 
 import sys
+sys.path.append('/app/app/controllers')
 import wapi, kw, nlp
 import json
 #import nltk
