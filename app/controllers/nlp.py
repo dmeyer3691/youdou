@@ -95,7 +95,7 @@ def getTerms(tree):
 		yield term
 
 def nps(s):
-	toks = tokenize.word_tokenize(s)
+	toks = nltk.tokenize.word_tokenize(s)
 	postoks = pos_tag(toks)
 	#print(postoks)
  
@@ -113,7 +113,7 @@ def nps(s):
 
 def getQClass(s):
 	classfeats = []
-	toks = tokenize.word_tokenize(s)
+	toks = nltk.tokenize.word_tokenize(s)
 	postoks = pos_tag(toks)
 	for i in range(0, len(postoks)):
 		word, pos = postoks[i]
