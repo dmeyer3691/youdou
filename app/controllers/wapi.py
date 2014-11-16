@@ -9,7 +9,8 @@ def queryWatson(query):
 
 	########## initialize query-based (data) input
 
-	data	=	{'question':{'questionText':query}}
+	#data	=	{'question':{'questionText':query}}
+	data	=	{'question':{'questionText':query, 'formattedAnswer':True}}
 
 	########## initialize authentication input
 
@@ -31,8 +32,12 @@ def queryWatson(query):
 	########## post request
 
 	r = requests.post(url, data=json.dumps(data), headers=headers)
-	#testPrint(r.json())
-	return r.json()
+
+	if r:
+		#testPrint(r.json())
+		return r.json()
+	else:
+		return {}
 
 ### test by printing stuff (if called as main)
 def testPrint(j):
