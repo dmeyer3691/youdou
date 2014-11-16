@@ -32,8 +32,8 @@ if j:
 	kws = nlp.nps(query)
 	syns = nlp.addSyns(kws)
 
-	print(kws)
-	print(syns)
+	#print(kws)
+	#print(syns)
 
 	recommendedResults = []
 	possibleResults = []
