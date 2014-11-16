@@ -1,19 +1,24 @@
 ### USAGE: python3 nlp.py
 
 import nltk
-from nltk import tokenize, grammar, parse, chunk, pos_tag
-#from nltk.corpus import stopwords
+nltk.data.path.append('/app/nltk_data')
 from nltk.corpus import wordnet as wn
 
 ##########
 
+# NP: {<DT|PRP\$>?<CD>?(<NN.*>|<JP>|<VB[GN]>)*<NN.*>}
+# NP: {<DT|PRP\$>?<CD>?<JP|VB[N]>*<NP>}
 grammar = r"""
-	JP:
-		{<RB>*<JJ.*>}
 	NP:
-		{<DT|PRP\$>?<CD>?(<NN.*>|<JP>|<VB[GN]>)*<NN.*>}
+		{<NN.*>+}
+	JP:
+		{<RB.*>*<JJ.*>}
+	NP:
+		{<DT|PRP\$|CD|JP|VB[N]>+<NP>}
 	NP:
 		{(<NP><,>)*<NP><,>?<CC><NP>}
+	NP:
+		{<RB.*>*<VB[GN]><RB.*>*<NP>}
 	PP:
 		{<IN|TO|RP><NP>}
 	PP:
@@ -60,43 +65,45 @@ grammar = r"""
 		{^<PHR><.>*}
 """
 
-#stopwords = stopwords.words('english')
-#stopwords = [line.strip() for line in open('stopwords.txt', 'r').readlines()]
-stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now', 'let', 'go', 'none']
-
-#stemmer = nltk.stem.porter.PorterStemmer()
-#lemmatizer = nltk.WordNetLemmatizer()
+stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'many', 'part', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now', 'let', 'go', 'none']
 
 ########## functions related to parsing/chunking
 
+# returns NP (nounphrase) leaf nodes of a tree
 def leaves(tree):
-	"""Finds NP (nounphrase) leaf nodes of a chunk tree."""
+	ret = []
 	for subtree in tree.subtrees(filter = lambda t: t.label()=='NP'):
-		yield subtree.leaves()
+		ret.append(list(subtree.leaves()))
+	return ret
+
+# returns rightmost NN (noun) leaf node of a NP tree
+def rightmostNN(tree):
+	ret = []
+	for subtree in tree.subtrees(filter = lambda t: t.label()=='NP'):
+		if subtree.height() == 2:
+			leaves = list(subtree.leaves())
+			if len(leaves) > 1 and 'NN' in leaves[-1][1]:
+				ret.append([leaves[-1]])
+	return ret
  
+# returns normalized words
 def norm(word):
-	"""Normalises words to lowercase and stems and lemmatizes it."""
-	word = word.lower()
-	#word = stemmer.stem_word(word)
-	#word = lemmatizer.lemmatize(word)
-	return word
- 
+	return word.lower().strip()
+
+# returns true if conditions for acceptable word are met
 def acceptableWord(word):
-	"""Checks conditions for acceptable word: length, stopword."""
-	accepted = bool(2 <= len(word) <= 40
-	)#	and word.lower() not in stopwords)
-	return accepted
- 
+	return (2 <= len(word.strip()) <= 40 and word.lower() not in stopwords)
  
 def getTerms(tree):
-	for leaf in leaves(tree):
-		#term = [ norm(w) for w,t in leaf if acceptableWord(w) ]
-		term = [ norm(w) for w,t in leaf ]
-		yield term
+	ret = []
+	for leaf in leaves(tree)+rightmostNN(tree):
+		term = [ norm(word) for word,tag in leaf ]
+		ret.append(term)
+	return ret
 
 def nps(s):
-	toks = tokenize.word_tokenize(s)
-	postoks = pos_tag(toks)
+	toks = nltk.tokenize.word_tokenize(s)
+	postoks = nltk.pos_tag(toks)
 	#print(postoks)
  
 	chunker = nltk.RegexpParser(grammar)
@@ -107,14 +114,17 @@ def nps(s):
 
 	ret = []
 	for term in terms:
-		ret.append(' '.join(term))
+		joined = ' '.join(term).strip()
+		if not joined in stopwords:
+			ret.append(' '.join(term))
 
-	return ret
+	#print('>>>', removeRepeats(ret))
+	return removeRepeats(ret)
 
 def getQClass(s):
 	classfeats = []
-	toks = tokenize.word_tokenize(s)
-	postoks = pos_tag(toks)
+	toks = nltk.tokenize.word_tokenize(s)
+	postoks = nltk.pos_tag(toks)
 	for i in range(0, len(postoks)):
 		word, pos = postoks[i]
 		if word.lower() == 'how':
@@ -141,19 +151,13 @@ def getQClass(s):
 
 ########## functions for getting/cleaning lists of relations and keywords
 
-def getRels(base):
+'''TODO: MAKE DICT TO MAKE THIS FUNCTION POSSIBLE'''
+#def getKnownRels(base):
+#	
+
+def getBasicRels(base):
 	sss = []
 	sss += [base]
-#	sss += base.hypernyms()
-#	sss += base.instance_hypernyms()
-#	#sss += base.hyponyms()
-#	#sss += base.instance_hyponyms()
-#	sss += base.member_holonyms()
-#	sss += base.substance_holonyms()
-#	sss += base.part_holonyms()
-#	sss += base.member_meronyms()
-#	sss += base.substance_meronyms()
-#	sss += base.part_meronyms()
 	sss += base.also_sees()
 
 	ret = []
@@ -161,6 +165,30 @@ def getRels(base):
 		for lemma in ss.lemmas():
 			ret.append(lemma)
 			ret += lemma.derivationally_related_forms()
+			ret += lemma.pertainyms()
+	return ret
+
+def getAllRels(base):
+	sss = []
+	sss += [base]
+	sss += base.hypernyms()
+	sss += base.instance_hypernyms()
+	sss += base.hyponyms()
+	sss += base.instance_hyponyms()
+	sss += base.member_holonyms()
+	sss += base.substance_holonyms()
+	sss += base.part_holonyms()
+	sss += base.member_meronyms()
+	sss += base.substance_meronyms()
+	sss += base.part_meronyms()
+	sss += base.also_sees()
+
+	ret = []
+	for ss in sss:
+		for lemma in ss.lemmas():
+			ret.append(lemma)
+			ret += lemma.derivationally_related_forms()
+			ret += lemma.pertainyms()
 	return ret
 
 def ngrams(s):
@@ -183,7 +211,6 @@ def ngrams(s):
 						tokens[i+j] = tokens[i+j][1:]
 					if (tokens[i+j]).endswith('\''):
 						tokens[i+j] = tokens[i+j][0:(len(tokens[i+j])-1)]
-					#print(tokens[i+j])
 					gram = gram + ' ' + tokens[i+j]
 				gram = gram.strip()
 				if not gram in thisn:
@@ -196,23 +223,25 @@ def addSyns(l):
 	for item in l:
 		morph = wn.morphy('_'.join(item.split(' ')))
 		if morph:
-			for ss in wn.synsets(morph, pos=wn.NOUN):
-				for lem in getRels(ss):
+			'''TODO: add provision for known words, i.e., scope words like "club"'''
+			for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
+				for lem in getBasicRels(ss):
 					name = lem.name().replace('_', ' ')
-					if not name in ret and not name in l and not name in stopwords and len(name)>2:
+					if not name in ret and not name in l and not name in stopwords and len(name)>3:
 						ret.append(name)
 		else:
 			for n in ngrams(item):
 				for gram in n:
-					morph = wn.morphy('_'.join(gram.split(' ')))
-					if morph:
-						if not gram in ret and not gram in l:
-							ret.append(gram)
-						for ss in wn.synsets(morph, pos=wn.NOUN):
-							for lem in getRels(ss):
-								name = lem.name().replace('_', ' ')
-								if not name in ret and not name in l and not name in stopwords and len(name)>2:
-									ret.append(name)
+					if not gram in stopwords:
+						morph = wn.morphy('_'.join(gram.split(' ')))
+						if morph:
+							if not gram in ret and not gram in l:
+								ret.append(gram)
+							for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
+								for lem in getBasicRels(ss):
+									name = lem.name().replace('_', ' ')
+									if not name in ret and not name in l and not name in stopwords and len(name)>3:
+										ret.append(name)
 #						break
 #				else:
 #					continue
@@ -225,12 +254,23 @@ def removeRedundant(l):
 	for i, a in enumerate(l):
 		redundant = False
 		for j, b in enumerate(l):
-			if a in b and not a == b:
-				#print(a, b)
+			if i != j and a in b:
 				redundant = True
 				break
 		if not redundant:
 			ret.append(a)
+	return ret
+
+def removeRepeats(l):
+	ret = []
+	for i in range(0, len(l)):
+		repeat = False
+		for j in range(i, len(l)):
+			if i != j and l[i] == l[j]:
+				repeat = True
+				break
+		if not repeat:
+			ret.append(l[i])
 	return ret
 
 ##########
@@ -253,7 +293,8 @@ def removeRedundant(l):
 #text = 'Which is the coolest club?'
 #text = 'How come there is no swim team?'
 #text = 'computer science scholarships available to grad students'
-#text = 'clubs where I can play video games and board games'
+#text = 'what are some clubs where I can play video games and board games'
+#text = 'I enjoy easy video games'
 #text = 'How will we get through this?'
 
 #print(ngrams(text))
