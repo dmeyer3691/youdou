@@ -14,6 +14,8 @@ Youdou::Application.routes.draw do
   get "answer" => "answer#index"
   get "question" => "question#index"
   get "privacy" => "about#privacy"
+  post 'profile/edit/update_name' => 'profile#update_name'
+
 
   resources :event_relationships, only: [:create, :destroy]
 

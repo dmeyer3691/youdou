@@ -1,7 +1,10 @@
 <div class="row">
   <div class="col-md-4">
     <img class="img-responsive" src="" alt="User's Picture"/>
-    <h3>User's Name</h3>
+    <%= form_tag({controller: "profile", action: "update_name"}, method: :post, class: "form-inline") do %>
+      <%= text_field_tag :name, @name, class: "form-control"  %>
+      <%= submit_tag 'Save', name: nil, class: "btn btn-default" %>
+    <% end %>
     <button type="button" class="btn btn-default">Upload Profile Picture</button>
     <br/>
     <div class="row">
