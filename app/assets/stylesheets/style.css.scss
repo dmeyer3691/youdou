@@ -72,7 +72,7 @@ ol {
     .block {
       @include flex-grow(1);
       @include flex-shrink(0);
-      @include flex-basis(33%);
+      /* @include flex-basis(33%); */
       text-align: center;
     }
 
