@@ -2,6 +2,7 @@
   <div class="col-md-2">
   </div>
   <div class="col-md-8">
+
     <div class="row">
       <div class="col-md-9">
         <div class="row">
@@ -11,6 +12,7 @@
           <p><%= @jsonData["blurb"] %></p>
         </div>
       </div>
+
       <div class="col-md-3">
         <div class="row">  
           <div class="dropdown">
@@ -28,25 +30,148 @@
       </div>
     </div>
 
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading red-panel" role="tab" id="headingOne">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Related Events
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            <div class="row">
+              <% @events.each do |event| %>
+              <div class="jumbotron">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h2><%= event["name"] %></h2>
+                    <h4><%= event["date"] %></h4>
+                  </div>
+                  <div class="col-md-2">
+                    <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <p><%= event["description"] %></p>
+                </div>
+                <div class="row" >
+                  <p><strong>Related Topics</strong></p>
+                  <ul>
+                    <% event["relevantTo"].each do |topic| %>
+                      <li>
+                        <p><a href="#"><%= topic %></a></p>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading red-panel" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Recommended Answers
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <div class="row">
+              <% @recommended.each do |recommendation| %>
+              <div class="jumbotron">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h2><%= recommendation["title"] %></h2>
+                  </div>
+                  <div class="col-md-2">
+                    <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <p><%= recommendation["content"] %></p>
+                </div>
+                <div class="row" >
+                  <p><strong>Related Topics</strong></p>
+                  <ul>
+                    <% recommendation["relevantTo"].each do |topic| %>
+                      <li>
+                        <p><a href="#"><%= topic %></a></p>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading red-panel" role="tab" id="headingThree">
+          <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Possible Answers
+            </a>
+          </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <div class="row">
+              <% @possible.each do |possibility| %>
+              <div class="jumbotron">
+                <div class="row">
+                  <div class="col-md-10">
+                    <h2><%= possibility["title"] %></h2>
+                  </div>
+                  <div class="col-md-2">
+                    <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <p><%= possibility["content"] %></p>
+                </div>
+                <div class="row" >
+                  <p><strong>Related Topics</strong></p>
+                  <ul>
+                    <% possibility["relevantTo"].each do |topic| %>
+                      <li>
+                        <p><a href="#"><%= topic %></a></p>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--
     <div class="row">
-      <% @events.each do |event| %>
+      <% @other.each do |another| %>
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-10">
-            <h2><%= event["name"] %></h2>
-            <h4><%= event["date"] %></h4>
+            <h2><%= another["title"] %></h2>
           </div>
           <div class="col-md-2">
             <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
           </div>
         </div>
         <div class="row">
-          <p><%= event["description"] %></p>
+          <p><%= another["content"] %></p>
         </div>
         <div class="row" >
           <p><strong>Related Topics</strong></p>
           <ul>
-            <% event["relevantTo"].each do |topic| %>
+            <% another["relevantTo"].each do |topic| %>
               <li>
                 <p><a href="#"><%= topic %></a></p>
               </li>
@@ -56,44 +181,21 @@
       </div>
       <% end %>
     </div>
+    -->
 
     <div class="row">
-      <% @recommended.each do |recommendation| %>
-      <div class="jumbotron">
-        <div class="row">
-          <div class="col-md-10">
-            <h2><%= recommendation["title"] %></h2>
-          </div>
-          <div class="col-md-2">
-            <p><a class="btn btn-default btn-lg" role="button">Save</a></p>
-          </div>
+      <div class="col-md-8 col-md-offset-2">
+        <h3 class="text-center">Ask Another Question!</h2>
+        <div class="text-center">
+          <%= form_tag({controller: "answer", action: "index"}, method: :get, class: "form-inline") do %>
+            <%= text_field_tag :query, nil, class: "form-control"  %>
+            <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
+          <% end %>
         </div>
-        <div class="row">
-          <p><%= recommendation["content"] %></p>
-        </div>
-        <div class="row" >
-          <p><strong>Related Topics</strong></p>
-          <ul>
-            <% recommendation["relevantTo"].each do |topic| %>
-              <li>
-                <p><a href="#"><%= topic %></a></p>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-      <% end %>
-    </div>
-    <div class="row">
-      <div class="jumbotron">
-        <h3>Ask a Question!</h3>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Ask a Question">
-        </div>
-        <p><a class="btn btn-default" role="button">Ask</a></p>
       </div>
     </div>
   </div>
+
   <div class="col-md-2">
   </div>
 </div>

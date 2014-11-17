@@ -1,21 +1,13 @@
 <div class="container">
-
   <div class="row">
-
     <div class="col-md-8 col-md-offset-2">
-
-      <h2 class="text-center">Ask a Question!</h2>
       <div class="jumbotron text-center">
+        <h2 class="text-center">Ask a Question!</h2>
         <%= form_tag({controller: "answer", action: "index"}, method: :get, class: "form-inline") do %>
           <%= text_field_tag :query, nil, class: "form-control"  %>
           <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
         <% end %>
       </div>
-
     </div>
-  
   </div>
-
 </div>
-
-
