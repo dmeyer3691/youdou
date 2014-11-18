@@ -52,6 +52,42 @@ ol {
   }
 }
 
+// question stuff
+.question-wrapper {
+  background: url(asset-path('revised_oval.jpg', image));
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.question-form {
+  margin-top: 15%;
+}
+.input-mysize {
+  width:70% !important;
+}
+
+//answer stuff
+.red-info {
+  background-color: $red !important;
+  h4 {
+    color:white;
+  }
+}
+.my-btn {
+  color: white;
+  background-color: $red;
+}
+.my-btn:hover, 
+.my-btn:focus, 
+.my-btn:active, 
+.my-btn.active{ 
+  color: #ffffff; 
+  background-color: #757073; 
+  border-color: #373638; 
+} 
+
+//other stuff
+
 .red-wrapper {
   h3 {
     margin: 0 0 1em;
