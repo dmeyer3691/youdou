@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :event_relationships, class_name: "EventRelationship",
     foreign_key: "follower_id", dependent: :destroy
   has_many :following_events, through: :event_relationships, source: :followed
+  has_one :profile
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
