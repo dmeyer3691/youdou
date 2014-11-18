@@ -1,3 +1,5 @@
+@import "bourbon";
+
 // media-query sizes
 $media-large: 1170px;
 
@@ -12,6 +14,11 @@ $media-large: 1170px;
 
   .block-container {
     flex-direction: row !important;
+    @include flex-basis(33%);
+
+    .block {
+      width: 33%;
+    }
 
     .block + .block {
       margin-top: 0 !important;
