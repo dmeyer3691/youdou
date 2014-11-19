@@ -5,7 +5,7 @@ $red: #900;
 $gray: #666;
 
 // helper classes
-.margin-top { margin-top: 80px; }
+.margin-top { margin-top: 55px; }
 
 // horizontal unordered lists
 @mixin horizontal-ul {
@@ -85,6 +85,34 @@ ol {
   background-color: #757073; 
   border-color: #373638; 
 } 
+
+//profile stuff
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  color: white;
+  cursor: default;
+  background-color: $gray;
+  border: 1px solid white;
+  border-bottom-color: transparent;
+  } 
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: $red;
+  cursor: default;
+  background-color: white;
+  border: 1px solid white;
+  border-bottom-color: transparent;
+  } 
+.red-back {
+  background-color: $red;
+}
+.btn-red {
+  background-color: $red; 
+  color: white;
+}
+
 
 //other stuff
 
