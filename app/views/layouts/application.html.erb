@@ -40,15 +40,6 @@
     <%= render "home/nav" %>
   <% end %>
 
-  <% if notice or alert %>
-  <div class="container">
-    <div class="row">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-    </div>
-  </div>
-  <% end %>
-
   <main class="site-content <% if current_page? question_path %>question-wrapper<% elsif !current_page? root_path %>margin-top<% end%>">
     <%= yield %>
   </main>
