@@ -1,52 +1,192 @@
-<div class="container">
-<div class="row">
 
-  <div class="col-sm-3">
-    <img class="img-responsive" src="" alt="User's Picture"/>
-    <h3><%= @name %></h3>
-    <button type="button" class="btn btn-default">Edit Profile</button>
-    <br/>
-    <p>Rank: Junior</p>
-    <p>Major: Biology</p>
-    <p>Minor: </p>
-    <p>Involvement:</p>
-    <ul>
-      <li>UG Student Senate</li>
-      <li>Club Soccer</li>
-      <li>Pre-med Club</li>
-    </ul>
-    <p>Jobs:</p>
-    <ul>
-      <li>Blackwell Waitress</li>
-      <li>Dog Walker</li>
-    </ul>
-    <p>Interests:</p>
-    <ul>
-      <li>Soccer</li>
-      <li>Movies</li>
-      <li>Oceanography</li>
-    </ul>
-  </div><%# col-sm-3 %>
+  <div class="row">
 
-  <div class="col-sm-9">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs nav-justified" role="tablist">
-      <li class="active">
-        <a href="#recommendations" role="tab" data-toggle="tab">
-          Recommendations
-        </a>
-      </li>
-      <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
-    </ul>
+    <div class="col-md-12">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li class="active">
+          <a href="#profile" role="tab" data-toggle="tab">Profile</a>
+        </li>
+        <li>
+          <a href="#recommendations" role="tab" data-toggle="tab">Recommendations</a>
+        </li>
+        <li>
+          <a href="#events" role="tab" data-toggle="tab">Events</a>
+        </li>
+      </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div class="active tab-pane" id="recommendations">Recommendations</div>
-      <div class="tab-pane" id="events">
-        <%= render "events" %>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="active tab-pane fade in" id="profile">
+          <div class="col-md-10 col-md-offset-1">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4 text-center">
+                  <h3>UserName</h3>
+                  <%= button_to "Edit Profile", edit_profile_path, :class=>"btn btn-default btn-red", :method => :get %>
+                  <br/>
+                  <br/>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h4 class="list-group-item-heading">Junior Rank</h4>
+                    </li>
+                    <li class="list-group-item">
+                      <h4 class="list-group-item-heading">Biology Major</h4>
+                    </li>
+                    <li class="list-group-item">
+                      <h4 class="list-group-item-heading">No Minor</h4>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4 text-center">
+                  <h3>Involvement</h3>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Undergraduate Student Senate</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Club Soccer</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Pre-Med Club</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default btn-red" type="button">Add</button>
+                        </span>
+                      </div><!-- /input-group -->
+                    </li>
+                  </ul>
+                  <h3>Jobs</h3>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Blackwell Waiter</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Dog Walker</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default btn-red" type="button">Add</button>
+                        </span>
+                      </div><!-- /input-group -->
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4 text-center">
+                  <h3>Interests</h3>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Soccer</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Movies</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Oceanography</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                       <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Cooking</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <h4 class="list-group-item-heading">Motorcycles</h4>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-red" type="button">Remove</button>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default btn-red" type="button">Add</button>
+                        </span>
+                      </div><!-- /input-group -->
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade " id="recommendations">
+          <!-- render "recommendations" -->
+        </div>
+        <div class="tab-pane fade" id="events">
+          <%= render "events" %>
+        </div>
       </div>
     </div>
-  </div><%# ./col-sm-9 %>
 
-</div><%# /.row %>
-</div><%# /.container %>
+  </div><%# /.row %>
+
