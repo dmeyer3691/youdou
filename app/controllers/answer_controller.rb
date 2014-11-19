@@ -10,7 +10,7 @@ class AnswerController < ApplicationController
 		result.each do |line|
 			string.concat(line)
 		end
-
+		
 		@jsonData = JSON.parse(string)
 		if (@jsonData)
 			@results = @jsonData["results"]
