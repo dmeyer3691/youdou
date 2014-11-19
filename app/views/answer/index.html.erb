@@ -42,7 +42,7 @@
                   <ul>
                     <% recommendation["relevantTo"].each do |topic| %>
                       <li>
-                        <p><a href="#"><%= topic %></a></p>
+                        <p><%= link_to topic, answer_path(:query => topic) %>
                       </li>
                     <% end %>
                   </ul>
@@ -83,7 +83,7 @@
                   <ul>
                     <% event["relevantTo"].each do |topic| %>
                       <li>
-                        <p><a href="#"><%= topic %></a></p>
+                        <p><%= link_to topic, answer_path(:query => topic) %>
                       </li>
                     <% end %>
                   </ul>
@@ -123,7 +123,7 @@
                   <ul>
                     <% possibility["relevantTo"].each do |topic| %>
                       <li>
-                        <p><a href="#"><%= topic %></a></p>
+                        <p><%= link_to topic, answer_path(:query => topic) %>
                       </li>
                     <% end %>
                   </ul>
