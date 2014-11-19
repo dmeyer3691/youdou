@@ -11,7 +11,7 @@ Youdou::Application.routes.draw do
   get "licensing" => "about#licensing"
   get "profile" => "profile#index", :as => :profile
   get "profile/edit" => "profile#edit", :as => :edit_profile
-  get "answer" => "answer#index"
+  get "answer" => "answer#index", :as => :answer
   get "question" => "question#index", :as => :question
   get "privacy" => "about#privacy"
   post 'profile/edit/update_name' => 'profile#update_name'

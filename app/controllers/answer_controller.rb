@@ -12,10 +12,20 @@ class AnswerController < ApplicationController
 		end
 
 		@jsonData = JSON.parse(string)
-		@recommended = @jsonData["results"]["recommended"]
-		@possible = @jsonData["results"]["possible"]
-		@other = @jsonData["results"]["other"]
-		@events = @jsonData["events"]
-		print :query
+		if (@jsonData)
+			@results = @jsonData["results"]
+			if (@results)
+				@recommended = @jsonData["results"]["recommended"]
+				@possible = @jsonData["results"]["possible"]
+				@other = @jsonData["results"]["other"]
+				@events = @jsonData["events"]
+				print :query
+			else
+				@recommended = []
+				@possible = []
+				@other = []
+				@events = []
+			end
+		end
 	end
 end
