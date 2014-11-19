@@ -40,7 +40,7 @@
     <%= render "home/nav" %>
   <% end %>
 
-  <main class="site-content <% if current_page? question_path %>question-wrapper<% elsif !current_page? root_path %>margin-top<% end%>">
+  <main class="site-content <% if !current_page? root_path %>margin-top<% end %> <% if current_page? question_path %>question-wrapper<% end %>">
     <%= yield %>
   </main>
 

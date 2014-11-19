@@ -1,9 +1,17 @@
 <div class="container">
+<div class="row">
+  <div class="col-sm-12">
 
-      <div class="question-form">
-        <%= form_tag({controller: "answer", action: "index"}, method: :get, class: "form-inline text-center") do %>
-          <%= text_field_tag :query, nil, class: "form-control input-lg input-mysize", placeholder: "Ask Watson a Question" %>
-          <%= submit_tag 'Ask', name: nil, class: "btn btn-lg btn-default" %>
-        <% end %>
-      </div>
-</div>
+    <%= form_tag({controller: "answer", action: "index"}, method: :get) do %>
+      <div class="input-group input-group-lg">
+        <%= text_field_tag :query, nil, class: "form-control",
+          placeholder: "Ask Watson a Question" %>
+        <span class="input-group-btn">
+        <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
+        </span>
+      </div><!-- /.input-group -->
+    <% end %>
+
+  </div>
+</div><!-- /.row -->
+</div><!-- /.container-->
