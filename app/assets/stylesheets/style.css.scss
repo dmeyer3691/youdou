@@ -25,6 +25,7 @@ body {
 
   .site-content {
     @include flex(1);
+    padding-bottom: 1em;
   }
 }
 
