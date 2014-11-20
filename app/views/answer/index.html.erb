@@ -36,7 +36,9 @@
                         <h2><%= recommendation["title"] %></h2>
                       </div>
                       <div class="col-md-2">
-                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                        <% if user_signed_in? %>
+                          <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                        <% end %>
                       </div>
                     </div>
                     <div class="row">

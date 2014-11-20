@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   has_many :event_relationships, class_name: "EventRelationship",
     foreign_key: "follower_id", dependent: :destroy
   has_many :following_events, through: :event_relationships, source: :followed
+  has_many :answer_relationships, class_name: "AnswerRelationship",
+    foreign_key: "follower_id"
+  has_many :saved_events, through: :answer_relationships, source: :followed
   has_one :profile
 
   # Include default devise modules. Others available are:
@@ -25,6 +28,18 @@ class User < ActiveRecord::Base
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  def save_answer(answer)
+
+  end
+
+  def forget_answer(answer)
+
+  end
+
+  def saved_answer?(answer)
+
   end
 
   def follow_event(event)
