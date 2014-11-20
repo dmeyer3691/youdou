@@ -4,24 +4,27 @@ import requests
 import base64
 import json
 
+########## initialize authentication input
+
+baseurl	=	'https://watson-wdc01.ihost.com'
+userid	=	'osu_student1'
+passwd	=	'4bfyY9Y4'
+authstr	=	userid + ":" + passwd
+auth	=	'Basic ' + (base64.b64encode(bytes(authstr, 'utf-8'))).decode('utf-8')
+
 ### queries watson given query string; returns json dict
 def queryWatson(query):
 
 	########## initialize query-based (data) input
 
-	#data	=	{'question':{'questionText':query}}
-	data	=	{'question':{'questionText':query, 'formattedAnswer':True}}
-
-	########## initialize authentication input
-
-	userid	=	'osu_student1'
-	passwd	=	'4bfyY9Y4'
-	authstr	=	userid + ":" + passwd
-	auth	=	'Basic ' + (base64.b64encode(bytes(authstr, 'utf-8'))).decode('utf-8')
+	data	=	{'question':{'questionText':query}}
+	#data	=	{'question':{'questionText':query, 'formattedAnswer':True}}
+	#data	=	{'question':{'questionText':query, 'formattedAnswer':'true'}}
 
 	########## initialize url & header input
 
-	url		=	'https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question'
+	#url		=	'https://watson-wdc01.ihost.com/instance/501/deepqa/v1/question'
+	url		=	baseurl + '/instance/501/deepqa/v1/question'
 	headers	=	{
 					'Content-type'	:	'application/json',
 					'Accept'		:	'application/json',
@@ -38,6 +41,20 @@ def queryWatson(query):
 		return r.json()
 	else:
 		return {}
+
+def getDocument(docurl):
+	
+	########## initialize url & header input
+
+	url = baseurl + docurl
+	headers	=	{'Authorization'	:	auth}
+
+	r = requests.get(url, headers=headers)
+
+	if r:
+		return r.text
+	else:
+		return ''
 
 ### test by printing stuff (if called as main)
 def testPrint(j):
@@ -68,3 +85,5 @@ def testPrint(j):
 ########## only uncomment if calling directly
 
 #testPrint()
+#print(getDocument('/instance/501/deepqa/v1/question/document/PB_16CB6B0B3F0CF433F3816F94ABD0BA25/303/1066'))
+#print(getDocument('/instance/501/deepqa/v1/question/document/T_4522AE0BF0879BE2E2ACCB7B58231BF7/0/-1'))

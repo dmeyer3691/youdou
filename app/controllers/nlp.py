@@ -67,7 +67,16 @@ grammar = r"""
 
 stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'many', 'part', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now', 'let', 'go', 'none']
 
+domainspecificstopwords = ['organization', 'group', 'student', 'person', 'people', 'class', 'club', 'course']
+
 ########## functions related to parsing/chunking
+
+# returns true if all words in string are stopwords; false if any tokens are not stopwords
+def isSW(s):
+	for tok in s.split(' '):
+		if not tok in stopwords+domainspecificstopwords:
+			return False
+	return True
 
 # returns NP (nounphrase) leaf nodes of a tree
 def leaves(tree):
@@ -92,7 +101,7 @@ def norm(word):
 
 # returns true if conditions for acceptable word are met
 def acceptableWord(word):
-	return (2 <= len(word.strip()) <= 40 and word.lower() not in stopwords)
+	return (2 <= len(word.strip()) <= 40 and not isSW(word.lower()))
  
 def getTerms(tree):
 	ret = []
@@ -102,6 +111,7 @@ def getTerms(tree):
 	return ret
 
 def nps(s):
+	'''TODO: more consistently use word tokenizer instead of just splitter?'''
 	toks = nltk.tokenize.word_tokenize(s)
 	postoks = nltk.pos_tag(toks)
 	#print(postoks)
@@ -115,8 +125,12 @@ def nps(s):
 	ret = []
 	for term in terms:
 		joined = ' '.join(term).strip()
-		if not joined in stopwords:
+		if not isSW(joined):
 			ret.append(' '.join(term))
+
+	if not ret:
+		for n in ngrams(s):
+			ret += n
 
 	#print('>>>', removeRepeats(ret))
 	return removeRepeats(ret)
@@ -223,24 +237,28 @@ def addSyns(l):
 	for item in l:
 		morph = wn.morphy('_'.join(item.split(' ')))
 		if morph:
+			if not morph in ret:
+				ret.append(morph)
 			'''TODO: add provision for known words, i.e., scope words like "club"'''
 			for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
 				for lem in getBasicRels(ss):
 					name = lem.name().replace('_', ' ')
-					if not name in ret and not name in l and not name in stopwords and len(name)>3:
+					if not name in ret and not name in l and not isSW(name) and len(name)>=3:
 						ret.append(name)
 		else:
 			for n in ngrams(item):
 				for gram in n:
-					if not gram in stopwords:
+					if not isSW(gram):
 						morph = wn.morphy('_'.join(gram.split(' ')))
 						if morph:
+							if not morph in ret:
+								ret.append(morph)
 							if not gram in ret and not gram in l:
 								ret.append(gram)
 							for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
 								for lem in getBasicRels(ss):
 									name = lem.name().replace('_', ' ')
-									if not name in ret and not name in l and not name in stopwords and len(name)>3:
+									if not name in ret and not name in l and not isSW(name) and len(name)>=3:
 										ret.append(name)
 #						break
 #				else:
@@ -248,6 +266,60 @@ def addSyns(l):
 #				break
 
 	return l+ret
+
+def propagateSyns(d):
+	for k1 in sorted(d, key=len, reverse=False):
+		for k2 in sorted(d, key=len, reverse=False):
+			if k1 != k2 and k1 in k2:
+				for i in range(0, len(d[k1])):
+					toAdd = []
+					for j in range(0, len(d[k2])):
+						if not k1 in d[k1][i] and not d[k1][i] in d[k2][j]:
+							new = d[k2][j].replace(k1, d[k1][i])
+							if not new in d[k2] and not new in toAdd:
+								toAdd.append(new)
+					d[k2] += toAdd
+	return d
+
+def synDictFromKeys(l):
+	ret = {}
+	for item in l:
+		val = [item]
+		morph = wn.morphy('_'.join(item.split(' ')))
+		if morph:
+			for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
+				for lem in getBasicRels(ss):
+					name = lem.name().replace('_', ' ')
+					if not name in ret and not name in l and not isSW(name) and len(name)>3:
+						val.append(name)
+			if item in ret:
+				ret[item] += val
+			else:
+				ret[item] = val
+			ret[item] = removeRepeats(ret[item])
+		else:
+			if item in ret:
+				ret[item] += val
+			else:
+				ret[item] = val
+			ret[item] = removeRepeats(ret[item])
+			for n in ngrams(item):
+				for gram in n:
+					if not isSW(gram) and not gram in l:
+						morph = wn.morphy('_'.join(gram.split(' ')))
+						if morph:
+							val = [gram]
+							for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
+								for lem in getBasicRels(ss):
+									name = lem.name().replace('_', ' ')
+									if not name in ret and not name in l and not isSW(name) and len(name)>3:
+										val.append(name)
+							if gram in ret:
+								ret[gram] += val
+							else:
+								ret[gram] = val
+							ret[gram] = removeRepeats(ret[gram])
+	return propagateSyns(ret)
 
 def removeRedundant(l):
 	ret = []
@@ -296,6 +368,21 @@ def removeRepeats(l):
 #text = 'what are some clubs where I can play video games and board games'
 #text = 'I enjoy easy video games'
 #text = 'How will we get through this?'
+#text = 'arabic lawyer organization'
+#text = 'and if A is useful and comes to dominate the population , then the probability of an AB individual appearing then also tends towards 100 % .'
+#text = 'The apostles may have believed that Jesus walked on water: that does NOT make it true.'
+
+#kws = nps(text)
+#syns = addSyns(kws)
+#syndict = synDictFromKeys(kws)
+
+#print(kws)
+#print(syns)
+#print(syndict)
+#print(syndict.keys())
+#for key in syndict:
+#	print('>>>', key)
+#	print('\t', syndict[key])
 
 #print(ngrams(text))
 #print(getQClass(text))

@@ -32,18 +32,26 @@ if j:
 	kws = nlp.nps(query)
 	syns = nlp.addSyns(kws)
 
-	print(kws)
-	print(syns)
+	#print(kws)
+	#print(syns)
+
+	docs = []
 
 	recommendedResults = []
 	possibleResults = []
 	otherResults = []
-	for i in range(0, len(j['question']['answers'])):
-		fullAnswer = j['question']['evidencelist'][i]['title'].strip() + ' ' + j['question']['evidencelist'][i]['text'].strip()
+	for i in range(0, len(j['question']['evidencelist'])):
+	#for i in range(0, len(j['question']['answers'])):
+		heading = j['question']['evidencelist'][i]['title'].strip()
+		content = j['question']['evidencelist'][i]['text'].strip()
+		fullAnswer = heading + ' ' + content
 
 		'''TODO: weight importance of keywords by length? so long shared things are better than short shared things?'''
 		'''ALSOTODO: extract interests...adjectivish sometimes?  i.e., anime club meetings'''
+		headingKW = nlp.removeRedundant(kw.onlyKeywordsIn(heading, syns))
+		contentKW = nlp.removeRedundant(kw.onlyKeywordsIn(content, syns))
 		relevantTo = nlp.removeRedundant(kw.onlyKeywordsIn(fullAnswer, syns))
+#		relevantTo = nlp.removeRedundant(headingKW+contentKW)
 
 		alsolist = []
 		for item in storedInterests:
@@ -56,22 +64,37 @@ if j:
 		#print('>>>', kw.getClassScore(query, fullAnswer))
 		#print('>>>', kw.getScopeScore(query, fullAnswer))
 
+		doc = j['question']['evidencelist'][i]['document'].strip()
+		if relevantTo and not doc in docs:
+			docs.append(doc)
+			content = wapi.getDocument(doc)
+
 		dic =	{	
-					'entity'		: j['question']['evidencelist'][i]['title'],
-					'title'			: j['question']['evidencelist'][i]['title'],
-					'content'		: j['question']['evidencelist'][i]['text'],
+					'entity'		: heading,
+					'title'			: heading,
+					'content'		: content,
 					#'content'		: nltk.tokenize.sent_tokenize(j['question']['evidencelist'][i]['text']),
 					'relevantTo'	: relevantTo,
 					'also'			: also
 				}
 
-		confidence = float(j['question']['answers'][i]['confidence'])
+		topicInHeading = (len(headingKW) > 0)
+		scopeInHeading = (kw.getScopeScore(query, heading) != 0)
+		classInHeading = (kw.getClassScore(query, heading) != 0)
+
+		topicInContent = (len(contentKW) > 0)
+		scopeInContent = (kw.getScopeScore(query, content) != 0)
+		classInContent = (kw.getClassScore(query, content) != 0)
+
+		#confidence = float(j['question']['answers'][i]['confidence'])
 		#answersQuestionBool = kw.answersQuestion(query, fullAnswer)
-		answersQuestionBool = (kw.getClassScore(query, fullAnswer) != 0 and kw.getScopeScore(query, fullAnswer) != 0)
-		if (answersQuestionBool and len(relevantTo) >= min(len(kws), 2)) or confidence > .9:
+		#answersQuestionBool = (kw.getClassScore(query, fullAnswer) != 0 and kw.getScopeScore(query, fullAnswer) != 0)
+		#if (answersQuestionBool and len(relevantTo) >= min(len(kws), 2)) or confidence > .9:
+		if ((topicInHeading and scopeInHeading and topicInContent and scopeInContent) and (classInHeading or classInContent)):
 			recommendedResults.append(dic)
 		#elif (answersQuestionBool or relevantTo) or confidence > .2:
-		elif relevantTo or confidence > .2:
+		#elif relevantTo or confidence > .2:
+		elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
 			possibleResults.append(dic)
 		else:
 			otherResults.append(dic)
@@ -97,7 +120,8 @@ if j:
 				'results'	:	{
 									'recommended'	: recommendedResults,
 									'possible'		: possibleResults,
-									'other'			: otherResults
+									'other'			: []
+									#'other'			: otherResults
 								},
 				'events'	: events
 			}
