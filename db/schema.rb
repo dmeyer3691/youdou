@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118183429) do
+ActiveRecord::Schema.define(version: 20141120190848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answer_relationships", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+  end
+
+  add_index "answer_relationships", ["followed_id"], name: "index_answer_relationships_on_followed_id", using: :btree
+  add_index "answer_relationships", ["follower_id", "followed_id"], name: "index_answer_relationships_on_follower_id_and_followed_id", using: :btree
+  add_index "answer_relationships", ["follower_id"], name: "index_answer_relationships_on_follower_id", using: :btree
+
+  create_table "answers", force: true do |t|
+    t.json     "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event_relationships", force: true do |t|
     t.integer  "follower_id"
