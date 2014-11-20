@@ -1,17 +1,39 @@
 <div class="container">
-<div class="row">
-  <div class="col-sm-12" style="margin-top: 15%">
+  <div class="row">
+    <div class="col-sm-12" style="margin-top: 15%">
 
-    <%= form_tag({controller: "answer", action: "index"}, method: :get) do %>
-      <div class="input-group input-group-lg">
-        <%= text_field_tag :query, nil, class: "form-control",
-          placeholder: "Ask Watson a Question" %>
-        <span class="input-group-btn">
-        <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
-        </span>
-      </div><!-- /.input-group -->
-    <% end %>
+      <%= form_tag({controller: "answer", action: "index"}, method: :get) do %>
+        <div class="input-group input-group-lg">
+          <%= text_field_tag :query, nil, class: "form-control",
+            placeholder: "Ask Watson a Question" %>
+          <span class="input-group-btn">
+          <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
+          </span>
+        </div><!-- /.input-group -->
+      <% end %>
+    </div>
 
-  </div>
-</div><!-- /.row -->
+  </div><!-- /.row -->
 </div><!-- /.container-->
+<div class="question-tips">
+  <div class="red-wrapper clearfix question-tips">
+    <h3 class="text-center">Helpful Search Hints</h3>
+    <div class="block-container">
+      <div class="block">
+        
+        <h4>Domain</h4>
+        <p>Watson is only trained to answer questions concerning Ohio State University so try and keep your queries in this domain</p>
+      </div>
+      <div class="block">
+       
+        <h4>Scope</h4>
+        <p>Watson picks up on natural language cues so use qualifiers like 'Who' or 'When' to get they type of answer you're looking for</p>
+      </div>
+      <div class="block">
+        
+        <h4>Specificity</h4>
+        <p>Watson is smart but still has a lot to learn. Try making your query more or less specific if his responses don't seem right</p>
+      </div>
+    </div>
+  </div>
+</div>
