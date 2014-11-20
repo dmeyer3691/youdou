@@ -24,30 +24,36 @@
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
           <div class="panel-body">
             <div class="row">
-              <% @recommended.each do |recommendation| %>
-              <div class="jumbotron">
-                <div class="row">
-                  <div class="col-md-10">
-                    <h2><%= recommendation["title"] %></h2>
+              <% if @recommended == [] %>
+                <div class="col-md-12 text-center">
+                  <h3>Sorry but there doesn't seem to be anything here</h3>
+                </div>
+              <% else %>
+                <% @recommended.each do |recommendation| %>
+                  <div class="jumbotron">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h2><%= recommendation["title"] %></h2>
+                      </div>
+                      <div class="col-md-2">
+                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><%= recommendation["content"].html_safe %></p>
+                    </div>
+                    <div class="row" >
+                      <p><strong>Related Topics</strong></p>
+                      <ul>
+                        <% recommendation["relevantTo"].each do |topic| %>
+                          <li>
+                            <p><%= link_to topic, answer_path(:query => topic) %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
-                  </div>
-                </div>
-                <div class="row">
-                  <p><%= recommendation["content"] %></p>
-                </div>
-                <div class="row" >
-                  <p><strong>Related Topics</strong></p>
-                  <ul>
-                    <% recommendation["relevantTo"].each do |topic| %>
-                      <li>
-                        <p><%= link_to topic, answer_path(:query => topic) %>
-                      </li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -64,31 +70,37 @@
         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
           <div class="panel-body">
             <div class="row">
-              <% @events.each do |event| %>
-              <div class="jumbotron">
-                <div class="row">
-                  <div class="col-md-10">
-                    <h2><%= event["name"] %></h2>
-                    <h4><%= event["date"] %></h4>
+              <% if @events == [] %>
+                <div class="col-md-12 text-center">
+                  <h3>Sorry but there doesn't seem to be anything here</h3>
+                </div>
+              <% else %>
+                <% @events.each do |event| %>
+                  <div class="jumbotron">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h2><%= event["name"] %></h2>
+                        <h4><%= event["date"] %></h4>
+                      </div>
+                      <div class="col-md-2">
+                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><%= event["description"] %></p>
+                    </div>
+                    <div class="row" >
+                      <p><strong>Related Topics</strong></p>
+                      <ul>
+                        <% event["relevantTo"].each do |topic| %>
+                          <li>
+                            <p><%= link_to topic, answer_path(:query => topic) %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
-                  </div>
-                </div>
-                <div class="row">
-                  <p><%= event["description"] %></p>
-                </div>
-                <div class="row" >
-                  <p><strong>Related Topics</strong></p>
-                  <ul>
-                    <% event["relevantTo"].each do |topic| %>
-                      <li>
-                        <p><%= link_to topic, answer_path(:query => topic) %>
-                      </li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -105,30 +117,36 @@
         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
           <div class="panel-body">
             <div class="row">
-              <% @possible.each do |possibility| %>
-              <div class="jumbotron">
-                <div class="row">
-                  <div class="col-md-10">
-                    <h2><%= possibility["title"] %></h2>
+              <% if @possible == [] %>
+                <div class="col-md-12 text-center">
+                  <h3>Sorry but there doesn't seem to be anything here</h3>
+                </div>
+              <% else %>
+                <% @possible.each do |possibility| %>
+                  <div class="jumbotron">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h2><%= possibility["title"] %></h2>
+                      </div>
+                      <div class="col-md-2">
+                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><%= possibility["content"].html_safe %></p>
+                    </div>
+                    <div class="row" >
+                      <p><strong>Related Topics</strong></p>
+                      <ul>
+                        <% possibility["relevantTo"].each do |topic| %>
+                          <li>
+                            <p><%= link_to topic, answer_path(:query => topic) %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
                   </div>
-                  <div class="col-md-2">
-                    <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
-                  </div>
-                </div>
-                <div class="row">
-                  <p><%= possibility["content"] %></p>
-                </div>
-                <div class="row" >
-                  <p><strong>Related Topics</strong></p>
-                  <ul>
-                    <% possibility["relevantTo"].each do |topic| %>
-                      <li>
-                        <p><%= link_to topic, answer_path(:query => topic) %>
-                      </li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
+                <% end %>
               <% end %>
             </div>
           </div>
