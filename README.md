@@ -14,3 +14,6 @@ We strive to make students’ transition to OSU as painless as possible by conne
 * [ ] Allow user to save recommendations and display in profile
 * [ ] Fix horizontal scrollbar on search result (and various other minute layout details)
 * [ ] Interim page while data is being returned by Watson
+* [ ] Add events from [Math department](http://math.osu.edu/events)
+* [ ] Add events from [Recsports](http://recsports.osu.edu/events/)
+* [ ] Add events from [CSE department](https://cse.osu.edu/events)
