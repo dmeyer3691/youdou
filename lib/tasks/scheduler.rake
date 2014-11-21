@@ -1,13 +1,19 @@
 desc "This task is called by the Heroku scheduler add-on"
-task :update_events => :environment do
-  puts "Updating events..."
-  EventWorker.update_events
+task :delete_old_events => :environment do
+  puts "Deleting old events..."
+  EventWorker.delete_old_events
   puts "done."
 end
 
-task :delete_old_events => :environment do
-  puts "Deleting old events..."
-  Event.old.delete_all
+task :update_union_events => :environment do
+  puts "Updating events..."
+  EventWorker.update_union_events
+  puts "done."
+end
+
+task :update_ecs_events => :environment do
+  puts "Updating events..."
+  EventWorker.update_ecs_events
   puts "done."
 end
 
