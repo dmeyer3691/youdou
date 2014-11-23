@@ -30,18 +30,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def save_answer(answer)
-
-  end
-
-  def forget_answer(answer)
-
-  end
-
-  def saved_answer?(answer)
-
-  end
-
   def follow_event(event)
     event_relationships.create(followed_id: event.id)
   end
