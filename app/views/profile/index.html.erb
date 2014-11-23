@@ -36,6 +36,7 @@
                     </li>
                   </ul>
                 </div>
+
                 <div class="col-md-4 text-center">
                   <h3>Involvement</h3>
                   <ul class="list-group">
@@ -110,74 +111,33 @@
                     </li>
                   </ul>
                 </div>
+
                 <div class="col-md-4 text-center">
                   <h3>Interests</h3>
-                  <ul class="list-group">
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <h4 class="list-group-item-heading"><%= link_to 'Soccer', answer_path(:query => 'soccer') %></h4>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-default btn-red btn-sm" type="button">Remove</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <h4 class="list-group-item-heading"><%= link_to 'Movies', answer_path(:query => 'Movies') %></h4>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-default btn-red btn-sm" type="button">Remove</button>
+                  <div class="list-group">
+                    <% current_user.following_interests.each do |interest| %>
+                      <div class="list-group-item clearfix">
+                        <h4 class="list-group-item-heading pull-left">
+                          <%= link_to interest.name, answer_path(query: interest.name) %>
+                        </h4>
+                        <div class="pull-right">
+                          <%= render "remove_interest_form", interest: interest %>
                         </div>
                       </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <h4 class="list-group-item-heading"><%= link_to 'Oceanography', answer_path(:query => 'oceanography') %></h4>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-default btn-red btn-sm" type="button">Remove</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                       <div class="row">
-                        <div class="col-md-8">
-                          <h4 class="list-group-item-heading"><%= link_to 'Cooking', answer_path(:query => 'cooking') %></h4>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-default btn-red btn-sm" type="button">Remove</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <h4 class="list-group-item-heading"><%= link_to 'Motorcycles', answer_path(:query => 'motorcycles') %></h4>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-default btn-red btn-sm" type="button">Remove</button>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="list-group-item">
-                      <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                          <button class="btn btn-default btn-red" type="button">Add</button>
-                        </span>
-                      </div><!-- /input-group -->
-                    </li>
-                  </ul>
-                </div>
+                    <% end %>
+                    <div class="list-group-item">
+                      <%= render "add_interest_form" %>
+                    </div>
+                  </div><!-- /.list-group -->
+                </div><!-- /.col-md-4 -->
+
               </div>
         </div>
+
         <div class="tab-pane fade " id="recommendations">
           <!-- render "recommendations" -->
         </div>
+
         <div class="tab-pane fade" id="events">
           <%= render "events" %>
         </div>

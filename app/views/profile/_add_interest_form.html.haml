@@ -1,0 +1,5 @@
+= form_for current_user.following_interests.build do |f|
+  .input-group
+    = f.text_field :name, placeholder: "Interest name", class: "form-control"
+    .input-group-btn
+      = f.submit "Add", class: "btn btn-primary"

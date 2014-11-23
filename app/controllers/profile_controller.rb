@@ -4,6 +4,8 @@ class ProfileController < ApplicationController
       redirect_to root_path
     end
 
+    @interest = Interest.new
+
     @name = current_user.name
 
     @my_events = current_user.following_events.current
@@ -19,5 +21,4 @@ class ProfileController < ApplicationController
 
   	render 'edit'
   end
-
 end

@@ -16,9 +16,10 @@ Youdou::Application.routes.draw do
   get "privacy" => "about#privacy"
   post 'profile/edit/update_name' => 'profile#update_name'
 
-
-
   resources :event_relationships, only: [:create, :destroy]
+
+  get 'interests/:interest_id/remove', to: 'interests#remove', as: 'remove_interest'
+  resources :interests
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
