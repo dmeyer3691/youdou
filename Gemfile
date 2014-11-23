@@ -13,6 +13,7 @@ gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'nokogiri'
 gem 'rails_12factor', group: :production # precompiling assets on Heroku
 gem 'sidekiq'
+gem 'simple_form'
 
 # Bootstrap assets
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -54,3 +55,7 @@ group :development do
   gem 'pry-rails'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+  gem 'shoulda-matchers'
+end
