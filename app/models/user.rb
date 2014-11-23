@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   has_many :saved_events, through: :answer_relationships, source: :followed
   has_one :profile
 
+  acts_as_follower
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
