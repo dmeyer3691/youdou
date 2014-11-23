@@ -5,6 +5,7 @@ gem 'rails', '4.0.2'
 
 gem 'pg'
 
+gem 'acts_as_follower'
 gem 'binding_of_caller'
 gem 'feedjira' # feed parsing
 gem 'kaminari'
