@@ -115,10 +115,10 @@
                 <div class="col-md-4 text-center">
                   <h3>Interests</h3>
                   <div class="list-group">
-                    <% current_user.following_interests.each do |interest| %>
+                    <% @my_interests.each do |interest| %>
                       <div class="list-group-item clearfix">
                         <h4 class="list-group-item-heading pull-left">
-                          <%= link_to interest.name, answer_path(query: interest.name) %>
+                          <%= link_to interest.name.capitalize, answer_path(query: interest.name) %>
                         </h4>
                         <div class="pull-right">
                           <%= render "remove_interest_form", interest: interest %>

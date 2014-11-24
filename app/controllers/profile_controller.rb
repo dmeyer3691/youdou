@@ -8,6 +8,7 @@ class ProfileController < ApplicationController
 
     @name = current_user.name
 
+    @my_interests = current_user.following_interests.order(:name)
     @my_events = current_user.following_events.current
   end
 
