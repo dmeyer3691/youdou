@@ -15,17 +15,20 @@
         #profile.active.tab-pane.fade.in
           .row
             .col-md-4.text-center
+              = image_tag current_user.avatar.url(:medium),
+                style: "margin-top: 1em;"
               %h3= @my_name
-              = button_to "Edit Profile", edit_profile_path, :class=>"btn btn-default btn-red", :method => :get
+              = link_to 'Edit Profile', edit_profile_path,
+                class: 'btn btn-primary'
               %br/
               %br/
               .list-group
                 .list-group-item
-                  %h4.list-group-item-heading Junior Rank
+                  = current_user.rank.nil? ? 'Rank Unspecified' : current_user.rank
                 .list-group-item
-                  %h4.list-group-item-heading Biology Major
+                  = current_user.major.nil? ? 'No Major' : current_user.major
                 .list-group-item
-                  %h4.list-group-item-heading No Minor
+                  = current_user.major.nil? ? 'No Minor' : current_user.minor
             .col-md-4.text-center
               %h3 Involvement
               %ul.list-group

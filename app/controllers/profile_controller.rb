@@ -1,4 +1,6 @@
 class ProfileController < ApplicationController
+  RANK = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate']
+
   def index
     unless user_signed_in?
       redirect_to root_path
@@ -12,13 +14,21 @@ class ProfileController < ApplicationController
   end
 
   def edit
-  	@name = current_user.name
   end
 
-  def update_name
-  	@name = params[:name]
-  	current_user.name = @name
+  def update
+    @user = current_user
 
-  	render 'edit'
+    if @user.update_attributes(user_params)
+      redirect_to profile_path
+    else
+      redirect_to profile_path
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:avatar, :rank, :major, :minor)
   end
 end

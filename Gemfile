@@ -6,14 +6,16 @@ gem 'rails', '4.0.2'
 gem 'pg'
 
 gem 'acts_as_follower'
+gem 'aws-sdk'
 gem 'binding_of_caller'
 gem 'feedjira' # feed parsing
 gem 'kaminari'
 gem 'kaminari-bootstrap', '~> 3.0.1'
 gem 'nokogiri'
+gem 'paperclip', '~> 4.2'
 gem 'rails_12factor', group: :production # precompiling assets on Heroku
 gem 'sidekiq'
-gem 'simple_form'
+gem 'simple_form', '>= 3.1.0.rc1'
 
 # Bootstrap assets
 gem 'bootstrap-sass', '~> 3.2.0'
