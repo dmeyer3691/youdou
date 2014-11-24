@@ -17,6 +17,7 @@ class ProfileController < ApplicationController
   end
 
   def update
+    p "in update"
     @user = current_user
 
     if @user.update_attributes(user_params)
