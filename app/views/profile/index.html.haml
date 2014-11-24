@@ -1,0 +1,92 @@
+.container
+  .row
+    .col-md-12
+      / Nav tabs
+      %ul.nav.nav-tabs.nav-justified{:role => "tablist", :style => "margin-top: 1em;"}
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#profile", :role => "tab"} Profile
+        %li
+          %a{"data-toggle" => "tab", :href => "#recommendations", :role => "tab"} Recommendations
+        %li
+          %a{"data-toggle" => "tab", :href => "#events", :role => "tab"} Events
+
+      / Tab panes
+      .tab-content
+        #profile.active.tab-pane.fade.in
+          .row
+            .col-md-4.text-center
+              %h3= @my_name
+              = button_to "Edit Profile", edit_profile_path, :class=>"btn btn-default btn-red", :method => :get
+              %br/
+              %br/
+              .list-group
+                .list-group-item
+                  %h4.list-group-item-heading Junior Rank
+                .list-group-item
+                  %h4.list-group-item-heading Biology Major
+                .list-group-item
+                  %h4.list-group-item-heading No Minor
+            .col-md-4.text-center
+              %h3 Involvement
+              %ul.list-group
+                %li.list-group-item
+                  .row
+                    .col-md-8
+                      %h4.list-group-item-heading Undergraduate Student Senate
+                    .col-md-4
+                      %button.btn.btn-default.btn-red.btn-sm{:type => "button"} Remove
+                %li.list-group-item
+                  .row
+                    .col-md-8
+                      %h4.list-group-item-heading Club Soccer
+                    .col-md-4
+                      %button.btn.btn-default.btn-red.btn-sm{:type => "button"} Remove
+                %li.list-group-item
+                  .row
+                    .col-md-8
+                      %h4.list-group-item-heading Pre-Med Club
+                    .col-md-4
+                      %button.btn.btn-default.btn-red.btn-sm{:type => "button"} Remove
+                %li.list-group-item
+                  .input-group
+                    %input.form-control{:type => "text"}/
+                    %span.input-group-btn
+                      %button.btn.btn-default.btn-red{:type => "button"} Add
+                  / /input-group
+              %h3 Jobs
+              %ul.list-group
+                %li.list-group-item
+                  .row
+                    .col-md-8
+                      %h4.list-group-item-heading Blackwell Waiter
+                    .col-md-4
+                      %button.btn.btn-default.btn-red.btn-sm{:type => "button"} Remove
+                %li.list-group-item
+                  .row
+                    .col-md-8
+                      %h4.list-group-item-heading Dog Walker
+                    .col-md-4
+                      %button.btn.btn-default.btn-red.btn-sm{:type => "button"} Remove
+                %li.list-group-item
+                  .input-group
+                    %input.form-control{:type => "text"}/
+                    %span.input-group-btn
+                      %button.btn.btn-default.btn-red{:type => "button"} Add
+                  / /input-group
+            .col-md-4.text-center
+              %h3 Interests
+              .list-group
+                - @my_interests.each do |interest|
+                  .list-group-item.clearfix
+                    %h4.list-group-item-heading.pull-left
+                      = link_to interest.name.capitalize, answer_path(query: interest.name)
+                    .pull-right
+                      = render "remove_interest_form", interest: interest
+                .list-group-item
+                  = render "add_interest_form"
+              / /.list-group
+            / /.col-md-4
+        #recommendations.tab-pane.fade
+          / render "recommendations"
+        #events.tab-pane.fade
+          = render "events"
