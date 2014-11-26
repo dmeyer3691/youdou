@@ -5,9 +5,11 @@ import nlp
 
 ########## REs
 
-##### domain/scope REs
-## academic
 courseRE = r'[A-Z]{3,4}[\s-]?[0-9]{3,4}'
+
+titleTagRE = r'(<head>.*?</head>)|(<h1.*>.*?</h1>)|(<span>.*?</span>)'
+contentTagRE = r'(<p>.*?</p>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
+anyTagRE = r'(<.+?>)'
 
 ##### class REs
 ## time
@@ -24,19 +26,9 @@ ANumberRE = r'zero|(((((((twen|thir|for|fif|six|seven|eigh|nine)(ty)(-?))?(one|t
 ## contact
 phoneNumberRE = r'(\+?)(([0-9]([\s\.-]?))?((\(?)[0-9]{3}(\)?)([\s\.-]?)))?([0-9]{3}([\s\.-]?))([0-9]{4})'
 emailRE = r'([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*((\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*))(\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*))*(\s*)(@|(([\(\[\{]\s*)*at(sign)?([\)\]\}]\s*)*))((\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*)))+(\s*)([\(\[\{]\s*)*(com|edu|gov|me|info|co|net)(\s*[\)\]\}])*'
-#addressRE = r''
+addressRE = r'([0-9]+(/s+))?([a-z]+(/s+)){1,2}((ave|avenue|ct|court|dr|drive|ln|lane|pkwy|parkway|rd|road|st|street|way)(\.?)((\s+)[NSEW])?)?(,(/s)*)?(([a-z]+(\s+)){1,2},(/s+)[a-z](/s+))[0-9]{5}(-[0-9]{4})?'
 
 ########## lexicons
-
-##### domain/scope lexicons
-## academic
-generalAcademicWords = ['undergraduate', 'graduate', 'undergrad', 'grad']
-courseAcademicWords = ['course', 'class', 'requirement', 'credit']
-focusAcademicWords = ['major', 'minor', 'focus', 'field', 'degree', 'bachelor', 'master', 'phd', 'doctorate', 'doctoral']
-researchAcademicWords = []
-moneyAcademicWords = ['scholarship', 'fellowship', 'award', 'fund']
-## social
-generalSocialWords = ['group', 'club', 'organization', 'play', 'fun']
 
 ##### class lexicons
 ## time
@@ -55,6 +47,23 @@ generalMoneyWords = ['$', 'money', 'how much', 'dollar', 'cent', 'expensive', 'c
 
 ########## general tools
 
+# returns html sans titleish thing
+def removeStuffFromHTML(s):
+	return re.compile(titleTagRE).sub('', s).strip()
+
+def rawFromHTML(s):
+	return ' '.join(re.compile(anyTagRE).sub(' ', s).split()).strip()
+
+def getContentHTML(s, syns, scopes, query):
+	allcontent = nlp.getInstancesOfRE(contentTagRE, s)
+	ret = []
+	for item in allcontent:
+		if nlp.removeRedundant(onlyKeywordsIn(item, syns)) or nlp.removeRedundant(onlyKeywordsIn(item, scopes)) or getClassScore(query, item) > 0:
+			#ret.append(item)
+			ret.append('<p>'+rawFromHTML(item)+'</p>')
+	return ''.join(ret)
+#	return nlp.getInstancesOfRE(contentTagRE, s)
+
 # returns true if string s contains any of the items in list l
 def containsKeywords(s, l):
 	for item in l:
@@ -65,9 +74,14 @@ def containsKeywords(s, l):
 # returns a list containing only those items from list l which are contained in string s
 def onlyKeywordsIn(s, l):
 	ret = []
+	si = s.lower().strip()
 	for item in l:
-		if item.lower().strip() in s.lower().strip() and not item.lower().strip() in ret and len(item.strip())>2:
-			ret.append(item.lower().strip())
+		ci = item.lower().strip()
+		ind = si.find(ci)
+		if (ind > -1 and ((ind == 0) or (not si[ind-1].isalpha()))) and not ci in ret and len(ci)>2:
+			ret.append(ci)
+	if 'course' in l and nlp.containsCourse(s):
+		ret += nlp.getInstancesOfRE(courseRE, s)
 	return ret
 
 # returns a list containing only those items that occur in both list l1 and list l2
@@ -78,62 +92,19 @@ def inBoth(l1, l2):
 			ret.append(item)
 	return ret
 
-# returns a list containing all the instances of pattern p in string s
-def getInstancesOfRE(p, s):
-	ret = []
-	s2 = s
-	while s2:
-		temp = ''
-		search = re.search(p, s2, re.I)
-		if search:
-			inst = search.group()
-			ret.append(inst)
-			temp = s2.replace(inst, ' ')
-		if temp == s2 or not temp:
-			break
-		else:
-			s2 = temp
-	return ret
-
-# returns a list containing all the instances of each item in list l in list s
+# returns a list containing all the instances of each item in list l in string s
 def getInstancesOf(l, s):
 	ret = []
-	toks = s.split(' ')
+	toks = s.lower().split(' ')
 	for tok in toks:
 		for item in l:
 			#if (len(item) > 3 and len(tok) <= len(item)+3 and item in tok) or item == tok:
-			if (len(item) > 3 and item in tok) or item == tok:
-				ret.append(tok)
+			#if (len(item) > 3 and item in tok) or item == tok:
+			if tok.startswith(item):
 				ret.append(item)
 				break
 	#return nlp.removeRedundant(ret)
 	return nlp.removeRepeats(ret)
-
-########## domain/scope checks
-
-# returns true if string s contains patterns or words indicating an academic topic
-def hasAcademics(s):
-	feats = []
-
-	if re.search(courseRE, s):
-		feats.append('course')
-
-	if containsKeywords(s, courseAcademicWords):
-		feats.append('course')
-	if containsKeywords(s, focusAcademicWords):
-		feats.append('focus')
-
-	feats.append(getInstancesOf(generalAcademicWords+courseAcademicWords+focusAcademicWords+moneyAcademicWords, s))
-
-	return nlp.removeRepeats(feats)
-
-# returns true if s contains patterns or words indicating a social domain
-def hasSocial(s):
-	feats = []
-
-	feats.append(getInstancesOf(generalSocialWords, s))
-
-	return nlp.removeRepeats(feats)
 
 ########## class checks
 
@@ -205,7 +176,17 @@ def hasContactInfo(s):
 def hasLocation(s):
 	feats = []
 
+	if re.search(addressRE, s, re.I):
+		feats.append('address')
+
 	feats.append(getInstancesOf(generalLocationWords, s))
+
+	return nlp.removeRepeats(feats)
+
+def hasMoney(s):
+	feats = []
+
+	feats.append(getInstancesOf(generalMoneyWords, s))
 
 	return nlp.removeRepeats(feats)
 
@@ -217,72 +198,47 @@ def scoreFeatureSets(a, b):
 	if a != [[]]:
 		score = 0.0
 		#if b[:-1] or b[-1]:
-		if b != [[]]:
-			score += 1.0
-		if a[:-1]:
-			score += len(inBoth(a[:-1], b[:-1])) / len(a[:-1])
+		if b == [[]]:
+			return score
 		else:
 			score += 1.0
-		if a[-1]:
-			score += .5 * (len(inBoth(a[-1], b[-1])) / len(a[-1]))
-		else:
-			score += .5
-		return (score / 2.5)
+			if a[:-1]:
+				score += len(inBoth(a[:-1], b[:-1])) / len(a[:-1])
+			else:
+				score += 1.0
+			if a[-1]:
+				score += .5 * (len(inBoth(a[-1], b[-1])) / len(a[-1]))
+			else:
+				score += .5
+			return (score / 2.5)
 	else:
 		return (1.0)
-
-def getScopeScore(q, r):
-	num = 0
-	den = 0
-
-	num += scoreFeatureSets(hasAcademics(q), hasAcademics(r))
-	den += 1
-
-	num += scoreFeatureSets(hasSocial(q), hasSocial(r))
-	den += 1
-
-	return (num / den)
 
 def getClassScore(q, r):
 	num = 0
 	den = 0
 
-	num += scoreFeatureSets(hasTime(q), hasTime(r))
-	den += 1
+	htq = hasTime(q)
+	hciq = hasContactInfo(q)
+	hlq = hasLocation(q)
+	hm = hasMoney(q)
 
-	num += scoreFeatureSets(hasContactInfo(q), hasContactInfo(r))
-	den += 1
-
-	num += scoreFeatureSets(hasLocation(q), hasLocation(r))
-	den += 1
-
-	return (num / den)
-
-# returns the item in l that gets the maximum feature similarity score relative to s
-def maxScored(s, l):
-	scores = [((getScopeScore(s, item)+getClassScore(s, item))/2) for item in l]
-	#scores = [getClassScore(s, item) for item in l]
-	return l[(max(enumerate(scores))[0])]
-
-def answersQuestion(q, r):
-	ret = False
-	qclasses = nlp.getQClass(q)
-	if hasAcademics(q) != [[]]:
-		if hasAcademics(r) != [[]]:
-			ret = True
-	if hasSocial(q) != [[]]:
-		if hasSocial(r) != [[]]:
-			ret = True
-	if hasTime(q) != [[]] or 'TIM' in qclasses:
-		if hasTime(r) != [[]]:
-			ret = True
-	if hasContactInfo(q) != [[]]:
-		if hasContactInfo(r) != [[]]:
-			ret = True
-	if hasLocation(q) != [[]] or 'LOC' in qclasses:
-		if hasLocation(r) != [[]]:
-			ret = True
-	return ret
+	if htq == [[]] and hciq == [[]] and hlq == [[]] and hm == [[]]:
+		return -1
+	else:
+		if htq != [[]]:
+			num += scoreFeatureSets(htq, hasTime(r))
+			den += 1
+		if hciq != [[]]:
+			num += scoreFeatureSets(hciq, hasContactInfo(r))
+			den += 1
+		if hlq != [[]]:
+			num += scoreFeatureSets(hlq, hasLocation(r))
+			den += 1
+		if hm != [[]]:
+			num += scoreFeatureSets(hm, hasMoney(r))
+			den += 1
+		return (num / den)
 
 ##########
  
@@ -307,14 +263,11 @@ def answersQuestion(q, r):
 #text2 = 'Please, call 614.292.5766, speak with your counselor or email Kipp for more information.'
 
 #print(text1)
-#print(maxScored(text1, text2))
 #print(hasContactInfo(text2))
 #print(getInstancesOfRE(phoneNumberRE, text2))
 #if re.search(phoneNumberRE, text2, re.I):
 #	print('phone')
 
-#temp = hasAcademics(text)
-#temp = hasAcademics(text)
 #if temp:
 #	print(temp)
 #temp = hasContactInfo(text)
