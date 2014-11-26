@@ -2,13 +2,15 @@
 
 import re
 import nlp
+import nltk
 
 ########## REs
 
 courseRE = r'[A-Z]{3,4}[\s-]?[0-9]{3,4}'
 
 titleTagRE = r'(<head>.*?</head>)|(<h1.*>.*?</h1>)|(<span>.*?</span>)'
-contentTagRE = r'(<p>.*?</p>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
+#contentTagRE = r'(<p>.*?</p>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
+contentTagRE = r'(<(p|br/)>.*?<(/p|br/)>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
 anyTagRE = r'(<.+?>)'
 
 ##### class REs
@@ -49,7 +51,8 @@ generalMoneyWords = ['$', 'money', 'how much', 'dollar', 'cent', 'expensive', 'c
 
 # returns html sans titleish thing
 def removeStuffFromHTML(s):
-	return re.compile(titleTagRE).sub('', s).strip()
+	#return re.compile(titleTagRE).sub('', s.replace('\n', '<br/>')).strip()
+	return re.compile(titleTagRE).sub('', s.replace('\n', '')).strip()
 
 def rawFromHTML(s):
 	return ' '.join(re.compile(anyTagRE).sub(' ', s).split()).strip()
@@ -58,9 +61,14 @@ def getContentHTML(s, syns, scopes, query):
 	allcontent = nlp.getInstancesOfRE(contentTagRE, s)
 	ret = []
 	for item in allcontent:
-		if nlp.removeRedundant(onlyKeywordsIn(item, syns)) or nlp.removeRedundant(onlyKeywordsIn(item, scopes)) or getClassScore(query, item) > 0:
-			#ret.append(item)
-			ret.append('<p>'+rawFromHTML(item)+'</p>')
+		ci = rawFromHTML(item)
+		if len(ret) <= 10:
+			cifilt = ''
+			for sent in nltk.tokenize.sent_tokenize(ci):
+				if (nlp.removeRedundant(onlyKeywordsIn(sent, syns)) or nlp.removeRedundant(onlyKeywordsIn(sent, scopes)) or getClassScore(query, sent) > 0):
+					cifilt += sent + ' '
+			if cifilt:
+				ret.append('<p>'+cifilt.strip()+'</p>')
 	return ''.join(ret)
 #	return nlp.getInstancesOfRE(contentTagRE, s)
 

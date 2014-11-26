@@ -92,19 +92,28 @@ if j:
 
 			topicInHeading = (len(headingKW) > 0)
 			#scopeInHeading = (kw.getScopeScore(query, heading) != 0)
-			scopeInHeading = (len(scopesyns) == 0 or len(headingScopes) > 0)
+			#scopeInHeading = (len(scopesyns) == 0 or len(headingScopes) > 0)
+			scopeInHeading = (len(headingScopes) > 0)
 			classInHeading = (kw.getClassScore(query, heading) != 0)
 
 			topicInContent = (len(contentKW) > 0)
 			#scopeInContent = (kw.getScopeScore(query, content) != 0)
-			scopeInContent = (len(scopesyns) == 0 or len(contentScopes) > 0)
+			#scopeInContent = (len(scopesyns) == 0 or len(contentScopes) > 0)
+			scopeInContent = (len(contentScopes) > 0)
 			classInContent = (kw.getClassScore(query, content) != 0)
 
-			#if (topicInHeading and topicInContent and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
-			if ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
-				recommendedResults.append(dic)
-			elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
-				possibleResults.append(dic)
+			if len(scopesyns) == 0:
+				if topicInHeading or topicInContent:
+					if classInHeading or classInContent:
+						recommendedResults.append(dic)
+					else:
+						possibleResults.append(dic)
+			else:
+				#if (topicInHeading and topicInContent and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
+				if ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
+					recommendedResults.append(dic)
+				elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
+					possibleResults.append(dic)
 
 	for event in currentEvents:
 		fullEvent = event['name'].strip()+' '+event['description'].strip()
