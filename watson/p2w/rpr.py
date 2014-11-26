@@ -4,7 +4,6 @@ import sys
 sys.path.append('/app/app/controllers')
 import wapi, nlp
 import json
-#import nltk
 
 ########## get watson's stuff
 
@@ -15,6 +14,7 @@ j = wapi.queryWatson(query)
 
 storedInterests = ['animation', 'board games']
 currentEvents = [{'name' : 'LAN PARTY!!!', 'description' : 'Come play video games and eat Cheetos all fukken night!', 'date' : 'November 18, 2014'}, {'name' : 'Cat Fanclub Meeting', 'description' : 'Our bimonthly meeting all about our favorite pets.', 'date' : 'November 12, 2014'}]
+cheapAsFree = [{'name' : 'GameStop BOGO', 'keywords' : 'video games, computer games', 'description' : 'Say the code "You Do U is awesome" at the GameStop south of campus to buy one game and get another free!'}]
 
 title = 'Q: ' + query
 blurb = 'There seems to be something wrong with Watson. Please try again later.'
@@ -22,11 +22,11 @@ blurb = 'There seems to be something wrong with Watson. Please try again later.'
 recommendedResults = []
 possibleResults = []
 events = []
+offers = []
 
 if j:
 
 	title = 'Q: ' + j['question']['questionText']
-	blurb = 'Here are some resources you might look into.'
 
 	kws = nlp.nps(query)
 	syns = nlp.addSyns(kws)
@@ -80,11 +80,9 @@ if j:
 			snip = nlp.getContentHTML(content, syns, scopesyns, query)
 
 			dic =	{	
-						#'entity'		: heading,
 						'title'			: heading,
 						'snippet'		: snip,
 						'content'		: content,
-						#'content'		: nltk.tokenize.sent_tokenize(j['question']['evidencelist'][i]['text']),
 						'relevantTo'	: relevantTo+relevantScopes,
 						'also'			: also,
 						'document'		: adjdoc
@@ -123,10 +121,28 @@ if j:
 			alsolist = []
 			for item in storedInterests:
 				if item in fullEvent:
-					alsolist.appent(item)
+					alsolist.append(item)
 			also = alsolist
 			event['also'] = also
 			events.append(event)
+
+	for offer in cheapAsFree:
+		fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
+		relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
+		if relevantTo:
+			offer['relevantTo'] = relevantTo
+			alsolist = []
+			for item in storedInterests:
+				if item in fullOffer:
+					alsolist.append(item)
+			also = alsolist
+			offer['also'] = also
+			offers.append(offer)
+
+	if not recommendedResults and not possibleResults and not events:
+		blurb = 'There doesn\'t seem to be anything matching your search. Try adjusting your query and ask again.'
+	else:
+		blurb = 'Here are some resources you might look into.'
 
 ret =	{
 			'title'		: title,
@@ -135,7 +151,8 @@ ret =	{
 								'recommended'	: recommendedResults,
 								'possible'		: possibleResults
 							},
-			'events'	: events
+			'events'	: events,
+			'offers'	: offers
 		}
 
 print(json.dumps(ret, indent=4))

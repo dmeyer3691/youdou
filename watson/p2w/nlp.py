@@ -25,13 +25,14 @@ dayRE = r'((on|each|every|every(\s)other)(\s))?((\w)*((day(s?))|morrow))'
 #ADateRE = r'(()|())'
 #EDateRE = r''
 durationRE = r'([0-9]+|(one|two|three|four|five|six|seven|eight|nine|ten)(\s)(second(s?)|minute(s?)|hour(s?)|day(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
-waitRE = r'(in|for|after)?((NUMERIC)|(ALPHANUM)|(APPRX))(second(s?)|minutes(s?)|hour(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
+#waitRE = r'(in|for|after)?((NUMERIC)|(ALPHANUM)|(APPRX))(second(s?)|minutes(s?)|hour(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
 NNumberRE = r'([0-9]{1,3}(,?))?([0-9]{3}(,?))?([0-9]{1-3})?((\.)[0-9]+)?'
 ANumberRE = r'zero|(((((((twen|thir|for|fif|six|seven|eigh|nine)(ty)(-?))?(one|two|three|four|five|six|seven|eight|nine)?)|ten|eleven|twelve|((thir|four|fif|six|seven|eigh|nine)(teen)))((\s)(point)(zero|one|two|three|four|five|six|seven|eight|nine)+)?)?(hundred|thousand|([a-z]+(illion))((\s)|(and\s)|(,\s))?))*(((((twen|thir|for|fif|six|seven|eigh|nine)(ty)(-?))?(one|two|three|four|five|six|seven|eight|nine)?)|ten|eleven|twelve|((thir|four|fif|six|seven|eigh|nine)(teen)))((\s)(point|and)(zero|one|two|three|four|five|six|seven|eight|nine)+)?))'
 ## contact
 phoneNumberRE = r'(\+?)(([0-9]([\s\.-]?))?((\(?)[0-9]{3}(\)?)([\s\.-]?)))?([0-9]{3}([\s\.-]?))([0-9]{4})'
 emailRE = r'([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*((\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*))(\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*))*(\s*)(@|(([\(\[\{]\s*)*at(sign)?([\)\]\}]\s*)*))((\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*)))+(\s*)([\(\[\{]\s*)*(com|edu|gov|me|info|co|net)(\s*[\)\]\}])*'
-addressRE = r'([0-9]+(/s+))?([a-z]+(/s+)){1,2}((ave|avenue|ct|court|dr|drive|ln|lane|pkwy|parkway|rd|road|st|street|way)(\.?)((\s+)[NSEW])?)?(,(/s)*)?(([a-z]+(\s+)){1,2},(/s+)[a-z](/s+))[0-9]{5}(-[0-9]{4})?'
+#addressRE = r'([0-9]+(\s+))?([a-z]+(\s+)){1,2}((apt|apartment|ave|avenue|ct|court|dr|drive|ln|lane|pkwy|parkway|rd|road|st|street|way)(\.?)((\s+)[a-z0-9]+)?)?(,(\s+))?(([a-z]+(\s+)){1,2}(,(\s+))[a-z]+(\s+))[0-9]{5}(-[0-9]{4})?'
+addressRE = r'([0-9]+(\s+))([a-z]+(\s+)){1,2}((apartment|apt|avenue|ave|court|ct|drive|dr|gateway|gtwy|lane|ln|parkway|pkwy|road|rd|street|st|way)(\.?)((\s+)[a-z0-9]+)?)(,?)(((\s+)[a-z]+){1,2}(,)(\s+)[a-z]+)((\s+)[0-9]{5}(-[0-9]{4})?)?'
 
 # NP: {<DT|PRP\$>?<CD>?(<NN.*>|<JP>|<VB[GN]>)*<NN.*>}
 # NP: {<DT|PRP\$>?<CD>?<JP|VB[N]>*<NP>}
@@ -595,7 +596,7 @@ def removeRepeats(l):
 # returns html sans titleish thing
 def removeStuffFromHTML(s):
 	#return re.compile(titleTagRE).sub('', s.replace('\n', '<br/>')).strip()
-	return re.compile(titleTagRE).sub('', s.replace('\n', '').replace('<br/>.', '<br/>')).strip()
+	return re.compile(titleTagRE).sub('', s.replace('\n', '').replace('<br/>.', '<br/>').replace('Tweet.', '')).strip()
 
 def rawFromHTML(s):
 	return ' '.join(re.compile(anyTagRE).sub(' ', s).split()).strip()
@@ -699,8 +700,8 @@ def hasContactInfo(s):
 	if re.search(emailRE, s, re.I):
 		feats.append('email')
 		#feats.append('exact')
-#	if re.search(addressRE, s, re.I):
-#		feats.append('address')
+	if re.search(addressRE, s, re.I):
+		feats.append('address')
 
 #	emails = getInstancesOfRE(emailRE, s)
 #	for i in range(0, len(emails)):
@@ -818,6 +819,11 @@ def getClassScore(q, r):
 #text = 'and if A is useful and comes to dominate the population , then the probability of an AB individual appearing then also tends towards 100 % .'
 #text = 'The apostles may have believed that Jesus walked on water: that does NOT make it true.'
 #text = 'Where does the anime club meet?'
+#text = 'find me at 739 North High Street, Columbus, OH 43210'
+#text = 'North High St South Campus Gateway Columbus Columbus, OH 43210'
+
+#print(getInstancesOfRE(addressRE, text.lower()))
+#print(re.search(addressRE, text.lower(), re.I).group())
 
 #kws = nps(text)
 #syns = addSyns(kws)
