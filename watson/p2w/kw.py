@@ -52,7 +52,7 @@ generalMoneyWords = ['$', 'money', 'how much', 'dollar', 'cent', 'expensive', 'c
 # returns html sans titleish thing
 def removeStuffFromHTML(s):
 	#return re.compile(titleTagRE).sub('', s.replace('\n', '<br/>')).strip()
-	return re.compile(titleTagRE).sub('', s.replace('\n', '')).strip()
+	return re.compile(titleTagRE).sub('', s.replace('\n', '').replace('<br/>.', '<br/>')).strip()
 
 def rawFromHTML(s):
 	return ' '.join(re.compile(anyTagRE).sub(' ', s).split()).strip()
@@ -247,37 +247,3 @@ def getClassScore(q, r):
 			num += scoreFeatureSets(hm, hasMoney(r))
 			den += 1
 		return (num / den)
-
-##########
- 
-#text = 'where can i get training for a marathon'
-#text = 'i made the girl a cake'
-#text = 'the girl gave me some cake'
-#text1 = 'what number can I call for a group to play video games'
-#text = 'How can I contact health services?'
-#text = 'clubs about cats'
-#text = 'groups that are about video games and board games'
-#text = 'groups that play video games, card games, and board games'
-#text = 'I saw the man who stole my computer.'
-#text = 'I like it, but that does not mean it\'s good'
-#text = 'what time is LING5601'
-#text = 'the courses are on Wednesdays at twelve PM.'
-#text = 'you can reach me at 16144788550'
-#text = 'you can reach me at [ azg ] ( atsign) {ling dot ohio-state} .edu'
-#text1 = 'what days can i meet with ajda'
-#text2 = ['you can reach me at [ azg ] ( atsign) {ling dot ohio-state} .edu or gokcen dot 2 @osu.edu.', 'I am usually around on Wednesdays but not on holidays. my office hours are between 3 and 5 pm.']
-
-#text2 = ['Some of these activities could include things like playing video games together, watching movies or sports, engaging in card or board games or sharing hobbies or skills we have developed over the years.', 'This is not your traditional therapy group and we hope you can join us!', 'Please, call 614.292.5766, speak with your counselor or email Kipp for more information.']
-#text2 = 'Please, call 614.292.5766, speak with your counselor or email Kipp for more information.'
-
-#print(text1)
-#print(hasContactInfo(text2))
-#print(getInstancesOfRE(phoneNumberRE, text2))
-#if re.search(phoneNumberRE, text2, re.I):
-#	print('phone')
-
-#if temp:
-#	print(temp)
-#temp = hasContactInfo(text)
-#if temp:
-#	print(temp)

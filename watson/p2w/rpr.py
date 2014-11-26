@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append('/app/app/controllers')
-import wapi, kw, nlp
+import wapi, nlp
 import json
 #import nltk
 
@@ -52,14 +52,14 @@ if j:
 		fullAnswer = heading + ' ' + content
 
 		'''TODO: weight importance of keywords by length? so long shared things are better than short shared things?'''
-		headingKW = nlp.removeRedundant(kw.onlyKeywordsIn(heading, syns))
-		contentKW = nlp.removeRedundant(kw.onlyKeywordsIn(content, syns))
-		relevantTo = nlp.removeRedundant(kw.onlyKeywordsIn(fullAnswer, syns))
+		headingKW = nlp.removeRedundant(nlp.onlyKeywordsIn(heading, syns))
+		contentKW = nlp.removeRedundant(nlp.onlyKeywordsIn(content, syns))
+		relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullAnswer, syns))
 #		relevantTo = nlp.removeRedundant(headingKW+contentKW)
 
-		headingScopes = nlp.removeRedundant(kw.onlyKeywordsIn(heading, scopesyns))
-		contentScopes = nlp.removeRedundant(kw.onlyKeywordsIn(content, scopesyns))
-		relevantScopes = nlp.removeRedundant(kw.onlyKeywordsIn(fullAnswer, scopesyns))
+		headingScopes = nlp.removeRedundant(nlp.onlyKeywordsIn(heading, scopesyns))
+		contentScopes = nlp.removeRedundant(nlp.onlyKeywordsIn(content, scopesyns))
+		relevantScopes = nlp.removeRedundant(nlp.onlyKeywordsIn(fullAnswer, scopesyns))
 
 		alsolist = []
 		for item in storedInterests:
@@ -68,16 +68,16 @@ if j:
 		also = alsolist
 
 		#print(fullAnswer)
-		#print('>>>', kw.getClassScore(query, fullAnswer))
-		#print('>>>', kw.getScopeScore(query, fullAnswer))
+		#print('>>>', nlp.getClassScore(query, fullAnswer))
+		#print('>>>', nlp.getScopeScore(query, fullAnswer))
 
 		doc = j['question']['evidencelist'][i]['document'].strip()
 		adjdoc = '/'.join(doc.split('/')[:-2]+['0','-1'])
-		content = kw.removeStuffFromHTML(wapi.getDocument(adjdoc))
+		content = nlp.removeStuffFromHTML(wapi.getDocument(adjdoc))
 		if 10 < len(content) < 10000 and len(heading) < 500 and not '__' in content and not doc in docs and ((relevantTo) or (not syns and relevantScopes)):
 			docs.append(adjdoc)
 
-			snip = kw.getContentHTML(content, syns, scopesyns, query)
+			snip = nlp.getContentHTML(content, syns, scopesyns, query)
 
 			dic =	{	
 						#'entity'		: heading,
@@ -91,16 +91,16 @@ if j:
 					}
 
 			topicInHeading = (len(headingKW) > 0)
-			#scopeInHeading = (kw.getScopeScore(query, heading) != 0)
+			#scopeInHeading = (nlp.getScopeScore(query, heading) != 0)
 			#scopeInHeading = (len(scopesyns) == 0 or len(headingScopes) > 0)
 			scopeInHeading = (len(headingScopes) > 0)
-			classInHeading = (kw.getClassScore(query, heading) != 0)
+			classInHeading = (nlp.getClassScore(query, heading) != 0)
 
 			topicInContent = (len(contentKW) > 0)
-			#scopeInContent = (kw.getScopeScore(query, content) != 0)
+			#scopeInContent = (nlp.getScopeScore(query, content) != 0)
 			#scopeInContent = (len(scopesyns) == 0 or len(contentScopes) > 0)
 			scopeInContent = (len(contentScopes) > 0)
-			classInContent = (kw.getClassScore(query, content) != 0)
+			classInContent = (nlp.getClassScore(query, content) != 0)
 
 			if len(scopesyns) == 0:
 				if topicInHeading or topicInContent:
@@ -117,7 +117,7 @@ if j:
 
 	for event in currentEvents:
 		fullEvent = event['name'].strip()+' '+event['description'].strip()
-		relevantTo = nlp.removeRedundant(kw.onlyKeywordsIn(fullEvent, syns))
+		relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullEvent, syns))
 		if relevantTo:
 			event['relevantTo'] = relevantTo
 			alsolist = []
