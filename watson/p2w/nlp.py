@@ -14,7 +14,8 @@ courseRE = r'[A-Z]{3,4}[\s-]?[0-9]{3,4}'
 titleTagRE = r'(<head>.*?</head>)|(<h1.*>.*?</h1>)|(<span>.*?</span>)'
 #contentTagRE = r'(<p>.*?</p>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
 contentTagRE = r'(<(p|br/)>.*?<(/p|br/)>)|(<tr(\s?)>.*?</tr>)|(<li>.*?</li>)'
-anyTagRE = r'(<.+?>)'
+anyTagRE = r'<.+?>'
+navRE = r'\[.+?\]'
 
 ##### class REs
 ## time
@@ -126,16 +127,16 @@ scopelist = [
 				['doctoral', 'doctorate', 'grad', 'graduate', 'master', 'phd', 'thesis'],
 				['associate', 'bachelor', 'undergrad', 'undergraduate'],
 				['advisor', 'contact', 'counselor', 'emeritus', 'facilitator', 'faculty', 'leader', 'lecturer', 'president', 'professor', 'researcher', 'staff', 'teacher'],
-				['college', 'department', 'institute', 'institution', 'office', 'university'],
+				['college', 'department', 'institute', 'institution', 'office', 'school', 'university'],
 				['board', 'committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
 				['volunteer', 'community service', 'service'],
 				['journal', 'magazine', 'newsletter', 'publish', 'publication', 'paper'],
-				['admission', 'application', 'apply', 'checklist', 'curriculum vitae'],
+				['admission', 'application', 'apply', 'checklist', 'curriculum vitae', 'letter of recommendation', 'register'],
 				['cause', 'initiative', 'outreach'],
 				['activity', 'involvement', 'join', 'opportunity', 'recruit'],
 				['individual', 'patient', 'person', 'people', 'student'],
-				['ball', 'intramural', 'recreation', 'sport', 'varsity']
-				#['ball', 'game', 'intramural', 'recreation', 'sport', 'varsity']
+				['ball', 'intramural', 'recreation', 'sport', 'varsity'],
+				['exam', 'gpa', 'grade', 'transcript']
 			]
 
 scopedict = {
@@ -225,6 +226,7 @@ scopedict = {
 				'institute'			: 8,
 				'institution'		: 8,
 				'office'			: 8,
+				'school'			: 8,
 				'university'		: 8,
 				'board'				: 9,
 				'committee'			: 9,
@@ -248,6 +250,8 @@ scopedict = {
 				'apply'				: 12,
 				'checklist'			: 12,
 				'curriculum vitae'	: 12,
+				'letter of recommendation'	: 12,
+				'register'			: 12,
 				'cause'				: 13,
 				'initiative'		: 13,
 				'outreach'			: 13,
@@ -266,7 +270,11 @@ scopedict = {
 				'intramural'		: 16,
 				'recreation'		: 16,
 				'sport'				: 16,
-				'varsity'			: 16
+				'varsity'			: 16,
+				'exam'				: 17,
+				'gpa'				: 17,
+				'grade'				: 17,
+				'transcript'		: 17
 			}
 
 ########## functions related to parsing/chunking
@@ -308,10 +316,14 @@ def isClassWord(s):
 
 # returns true if all words in string are stopwords or scopewords; false if any tokens are not stopwords
 def isSW(s):
-	for tok in nltk.tokenize.word_tokenize(s):
-		if not tok in stopwords and not isScopeWord(tok) and not isClassWord(tok):
+	if isScopeWord(s) or isClassWord(s):
+		return True
+	else:
+		for tok in nltk.tokenize.word_tokenize(s):
+#			if not tok in stopwords and not isScopeWord(tok) and not isClassWord(tok):
+			if not tok in stopwords:
 				return False
-	return True
+		return True
 
 def containsCourse(s):
 	if re.search(courseRE, s):
@@ -495,7 +507,7 @@ def addSyns(l):
 		if morph:
 			spacedmorph = morph.replace('_', ' ')
 			if not isSW(spacedmorph):
-				if not spacedmorph in ret:
+				if not spacedmorph in ret and not spacedmorph in l:
 					ret.append(spacedmorph)
 				for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
 					for lem in getBasicRels(ss):
@@ -511,7 +523,7 @@ def addSyns(l):
 						if morph:
 							spacedmorph = morph.replace('_', ' ')
 							if not isSW(spacedmorph):
-								if not spacedmorph in ret:
+								if not spacedmorph in ret and not spacedmorph in l:
 									ret.append(spacedmorph)
 								if not gram in ret and not gram in l:
 									ret.append(gram)
@@ -611,7 +623,7 @@ def removeRepeats(l):
 # returns html sans titleish thing
 def removeStuffFromHTML(s):
 	#return re.compile(titleTagRE).sub('', s.replace('\n', '<br/>')).strip()
-	return re.compile(titleTagRE).sub('', s.replace('\n', '').replace('<br/>.', '<br/>').replace('Tweet.', '')).strip()
+	return re.compile(navRE).sub('', re.compile(titleTagRE).sub('', s.replace('\n', '').replace('<br/>.', '<br/>').replace('Tweet.', ''))).strip()
 
 def rawFromHTML(s):
 	return ' '.join(re.compile(anyTagRE).sub(' ', s).split()).strip()

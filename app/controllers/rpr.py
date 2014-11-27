@@ -84,7 +84,7 @@ if j:
 						'title'			: heading,
 						'snippet'		: snip,
 						'content'		: content,
-						'relevantTo'	: relevantTo+relevantScopes,
+						'relevantTo'	: nlp.removeRedundant(relevantTo+relevantScopes),
 						'also'			: also,
 						'document'		: adjdoc
 					}
