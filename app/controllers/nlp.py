@@ -130,10 +130,12 @@ scopelist = [
 				['board', 'committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
 				['volunteer', 'community service', 'service'],
 				['journal', 'magazine', 'newsletter', 'publish', 'publication', 'paper'],
-				['admission', 'application', 'apply', 'curriculum vitae'],
+				['admission', 'application', 'apply', 'checklist', 'curriculum vitae'],
 				['cause', 'initiative', 'outreach'],
 				['activity', 'involvement', 'join', 'opportunity', 'recruit'],
-				['individual', 'patient', 'person', 'people', 'student']
+				['individual', 'patient', 'person', 'people', 'student'],
+				['ball', 'intramural', 'recreation', 'sport', 'varsity']
+				#['ball', 'game', 'intramural', 'recreation', 'sport', 'varsity']
 			]
 
 scopedict = {
@@ -244,6 +246,7 @@ scopedict = {
 				'admission'			: 12,
 				'application'		: 12,
 				'apply'				: 12,
+				'checklist'			: 12,
 				'curriculum vitae'	: 12,
 				'cause'				: 13,
 				'initiative'		: 13,
@@ -257,7 +260,13 @@ scopedict = {
 				'patient'			: 15,
 				'person'			: 15,
 				'people'			: 15,
-				'student'			: 15
+				'student'			: 15,
+				'ball'				: 16,
+				#'game'				: 16,
+				'intramural'		: 16,
+				'recreation'		: 16,
+				'sport'				: 16,
+				'varsity'			: 16
 			}
 
 ########## functions related to parsing/chunking

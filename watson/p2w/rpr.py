@@ -74,7 +74,8 @@ if j:
 		doc = j['question']['evidencelist'][i]['document'].strip()
 		adjdoc = '/'.join(doc.split('/')[:-2]+['0','-1'])
 		content = nlp.removeStuffFromHTML(wapi.getDocument(adjdoc))
-		if 10 < len(content) < 10000 and len(heading) < 500 and not '__' in content and not doc in docs and ((relevantTo) or (not syns and relevantScopes)):
+		actuallen = len(nlp.rawFromHTML(content))
+		if 20 < actuallen < 10000 and len(heading) < 500 and not '.....' in content and not '__' in content and not '__' in heading and not 'table of contents' in heading and not doc in docs and ((relevantTo) or (not syns and relevantScopes)):
 			docs.append(adjdoc)
 
 			snip = nlp.getContentHTML(content, syns, scopesyns, query)
@@ -102,13 +103,13 @@ if j:
 
 			if len(scopesyns) == 0:
 				if topicInHeading or topicInContent:
-					if classInHeading or classInContent:
+					if snip and (classInHeading or classInContent):
 						recommendedResults.append(dic)
 					else:
 						possibleResults.append(dic)
 			else:
 				#if (topicInHeading and topicInContent and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
-				if ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
+				if snip and ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
 					recommendedResults.append(dic)
 				elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
 					possibleResults.append(dic)
