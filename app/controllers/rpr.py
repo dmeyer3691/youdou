@@ -19,23 +19,22 @@ cheapAsFree = [{'name' : 'GameStop BOGO', 'keywords' : 'video games, computer ga
 title = 'Q: ' + query
 blurb = 'There seems to be something wrong with Watson. Please try again later.'
 
+kws = nlp.nps(query)
+syns = nlp.addSyns(kws)
+scopesyns = nlp.relevantScopes(query)
+
+#print(kws)
+#print(syns)
+#print(scopesyns)
+
 recommendedResults = []
 possibleResults = []
 events = []
 offers = []
 
-if j:
+if j and 'evidencelist' in j['question']:
 
 	title = 'Q: ' + j['question']['questionText']
-
-	kws = nlp.nps(query)
-	syns = nlp.addSyns(kws)
-
-	scopesyns = nlp.relevantScopes(query)
-
-	#print(kws)
-	#print(syns)
-	#print(scopesyns)
 
 	docs = []
 
@@ -114,31 +113,31 @@ if j:
 				elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
 					possibleResults.append(dic)
 
-	for event in currentEvents:
-		fullEvent = event['name'].strip()+' '+event['description'].strip()
-		relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullEvent, syns))
-		if relevantTo:
-			event['relevantTo'] = relevantTo
-			alsolist = []
-			for item in storedInterests:
-				if item in fullEvent:
-					alsolist.append(item)
-			also = alsolist
-			event['also'] = also
-			events.append(event)
+for event in currentEvents:
+	fullEvent = event['name'].strip()+' '+event['description'].strip()
+	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullEvent, syns))
+	if relevantTo:
+		event['relevantTo'] = relevantTo
+		alsolist = []
+		for item in storedInterests:
+			if item in fullEvent:
+				alsolist.append(item)
+		also = alsolist
+		event['also'] = also
+		events.append(event)
 
-	for offer in cheapAsFree:
-		fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
-		relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
-		if relevantTo:
-			offer['relevantTo'] = relevantTo
-			alsolist = []
-			for item in storedInterests:
-				if item in fullOffer:
-					alsolist.append(item)
-			also = alsolist
-			offer['also'] = also
-			offers.append(offer)
+for offer in cheapAsFree:
+	fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
+	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
+	if relevantTo:
+		offer['relevantTo'] = relevantTo
+		alsolist = []
+		for item in storedInterests:
+			if item in fullOffer:
+				alsolist.append(item)
+		also = alsolist
+		offer['also'] = also
+		offers.append(offer)
 
 	if not recommendedResults and not possibleResults and not events:
 		blurb = 'There doesn\'t seem to be anything matching your search. Try adjusting your query and ask again.'
