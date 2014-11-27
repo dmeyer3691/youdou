@@ -18,21 +18,20 @@ anyTagRE = r'(<.+?>)'
 
 ##### class REs
 ## time
-exactMTimeRE = r'((([2][0-3])|([0-1]?[0-9]))((:[0-5][0-9])|\so\'clock))|(((([2][0-3])|([0-1][0-9]))((:)?[0-5][0-9]))((\s)hours))'
-exactCTimeRE = r'((([1][0-2])|([0]?[0-9]))(:[0-5][0-9])?)(((\s?)o\'clock)|((\s?)[ap](\.)?(m)(\.)?)){1,2}'
-apprxTimeRE = r'((at|exactly|around|about|before|after)(\s))?(((a)(\s))?((five|ten|quarter|half)(\s))((til|\'til|until|to|after|past)(\s)))?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon|midnight)((\s)o\'clock)?((\s)[ap](\.)?(m)(\.)?)?'
+exactMTimeRE = r'((([2][0-3])|([0-1]?[0-9]))((:[0-5][0-9])|(\s+)o\'clock))|(((([2][0-3])|([0-1][0-9]))((:)?[0-5][0-9]))((\s+)hours))'
+exactCTimeRE = r'((([1][0-2])|([0]?[0-9]))(:[0-5][0-9])?)(((\s*)o\'clock)|((\s*)[ap](\.)?(m)(\.)?)){1,2}'
+apprxTimeRE = r'((at|exactly|around|about|before|after)(\s+))?(((a(n?))(\s))?((five|ten|quarter|half)(\s))((til|\'til|until|to|after|past)(\s)))?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon|midnight)((\s)o\'clock)?((\s)[ap](\.)?(m)(\.)?)?'
 dayRE = r'((on|each|every|every(\s)other)(\s))?((\w)*((day(s?))|morrow))'
-#ADateRE = r'(()|())'
-#EDateRE = r''
-durationRE = r'([0-9]+|(one|two|three|four|five|six|seven|eight|nine|ten)(\s)(second(s?)|minute(s?)|hour(s?)|day(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
-#waitRE = r'(in|for|after)?((NUMERIC)|(ALPHANUM)|(APPRX))(second(s?)|minutes(s?)|hour(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
+fullDateRE = r'(((the(\s+))?([0-3]?[0-9](st|nd|rd|th)?)(\s+)(of(\s+))?(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep((t)?ember)?|oct(ober)?|nov(ember)?|dec(ember)?)(\.?))|((jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep((t)?ember)?|oct(ober)?|nov(ember)?|dec(ember)?)(\.?)(\s+)([0-3]?[0-9](st|nd|rd|th)?)))((,?)(\s*))([0-9]{4}((\s*)((b(\.?)c(\.?))|(a(\.?)d(\.?))))?)?'
+condDateRE = r'((([0-3]?[0-9])(\s*)[/\-\.](\s*)([0-1]?[0-9]))|(([0-1]?[0-9])(\s*)[/\-\.](\s*)([0-3]?[0-9])))((\s*)[/\-\.](\s*)(([0-9]{2})|([0-9]{4})))?'
+durationRE = r'((in|for|after)(\s+))?((about|approx(\.?)(imately)?|exactly)(\s+))?((a(n?)|the)(\s+))?((couple|few|some|many|several|lot of|next)(\s+))?((([0-9]+)|(one|two|three|four|five|six|seven|eight|nine|ten))(\s+))?(second(s?)|minute(s?)|hour(s?)|day(s?)|week(s?)|month(s?)|year(s?)|quarter(s?)|semester(s?)|season(s?))'
 NNumberRE = r'([0-9]{1,3}(,?))?([0-9]{3}(,?))?([0-9]{1-3})?((\.)[0-9]+)?'
 ANumberRE = r'zero|(((((((twen|thir|for|fif|six|seven|eigh|nine)(ty)(-?))?(one|two|three|four|five|six|seven|eight|nine)?)|ten|eleven|twelve|((thir|four|fif|six|seven|eigh|nine)(teen)))((\s)(point)(zero|one|two|three|four|five|six|seven|eight|nine)+)?)?(hundred|thousand|([a-z]+(illion))((\s)|(and\s)|(,\s))?))*(((((twen|thir|for|fif|six|seven|eigh|nine)(ty)(-?))?(one|two|three|four|five|six|seven|eight|nine)?)|ten|eleven|twelve|((thir|four|fif|six|seven|eigh|nine)(teen)))((\s)(point|and)(zero|one|two|three|four|five|six|seven|eight|nine)+)?))'
-## contact
+## contact/location
 phoneNumberRE = r'(\+?)(([0-9]([\s\.-]?))?((\(?)[0-9]{3}(\)?)([\s\.-]?)))?([0-9]{3}([\s\.-]?))([0-9]{4})'
 emailRE = r'([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*((\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*))(\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*))*(\s*)(@|(([\(\[\{]\s*)*at(sign)?([\)\]\}]\s*)*))((\s*)([\(\[\{]\s*)*(\S+)(\s*[\)\]\}])*(\s*)(\.|(([\(\[\{]\s*)*dot([\)\]\}]\s*)*)))+(\s*)([\(\[\{]\s*)*(com|edu|gov|me|info|co|net)(\s*[\)\]\}])*'
 #addressRE = r'([0-9]+(\s+))?([a-z]+(\s+)){1,2}((apt|apartment|ave|avenue|ct|court|dr|drive|ln|lane|pkwy|parkway|rd|road|st|street|way)(\.?)((\s+)[a-z0-9]+)?)?(,(\s+))?(([a-z]+(\s+)){1,2}(,(\s+))[a-z]+(\s+))[0-9]{5}(-[0-9]{4})?'
-addressRE = r'([0-9]+(\s+))([a-z]+(\s+)){1,2}((apartment|apt|avenue|ave|court|ct|drive|dr|gateway|gtwy|lane|ln|parkway|pkwy|road|rd|street|st|way)(\.?)((\s+)[a-z0-9]+)?)(,?)(((\s+)[a-z]+){1,2}(,)(\s+)[a-z]+)((\s+)[0-9]{5}(-[0-9]{4})?)?'
+addressRE = r'([0-9]+(\s+))([a-z]+(\s+)){1,2}((apartment|apt|avenue|ave|court|ct|drive|dr|gateway|gtwy|hall|lane|ln|parkway|pkwy|road|rd|street|st|way)(\.?)((\s+)[a-z0-9]+)?)((,?)(((\s+)[a-z]+){1,2}(,)(\s+)[a-z]+)?((\s+)[0-9]{5}(-[0-9]{4})?)?)?'
 
 # NP: {<DT|PRP\$>?<CD>?(<NN.*>|<JP>|<VB[GN]>)*<NN.*>}
 # NP: {<DT|PRP\$>?<CD>?<JP|VB[N]>*<NP>}
@@ -603,6 +602,8 @@ def rawFromHTML(s):
 
 def getContentHTML(s, syns, scopes, query):
 	allcontent = getInstancesOfRE(contentTagRE, s)
+	if not allcontent:
+		allcontent = [s]
 	ret = []
 	for item in allcontent:
 		ci = rawFromHTML(item)
@@ -673,9 +674,14 @@ def hasTime(s):
 	if re.search(dayRE, s, re.I):
 		feats.append('weekday')
 		feats.append('day')
-#	if re.search(dateRE, s, re.I):
-#		feats.append('date')
-#		feats.append('day')
+	if re.search(fullDateRE, s, re.I):
+		feats.append('date')
+		feats.append('day')
+	if re.search(condDateRE, s, re.I):
+		feats.append('date')
+		feats.append('day')
+	if re.search(durationRE, s, re.I):
+		feats.append('dur')
 
 	if containsKeywords(s, generalTimeWords):
 		if containsKeywords(s, pointTimeWords):
@@ -821,8 +827,9 @@ def getClassScore(q, r):
 #text = 'Where does the anime club meet?'
 #text = 'find me at 739 North High Street, Columbus, OH 43210'
 #text = 'North High St South Campus Gateway Columbus Columbus, OH 43210'
+#text = 'I was born on 5/11/2013'
 
-#print(getInstancesOfRE(addressRE, text.lower()))
+#print(getInstancesOfRE(condDateRE, text.lower()))
 #print(re.search(addressRE, text.lower(), re.I).group())
 
 #kws = nps(text)
