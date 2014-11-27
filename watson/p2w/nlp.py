@@ -135,7 +135,7 @@ scopelist = [
 				['cause', 'initiative', 'outreach'],
 				['activity', 'involvement', 'join', 'opportunity', 'recruit'],
 				['individual', 'patient', 'person', 'people', 'student'],
-				['ball', 'intramural', 'recreation', 'sport', 'varsity'],
+				['ball', 'game', 'intramural', 'recreation', 'sport', 'varsity'],
 				['exam', 'gpa', 'grade', 'transcript']
 			]
 
@@ -266,7 +266,7 @@ scopedict = {
 				'people'			: 15,
 				'student'			: 15,
 				'ball'				: 16,
-				#'game'				: 16,
+				'game'				: 16,
 				'intramural'		: 16,
 				'recreation'		: 16,
 				'sport'				: 16,
