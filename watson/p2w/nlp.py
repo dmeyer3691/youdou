@@ -20,7 +20,7 @@ anyTagRE = r'(<.+?>)'
 ## time
 exactMTimeRE = r'((([2][0-3])|([0-1]?[0-9]))((:[0-5][0-9])|(\s+)o\'clock))|(((([2][0-3])|([0-1][0-9]))((:)?[0-5][0-9]))((\s+)hours))'
 exactCTimeRE = r'((([1][0-2])|([0]?[0-9]))(:[0-5][0-9])?)(((\s*)o\'clock)|((\s*)[ap](\.)?(m)(\.)?)){1,2}'
-apprxTimeRE = r'((at|exactly|around|about|before|after)(\s+))?(((a(n?))(\s))?((five|ten|quarter|half)(\s))((til|\'til|until|to|after|past)(\s)))?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon|midnight)((\s)o\'clock)?((\s)[ap](\.)?(m)(\.)?)?'
+apprxTimeRE = r'((at|exactly|around|about|before|after)(\s+))?(((a(n?))(\s))?((five|ten|quarter|half)(\s))((til|\'til|until|to|after|past)(\s)))?(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|noon|midnight)(((\s*)o\'clock)|((\s*)[ap](\.)?(m)(\.)?)){1,2}'
 dayRE = r'((on|each|every|every(\s)other)(\s))?((\w)*((day(s?))|morrow))'
 fullDateRE = r'(((the(\s+))?([0-3]?[0-9](st|nd|rd|th)?)(\s+)(of(\s+))?(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep((t)?ember)?|oct(ober)?|nov(ember)?|dec(ember)?)(\.?))|((jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep((t)?ember)?|oct(ober)?|nov(ember)?|dec(ember)?)(\.?)(\s+)([0-3]?[0-9](st|nd|rd|th)?)))((,?)(\s*))([0-9]{4}((\s*)((b(\.?)c(\.?))|(a(\.?)d(\.?))))?)?'
 condDateRE = r'((([0-3]?[0-9])(\s*)[/\-\.](\s*)([0-1]?[0-9]))|(([0-1]?[0-9])(\s*)[/\-\.](\s*)([0-3]?[0-9])))((\s*)[/\-\.](\s*)(([0-9]{2})|([0-9]{4})))?'
@@ -110,8 +110,11 @@ phoneContactWords = ['phone number', 'phone', 'call', 'number']
 generalLocationWords = ['where', 'location', 'located', 'place', 'building', 'center', 'floor', 'room', 'library', 'office', 'house', 'department']
 ## money
 generalMoneyWords = ['$', 'money', 'how much', 'dollar', 'cent', 'expensive', 'cheap', 'free', 'cost', 'loan', 'pay', 'paid', 'spend', 'spent', 'fee', 'charge']
+## person
+generalPersonWords = ['whose', 'whom', 'who', 'mrs.', 'miss', 'mr.', 'doctor', 'dr.', 'professor', 'prof.', 'prof', 'vice president', 'v.p.', 'president', 'pres.', 'treasurer', 'leader', 'counselor', 'facilitator', 'contact']
 
-allclasswords = generalTimeWords+pointTimeWords+frequencyTimeWords+durationTimeWords+generalContactWords+emailContactWords+phoneContactWords+generalLocationWords+generalMoneyWords
+allclasswords = generalTimeWords+pointTimeWords+frequencyTimeWords+durationTimeWords+generalContactWords+emailContactWords+phoneContactWords+generalLocationWords+generalMoneyWords+generalPersonWords
+#allclasswords = generalTimeWords+pointTimeWords+frequencyTimeWords+durationTimeWords+generalContactWords+emailContactWords+phoneContactWords+generalLocationWords+generalMoneyWords
 
 ##### scope lexicon
 scopelist = [
@@ -122,9 +125,9 @@ scopelist = [
 				['area', 'degree', 'field', 'focus', 'major', 'minor', 'program', 'study'],
 				['doctoral', 'doctorate', 'grad', 'graduate', 'master', 'phd', 'thesis'],
 				['associate', 'bachelor', 'undergrad', 'undergraduate'],
-				['advisor', 'contact', 'emeritus', 'facilitator', 'faculty', 'leader', 'lecturer', 'president', 'professor', 'researcher', 'staff', 'teacher'],
+				['advisor', 'contact', 'counselor', 'emeritus', 'facilitator', 'faculty', 'leader', 'lecturer', 'president', 'professor', 'researcher', 'staff', 'teacher'],
 				['college', 'department', 'institute', 'institution', 'office', 'university'],
-				['board', 'committee', 'council', 'governance', 'government', 'leadership', 'senate'],
+				['board', 'committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
 				['volunteer', 'community service', 'service'],
 				['journal', 'magazine', 'newsletter', 'publish', 'publication', 'paper'],
 				['admission', 'application', 'apply', 'curriculum vitae'],
@@ -204,6 +207,7 @@ scopedict = {
 				'undergraduate'		: 6,
 				'advisor'			: 7,
 				'contact'			: 7,
+				'counselor'			: 7,
 				'emeritus'			: 7,
 				'facilitator'		: 7,
 				'faculty'			: 7,
@@ -225,6 +229,7 @@ scopedict = {
 				'council'			: 9,
 				'governance'		: 9,
 				'government'		: 9,
+				'in charge of'		: 9,
 				'leadership'		: 9,
 				'senate'			: 9,
 				'volunteer'			: 10,
@@ -485,6 +490,7 @@ def addSyns(l):
 					ret.append(spacedmorph)
 				for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
 					for lem in getBasicRels(ss):
+					#for lem in getAllRels(ss):
 						name = lem.name().replace('_', ' ')
 						if not name in ret and not name in l and not isSW(name) and len(name)>=3:
 							ret.append(name)
@@ -502,6 +508,7 @@ def addSyns(l):
 									ret.append(gram)
 								for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
 									for lem in getBasicRels(ss):
+									#for lem in getAllRels(ss):
 										name = lem.name().replace('_', ' ')
 										if not name in ret and not name in l and not isSW(name) and len(name)>=3:
 											ret.append(name)
@@ -748,6 +755,13 @@ def hasMoney(s):
 
 	return removeRepeats(feats)
 
+def hasPerson(s):
+	feats = []
+
+	feats.append(getInstancesOf(generalPersonWords, s))
+
+	return removeRepeats(feats)
+
 ########## aggregate checks
 
 # if a and b have stuff, calculate; if a has stuff but b doesn't, the score is zero; if a doesn't have stuff, the score is 1
@@ -780,8 +794,9 @@ def getClassScore(q, r):
 	hciq = hasContactInfo(q)
 	hlq = hasLocation(q)
 	hm = hasMoney(q)
+	hp = hasPerson(q)
 
-	if htq == [[]] and hciq == [[]] and hlq == [[]] and hm == [[]]:
+	if htq == [[]] and hciq == [[]] and hlq == [[]] and hm == [[]] and hp == [[]]:
 		return -1
 	else:
 		if htq != [[]]:
@@ -795,6 +810,9 @@ def getClassScore(q, r):
 			den += 1
 		if hm != [[]]:
 			num += scoreFeatureSets(hm, hasMoney(r))
+			den += 1
+		if hp != [[]]:
+			num += scoreFeatureSets(hp, hasPerson(r))
 			den += 1
 		return (num / den)
 
