@@ -100,6 +100,8 @@ if j and 'evidencelist' in j['question']:
 			scopeInContent = (len(contentScopes) > 0)
 			classInContent = (nlp.getClassScore(query, content) != 0)
 
+			enoughscopes = (nlp.countScopeTypes(relevantScopes) >= nlp.countScopeTypes(scopesyns) - 1)
+
 			if len(scopesyns) == 0:
 				if topicInHeading or topicInContent:
 					if snip and (classInHeading or classInContent):
@@ -108,7 +110,7 @@ if j and 'evidencelist' in j['question']:
 						possibleResults.append(dic)
 			else:
 				#if (topicInHeading and topicInContent and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
-				if snip and ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and (classInHeading or classInContent)):
+				if snip and ((topicInHeading or topicInContent) and (scopeInHeading or scopeInContent) and enoughscopes and (classInHeading or classInContent)):
 					recommendedResults.append(dic)
 				elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
 					possibleResults.append(dic)

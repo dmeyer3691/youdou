@@ -99,7 +99,7 @@ stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you',
 
 ##### class lexicons
 ## time
-generalTimeWords = ['when', 'schedule', 'hours', 'time', 'second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'semester', 'quarter']
+generalTimeWords = ['when', 'schedule', 'hours', 'time', 'second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'semester', 'quarter', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'weekday', 'weekend', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'holiday', 'winter', 'spring', 'summer', 'autumn']
 pointTimeWords = ['at', 'on', 'between']
 frequencyTimeWords = ['every', 'each', 'days', 'weekends', 'yearly', 'monthly', 'daily', 'hourly', 'semesterly', 'quarterly']
 durationTimeWords = ['long', 'for', 'last', 'continue']
@@ -346,6 +346,13 @@ def relevantScopes(s):
 	for ind in inds:
 		ret += scopelist[ind]
 	return ret
+
+def countScopeTypes(l):
+	ret = []
+	for item in l:
+		if item in scopedict and scopedict[item] not in ret:
+			ret.append(scopedict[item])
+	return len(ret)
 
 # returns NP (nounphrase) leaf nodes of a tree
 def leaves(tree):
@@ -638,7 +645,23 @@ def getContentHTML(s, syns, scopes, query):
 		if len(ret) <= 10:
 			cifilt = ''
 			for sent in nltk.tokenize.sent_tokenize(ci):
-				if (removeRedundant(onlyKeywordsIn(sent, syns)) or removeRedundant(onlyKeywordsIn(sent, scopes)) or getClassScore(query, sent) > 0):
+				relsyns = removeRedundant(onlyKeywordsIn(sent, syns))
+				relscopes = removeRedundant(onlyKeywordsIn(sent, scopes))
+				relclass = getClassScore(query, sent)
+
+#				if relclass > 0:
+#					if scopes:
+#						if relscopes:
+#							cifilt += sent + ' '
+#					elif syns:
+#						if relsyns:
+#							cifilt += sent + ' '
+#				else:
+#					if scopes and syns:
+#						if relscopes and relsyns:
+#							cifilt += sent + ' '
+
+				if relsyns or relscopes or relclass > 0:
 					cifilt += sent + ' '
 			if cifilt:
 				ret.append('<p>'+cifilt.strip()+'</p>')
@@ -868,7 +891,7 @@ def getClassScore(q, r):
 #text = 'North High St South Campus Gateway Columbus Columbus, OH 43210'
 #text = 'I was born on 5/11/2013'
 
-#print(getInstancesOfRE(condDateRE, text.lower()))
+#print(getInstancesOfRE(exactCTimeRE, text.lower()))
 #print(re.search(addressRE, text.lower(), re.I).group())
 
 #kws = nps(text)
