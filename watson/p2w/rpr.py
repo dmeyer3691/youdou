@@ -10,14 +10,13 @@ import json
 query = sys.argv[1]
 j = wapi.queryWatson(query)
 
-########## do the magic
+########## initialize
 
 storedInterests = ['animation', 'board games']
 currentEvents = [{'name' : 'LAN PARTY!!!', 'description' : 'Come play video games and eat Cheetos all fukken night!', 'date' : 'November 18, 2014'}, {'name' : 'Cat Fanclub Meeting', 'description' : 'Our bimonthly meeting all about our favorite pets.', 'date' : 'November 12, 2014'}]
 cheapAsFree = [{'name' : 'GameStop BOGO', 'keywords' : 'video games, computer games', 'description' : 'Say the code "You Do U is awesome" at the GameStop south of campus to buy one game and get another free!'}]
 
 title = 'Q: ' + query
-blurb = 'There seems to be something wrong with Watson. Please try again later.'
 
 kws = nlp.nps(query)
 syns = nlp.addSyns(kws)
@@ -27,10 +26,41 @@ scopesyns = nlp.relevantScopes(query)
 #print(syns)
 #print(scopesyns)
 
-recommendedResults = []
-possibleResults = []
+########## get relevant events and offers
+
 events = []
 offers = []
+
+for event in currentEvents:
+	fullEvent = event['name'].strip()+' '+event['description'].strip()
+	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullEvent, syns))
+	if relevantTo:
+		event['relevantTo'] = relevantTo
+		alsolist = []
+		for item in storedInterests:
+			if item in fullEvent:
+				alsolist.append(item)
+		also = alsolist
+		event['also'] = also
+		events.append(event)
+
+for offer in cheapAsFree:
+	fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
+	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
+	if relevantTo:
+		offer['relevantTo'] = relevantTo
+		alsolist = []
+		for item in storedInterests:
+			if item in fullOffer:
+				alsolist.append(item)
+		also = alsolist
+		offer['also'] = also
+		offers.append(offer)
+
+########## sort out watson's results
+
+recommendedResults = []
+possibleResults = []
 
 if j and 'evidencelist' in j['question']:
 
@@ -115,36 +145,23 @@ if j and 'evidencelist' in j['question']:
 				elif (topicInHeading or topicInContent) and (scopeInHeading or scopeInContent or classInHeading or classInContent):
 					possibleResults.append(dic)
 
-for event in currentEvents:
-	fullEvent = event['name'].strip()+' '+event['description'].strip()
-	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullEvent, syns))
-	if relevantTo:
-		event['relevantTo'] = relevantTo
-		alsolist = []
-		for item in storedInterests:
-			if item in fullEvent:
-				alsolist.append(item)
-		also = alsolist
-		event['also'] = also
-		events.append(event)
+########## set the blurb
 
-for offer in cheapAsFree:
-	fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
-	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
-	if relevantTo:
-		offer['relevantTo'] = relevantTo
-		alsolist = []
-		for item in storedInterests:
-			if item in fullOffer:
-				alsolist.append(item)
-		also = alsolist
-		offer['also'] = also
-		offers.append(offer)
-
-	if not recommendedResults and not possibleResults and not events:
-		blurb = 'There doesn\'t seem to be anything matching your search. Try adjusting your query and ask again.'
+blurb = ''
+if (recommendedResults or possibleResults):
+	blurb = 'Here are some resources you might look into.'
+elif j:
+	if (events or offers):
+		blurb = 'Watson doesn\'t seem to have anything matching your search. Here are some other opportunities that may interest you.'
 	else:
-		blurb = 'Here are some resources you might look into.'
+		blurb = 'There doesn\'t seem to be anything matching your search. Try adjusting your query and ask again.'
+else:
+	if (events or offers):
+		blurb = 'Watson doesn\'t seem to be working at the moment. Here are some opportunities that might interest you in the meantime.'
+	else:
+		blurb = 'There seems to be something wrong with Watson. Please try again later.'
+
+########## RETURN OF THE JEDI--I MEAN JSON
 
 ret =	{
 			'title'		: title,

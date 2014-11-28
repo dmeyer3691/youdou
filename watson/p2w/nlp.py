@@ -135,7 +135,7 @@ scopelist = [
 				['cause', 'initiative', 'outreach'],
 				['activity', 'involvement', 'join', 'opportunity', 'recruit'],
 				['individual', 'patient', 'person', 'people', 'student'],
-				['ball', 'game', 'intramural', 'recreation', 'sport', 'varsity'],
+				['ball', 'game', 'intramural', 'play', 'recreation', 'sport', 'varsity'],
 				['exam', 'gpa', 'grade', 'transcript']
 			]
 
@@ -268,6 +268,7 @@ scopedict = {
 				'ball'				: 16,
 				'game'				: 16,
 				'intramural'		: 16,
+				'play'				: 16,
 				'recreation'		: 16,
 				'sport'				: 16,
 				'varsity'			: 16,
@@ -396,6 +397,7 @@ def nps(s):
 	#print(tree)
 
 	terms = getTerms(tree)
+	#print(terms)
 
 	ret = []
 	for term in terms:
@@ -406,6 +408,12 @@ def nps(s):
 	for inst in getInstancesOfRE(courseRE, s):
 		if not inst in ret:
 			ret.append(inst)
+
+	if not ret:
+		for n in ngrams(s):
+			for gram in n:
+				if not isSW(gram):
+					ret.append(gram)
 
 	if not ret:
 		for n in ngrams(s):
@@ -863,15 +871,11 @@ def getClassScore(q, r):
 ##########
  
 #text = 'where can i get training for a marathon'
-#text = 'i made the girl a cake'
-#text = 'the girl gave me some cake'
 #text = 'tell me some places i can play video games'
 #text = 'How can I contact health services?'
 #text = 'clubs about cats'
 #text = 'groups about video games and board games'
 #text = 'groups that play video games, card games, and board games'
-#text = 'I saw the man who stole my computer.'
-#text = 'I like it, but that does not mean it\'s good'
 #text = 'what time is LING 5601'
 #text = 'the courses are on Wednesdays at twelve PM.'
 #text = 'you can reach me at 16144788550'
