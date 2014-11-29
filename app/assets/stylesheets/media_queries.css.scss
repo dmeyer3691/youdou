@@ -12,6 +12,8 @@ $media-large: 1170px;
   .block-container,
   .nav-flex-container { @include max-container-width(750px); }
 
+  .navbar-profile-pic { display: inline !important; }
+
   .block-container {
     flex-direction: row !important;
     @include flex-basis(33%);
