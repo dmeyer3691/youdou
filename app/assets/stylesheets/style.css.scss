@@ -6,6 +6,7 @@ $gray: #666;
 
 // helper classes
 .margin-top { margin-top: 50px; }
+.text-white { color: white; }
 
 // horizontal unordered lists
 @mixin horizontal-ul {
@@ -34,7 +35,18 @@ body {
   height: 40px !important;
   margin-top: -10px !important;
 }
-.nav-tabs { margin-left: 0px !important; }
+.nav-tabs, .nav-pills { margin-left: 0px !important; }
+
+.nav-pills-white {
+  a {
+    font-weight: bold;
+    color: white;
+
+    &:hover {
+      color: $red;
+    }
+  }
+}
 
 ul,
 ol {
@@ -50,6 +62,18 @@ ol {
     text-align: center;
     color: white;
     font-size: 400%;
+  }
+}
+
+.transparency {
+  border: 0;
+
+  .input-group-addon {
+    background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.9);
+  }
+
+  .form-control {
+    background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.75);
   }
 }
 
