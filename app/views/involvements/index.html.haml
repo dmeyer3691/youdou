@@ -1,0 +1,11 @@
+.container
+  .row
+    .col-sm-12
+      - @involvements.each do |involvement|
+        .involvement.margin-top
+          = image_tag involvement.image.url(:medium)
+          %p= involvement.name.capitalize
+          = form_for involvement, :html => { :multipart => true } do |form|
+            = form.file_field :image
+            = form.submit 'Update Image', class: 'btn btn-primary'
+
