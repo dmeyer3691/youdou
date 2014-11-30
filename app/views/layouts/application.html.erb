@@ -9,9 +9,9 @@
   <link rel="icon" href="../../favicon.ico">
 
   <title>You Do U</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "application", media: "all" %>
   <link rel="stylesheet" href="http://www.osu.edu/assets/fonts/webfonts.css">
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
 
@@ -33,7 +33,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body ng-app='YouDoU'>
   <% if current_page?(root_path) %>
     <%= render "layouts/icons" %>
     <%= render "home/home" %> 

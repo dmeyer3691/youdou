@@ -1,8 +1,8 @@
-class Interest < ActiveRecord::Base
+class Involvement < ActiveRecord::Base
   validates :name, presence: true
   validates :name, uniqueness: true
 
-  before_save { |interest| interest.name = interest.name.downcase }
+  before_save { |involvement| involvement.name = involvement.name.downcase }
 
   acts_as_followable
 

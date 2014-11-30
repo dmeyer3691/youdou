@@ -1,0 +1,24 @@
+%h2 Interests
+
+.interests-container
+  - @my_interests.each do |interest|
+    .interest{style: "background: url(#{interest.image.url(:medium)}); background-size: cover;"}
+      = render "remove_interest_form", interest: interest
+      .name
+        = interest.name.titleize
+
+.row{style: "margin-top: 1em;"}
+  .col-sm-6.col-sm-offset-6
+    = render "add_interest_form"
+
+%h2 Involvement
+
+.involvement-container
+  - @my_involvements.each do |involvement|
+    .involvement{style: "background: url(#{involvement.image.url(:medium)}); background-size: cover;"}
+      = render "remove_involvement_form", involvement: involvement
+      .name= involvement.name.titleize
+
+.row{style: "margin: 1em 0 1em 0;"}
+  .col-sm-6.col-sm-offset-6
+    = render "add_involvement_form"

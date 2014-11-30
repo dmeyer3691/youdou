@@ -1,0 +1,4 @@
+= simple_form_for involvement, url: {controller: "involvements", action: "remove",
+  involvement_id: involvement.id}, method: :get do |f|
+  = button_tag(type: 'submit', class: 'btn btn-primary btn-xs') do
+    %span.glyphicon.glyphicon-trash

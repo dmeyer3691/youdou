@@ -7,9 +7,11 @@ class ProfileController < ApplicationController
     end
 
     @interest = Interest.new
+    @involvement = Involvement.new
 
     @my_name = current_user.name.nil? ? current_user.email : current_user.name
     @my_interests = current_user.following_interests.order(:name)
+    @my_involvements = current_user.following_involvements.order(:name)
     @my_events = current_user.following_events.current
   end
 

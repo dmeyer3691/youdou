@@ -1,0 +1,9 @@
+.container
+  .row
+    .col-sm-12
+      - @interests.each do |interest|
+        .interest.margin-top
+          = image_tag interest.image.url(:medium)
+          %p= interest.name.capitalize
+          = form_for interest, :url => interests_path, :html => { :multipart => true } do |form|
+            = form.file_field :image

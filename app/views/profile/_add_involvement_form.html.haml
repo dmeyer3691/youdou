@@ -1,0 +1,5 @@
+= form_for current_user.following_involvements.build do |f|
+  .input-group
+    = f.text_field :name, placeholder: "Involvement name", class: "form-control"
+    .input-group-btn
+      = f.submit "Add", class: "btn btn-primary"

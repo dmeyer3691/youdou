@@ -1,4 +1,8 @@
 class InterestsController < ApplicationController
+  def index
+    @interests = Interest.all
+  end
+
   def create
     @interest = Interest.find_or_create_by(interest_params)
     current_user.follow(@interest)

@@ -10,7 +10,8 @@ $media-large: 1170px;
 
 @media (min-width: 768px) {
   .block-container,
-  .nav-flex-container { @include max-container-width(750px); }
+  .nav-flex-container,
+  .profile-container { @include max-container-width(750px); }
 
   .navbar-profile-pic { display: inline !important; }
 
@@ -34,11 +35,13 @@ $media-large: 1170px;
 
 @media (min-width: 992px) {
   .block-container,
-  .nav-flex-container { @include max-container-width(970px); }
+  .nav-flex-container,
+  .profile-container { @include max-container-width(970px); }
 }
 
 @media (min-width: 1200px) {
   .block-container,
-  .nav-flex-container { @include max-container-width(1170px); }
+  .nav-flex-container,
+  .profile-container { @include max-container-width(1170px); }
 }
 

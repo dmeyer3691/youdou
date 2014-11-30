@@ -26,12 +26,11 @@ body {
 
   .site-content {
     @include flex(1);
-    padding-bottom: 1em;
   }
 }
 
 .navbar { border-bottom: 0; }
-.navbar-profile-pic { height: 50px; display: none; }
+.navbar-profile-pic { height: 50px; display: none; margin-right: 15px; }
 .navbar-text { color: white !important; }
 .navbar-brand img {
   height: 40px !important;
@@ -56,7 +55,7 @@ ol {
 }
 
 .oval-wrapper {
-  background: url(asset-path('tiny-revised_oval.jpg', image));
+  background: url(asset-path('tiny-revised_oval.jpg'));
   background-size: cover;
   padding: 0 20px 3em;
 
@@ -81,7 +80,7 @@ ol {
 
 // question stuff
 .question-wrapper {
-  background: url(asset-path('tiny-revised_oval.jpg', image));
+  background: url(asset-path('tiny-revised_oval.jpg'));
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -116,7 +115,72 @@ ol {
   border-color: #373638; 
 } 
 
-//profile stuff
+// profile
+.profile-container {
+  margin: 0 auto;
+  height: 100%;
+  @include display(flex);
+  @include align-items(stretch);
+
+  .profile-sidebar {
+    width: 30%;
+    background: #333;
+    color: white;
+
+    .profile-pic { width: 100%; }
+
+    a {
+      display: block;
+      width: 100%;
+      background: #222;
+      color: white;
+      padding: .8em 1.5em;
+
+      &:hover {
+        background: lighten(#222, 3%);
+      }
+    }
+
+    a + a {
+      border-top: 1px solid #333;
+    }
+  }
+
+  .profile-content {
+    width: 70%;
+
+    h2 {
+      font-variant: small-caps;
+      padding-left: .7em;
+      color: $red;
+    }
+
+    .interests-container,
+    .involvement-container {
+      @include display(flex);
+      @include flex-wrap(wrap);
+
+      .interest,
+      .involvement {
+        @include display(flex);
+        @include flex-direction(column);
+        @include justify-content(space-between);
+        @include align-items(flex-end);
+
+        width: calc(100% / 3);
+        height: 200px;
+        background: white;
+
+        .name {
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          padding: .5em 1em;
+        }
+      }
+    }
+  }
+}
+
 .nav-tabs > li > a,
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {

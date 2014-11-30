@@ -22,6 +22,9 @@ Youdou::Application.routes.draw do
   get 'interests/:interest_id/remove', to: 'interests#remove', as: 'remove_interest'
   resources :interests
 
+  get 'involvements/:involvement_id/remove', to: 'involvements#remove', as: 'remove_involvement'
+  resources :involvements
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
