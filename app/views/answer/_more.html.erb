@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+  <% if @possible != [] %>
+  <div class="panel-heading red-info" role="tab" id="headingThree">
+    <h4 class="panel-title">
+      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        More Results
+      </a>
+    </h4>
+  </div>
+  <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+    <div class="panel-body">
+      <div class="row">
+        <% if @possible == [] %>
+          <div class="col-md-12 text-center">
+            <h3>Sorry but there doesn't seem to be anything here</h3>
+          </div>
+        <% else %>
+          <% @possible.each do |possibility| %>
+            <div class="jumbotron">
+              <div class="row">
+                <div class="col-md-10">
+                  <h2><%= possibility["title"] %></h2>
+                </div>
+                <div class="col-md-2">
+                  <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                </div>
+              </div>
+              <div class="row">
+                <p><%= possibility["content"].html_safe %></p>
+              </div>
+              <div class="row" >
+                <p><strong>Related Topics</strong></p>
+                <ul>
+                  <% possibility["relevantTo"].each do |topic| %>
+                    <li>
+                      <p><%= link_to topic, answer_path(:query => topic) %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

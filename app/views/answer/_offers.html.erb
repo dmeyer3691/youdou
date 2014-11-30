@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+  <div class="panel-heading red-info" role="tab" id="headingFour">
+    <h4 class="panel-title">
+      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        Relevent Offers
+      </a>
+    </h4>
+  </div>
+  <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+    <div class="panel-body">
+      <div class="row">
+        <% if @offers == [] %>
+          <div class="col-md-12 text-center">
+            <h3>Sorry but there doesn't seem to be anything here</h3>
+          </div>
+        <% else %>
+          <% @offers.each do |offer| %>
+            <div class="jumbotron">
+              <div class="row">
+                <div class="col-md-10">
+                  <h2><%= offer["name"] %></h2>
+                </div>
+              </div>
+              <div class="row">
+                <p><%= offer["description"] %></p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
