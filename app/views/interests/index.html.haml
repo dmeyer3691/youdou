@@ -7,3 +7,4 @@
           %p= interest.name.capitalize
           = form_for interest, :url => interests_path, :html => { :multipart => true } do |form|
             = form.file_field :image
+            = form.submit 'Update Image', class: 'btn btn-primary'
