@@ -31,6 +31,6 @@ class ProfileController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:avatar, :rank, :major, :minor)
+    params.require(:user).permit(:name, :avatar, :rank, :major, :minor)
   end
 end

@@ -16,6 +16,7 @@
     <%= simple_form_for current_user, url: update_profile_path,
       html: {class: 'form-horizontal', style: 'margin-top: 1em;'},
       wrapper: :horizontal_form do |f| %>
+      <%= f.input :name %>
       <%= f.input :rank, as: :select, collection: ProfileController::RANK %>
       <%= f.input :major, label: "Major(s)" %>
       <%= f.input :minor, label: "Minor(s)" %>
