@@ -5,7 +5,7 @@
     .interest{style: "background: url(#{interest.image.url(:medium)}); background-size: cover;"}
       = render "remove_interest_form", interest: interest
       .name
-        = interest.name.titleize
+        = link_to interest.name.titleize, answer_path(query: interest.name)
 
 .row{style: "margin-top: 1em;"}
   .col-sm-6.col-sm-offset-6
@@ -17,7 +17,9 @@
   - @my_involvements.each do |involvement|
     .involvement{style: "background: url(#{involvement.image.url(:medium)}); background-size: cover;"}
       = render "remove_involvement_form", involvement: involvement
-      .name= involvement.name.titleize
+      .name
+        = link_to involvement.name.titleize,
+          answer_path(query: involvement.name)
 
 .row{style: "margin: 1em 0 1em 0;"}
   .col-sm-6.col-sm-offset-6
