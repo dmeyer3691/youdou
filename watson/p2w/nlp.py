@@ -108,7 +108,7 @@ generalContactWords = ['contact', 'reach', 'talk to', 'mail', 'address', 'appoin
 emailContactWords = ['email', 'e-mail', 'message']
 phoneContactWords = ['phone number', 'phone', 'call', 'number']
 ## location
-generalLocationWords = ['where', 'location', 'located', 'place', 'building', 'center', 'floor', 'room', 'library', 'office', 'house', 'department']
+generalLocationWords = ['where', 'location', 'located', 'place', 'building', 'center', 'floor', 'room', 'office', 'house', 'department']
 ## money
 generalMoneyWords = ['$', 'money', 'how much', 'dollar', 'cent', 'expensive', 'cheap', 'free', 'cost', 'loan', 'pay', 'paid', 'spend', 'spent', 'fee', 'charge']
 ## person
@@ -119,7 +119,7 @@ allclasswords = generalTimeWords+pointTimeWords+frequencyTimeWords+durationTimeW
 
 ##### scope lexicon
 scopelist = [
-				['alliance', 'association', 'brigade', 'chapter', 'club', 'federation', 'fraternity', 'greek life', 'group', 'league', 'organization', 'society', 'sorority'],
+				['alliance', 'association', 'brigade', 'chapter', 'club', 'collective', 'federation', 'fraternity', 'greek life', 'group', 'league', 'organization', 'society', 'sorority'],
 				['award', 'career', 'co-op', 'employment', 'externship', 'fellowship', 'fund', 'grant', 'internship', 'job', 'research', 'scholarship', 'work'],
 				['colloquium', 'conference', 'fair', 'forum', 'interview', 'meet', 'meeting', 'presentation', 'seminar', 'session', 'showcase', 'social', 'speech', 'talk'],
 				['class', 'corequisite', 'course', 'credit', 'lecture', 'prerequisite', 'recitation', 'requirement', 'requisite'],
@@ -128,7 +128,8 @@ scopelist = [
 				['associate', 'bachelor', 'undergrad', 'undergraduate'],
 				['advisor', 'contact', 'counselor', 'emeritus', 'facilitator', 'faculty', 'leader', 'lecturer', 'president', 'professor', 'researcher', 'staff', 'teacher'],
 				['college', 'department', 'institute', 'institution', 'office', 'school', 'university'],
-				['board', 'committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
+				#['board', 'committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
+				['committee', 'council', 'governance', 'government', 'in charge of', 'leadership', 'senate'],
 				['volunteer', 'community service', 'service'],
 				['journal', 'magazine', 'newsletter', 'publish', 'publication', 'paper'],
 				['admission', 'application', 'apply', 'checklist', 'curriculum vitae', 'letter of recommendation', 'register'],
@@ -136,7 +137,8 @@ scopelist = [
 				['activity', 'involvement', 'join', 'opportunity', 'recruit'],
 				['individual', 'patient', 'person', 'people', 'student'],
 				['ball', 'game', 'intramural', 'play', 'recreation', 'sport', 'varsity'],
-				['exam', 'gpa', 'grade', 'transcript']
+				['exam', 'gpa', 'grade', 'transcript'],
+				['book', 'bibliography', 'catalog', 'database', 'ficiton', 'interlibrary', 'library', 'reference', 'reserve', 'textbook', 'tome']
 			]
 
 scopedict = {
@@ -145,6 +147,7 @@ scopedict = {
 				'brigage'			: 0,
 				'chapter'			: 0,
 				'club'				: 0,
+				'collective'		: 0,
 				'federation'		: 0,
 				'fraternity'		: 0,
 				'greek life'		: 0,
@@ -228,7 +231,7 @@ scopedict = {
 				'office'			: 8,
 				'school'			: 8,
 				'university'		: 8,
-				'board'				: 9,
+#				'board'				: 9,
 				'committee'			: 9,
 				'council'			: 9,
 				'governance'		: 9,
@@ -275,7 +278,18 @@ scopedict = {
 				'exam'				: 17,
 				'gpa'				: 17,
 				'grade'				: 17,
-				'transcript'		: 17
+				'transcript'		: 17,
+				'book'				: 18,
+				'bibliography'		: 18,
+				'catalog'			: 18,
+				'database'			: 18,
+				'fiction'			: 18,
+				'interlibrary'		: 18,
+				'library'			: 18,
+				'reference'			: 18,
+				'reserve'			: 18,
+				'textbook'			: 18,
+				'tome'				: 18
 			}
 
 ########## functions related to parsing/chunking
@@ -297,34 +311,49 @@ def getInstancesOfRE(p, s):
 			s2 = temp
 	return ret
 
+# s1 = potential instance, s2 = lexicon
+def itemCanHaveLemmaInLex(s, lex):
+	return	(	(s in lex) or
+				((s.endswith('ies') or s.endswith('ied')) and (s[:-3]+'y' in lex)) or
+				(s.endswith('ing') and (s[:-3] in lex)) or
+				((s.endswith('es') or s.endswith('ed') or s.endswith('\'s')) and (s[:-2] in lex)) or
+				(s.endswith('s') and (s[:-1] in lex))
+			)
+
 # returns true if given word is a scopeword or morph'd version thereof; false otherwise
 def isScopeWord(s):
-	return	(	(s in scopedict) or
-				((s.endswith('ies') or s.endswith('ied')) and (s[:-3]+'y' in scopedict)) or
-				(s.endswith('ing') and (s[:-3] in scopedict)) or
-				((s.endswith('es') or s.endswith('ed') or s.endswith('\'s')) and (s[:-2] in scopedict)) or
-				(s.endswith('s') and (s[:-1] in scopedict))
-			)
+	return itemCanHaveLemmaInLex(s, scopedict)
 
 # returns true if given word is a classword or morph'd version thereof; false otherwise
 def isClassWord(s):
-	return	(	(s in allclasswords) or
-				((s.endswith('ies') or s.endswith('ied')) and (s[:-3]+'y' in allclasswords)) or
-				(s.endswith('ing') and (s[:-3] in allclasswords)) or
-				((s.endswith('es') or s.endswith('ed') or s.endswith('\'s')) and (s[:-2] in allclasswords)) or
-				(s.endswith('s') and (s[:-1] in allclasswords))
-			)
+	return itemCanHaveLemmaInLex(s, allclasswords)
 
 # returns true if all words in string are stopwords or scopewords; false if any tokens are not stopwords
 def isSW(s):
-	if isScopeWord(s) or isClassWord(s):
+	if s in stopwords or isScopeWord(s) or isClassWord(s):
 		return True
 	else:
 		for tok in nltk.tokenize.word_tokenize(s):
-#			if not tok in stopwords and not isScopeWord(tok) and not isClassWord(tok):
-			if not tok in stopwords:
+			if not tok in stopwords and not isScopeWord(tok) and not isClassWord(tok):
 				return False
 		return True
+
+def isSW2(s):
+	if s in stopwords or isClassWord(s):
+		return True
+	else:
+		for tok in nltk.tokenize.word_tokenize(s):
+			if not tok in stopwords and not isClassWord(tok):
+				return False
+		return True
+
+def isSW3(s):
+	if s in stopwords:
+		return True
+	for tok in nltk.tokenize.word_tokenize(s):
+		if not tok in stopwords:
+			return False
+	return True
 
 def containsCourse(s):
 	if re.search(courseRE, s):
@@ -332,14 +361,18 @@ def containsCourse(s):
 	else:
 		return False
 
+# s1 = entry in lexicon, s2 = potential instance
+def entryCanTakeForm(s1, s2):
+	return	(	((s1 in s2) or
+				(s1.endswith('y') and (s1[:-1]+'ies' in s2 or s1[:-1]+'ied' in s2)) or
+				(s1+'ing' in s2 or s1+'es' in s2 or s1+'ed' in s2 or s1+'\'s' in s2 or s1+'s' in s2))
+			)
+
 # returns an array containing the indices of scopesyns 
 def relevantScopes(s):
 	inds = []
 	for scope in scopedict:
-		if	(((scope in s) or
-			(scope.endswith('y') and (scope[:-1]+'ies' in s or scope[:-1]+'ied' in s)) or
-			(scope+'ing' in s or scope+'es' in s or scope+'ed' in s or scope+'\'s' in s or scope+'s' in s)) and
-			(not scopedict[scope] in inds)):
+		if entryCanTakeForm(scope, s) and not scopedict[scope] in inds:
 			inds.append(scopedict[scope])
 	if not 3 in inds and containsCourse(s):
 		inds.append(3)
@@ -347,6 +380,34 @@ def relevantScopes(s):
 	for ind in inds:
 		ret += scopelist[ind]
 	return ret
+
+def relevantClasses(s):
+	if itemCanHaveLemmaInLex(s, generalTimeWords):
+		return generalTimeWords
+	if itemCanHaveLemmaInLex(s, pointTimeWords):
+		return pointTimeWords
+	if itemCanHaveLemmaInLex(s, frequencyTimeWords):
+		return frequencyTimeWords
+	if itemCanHaveLemmaInLex(s, durationTimeWords):
+		return durationTimeWords
+
+	if itemCanHaveLemmaInLex(s, generalContactWords):
+		return generalContactWords
+	if itemCanHaveLemmaInLex(s, emailContactWords):
+		return emailContactWords
+	if itemCanHaveLemmaInLex(s, phoneContactWords):
+		return phoneContactWords
+
+	if itemCanHaveLemmaInLex(s, generalLocationWords):
+		return generalLocationWords
+
+	if itemCanHaveLemmaInLex(s, generalMoneyWords):
+		return generalMoneyWords
+
+	if itemCanHaveLemmaInLex(s, generalPersonWords):
+		return generalPersoonWords
+
+	return []
 
 def countScopeTypes(l):
 	ret = []
@@ -409,12 +470,28 @@ def nps(s):
 		if not inst in ret:
 			ret.append(inst)
 
+	# first pass -- don't let any scopewords, classwords, or stopwords through
 	if not ret:
 		for n in ngrams(s):
 			for gram in n:
 				if not isSW(gram):
 					ret.append(gram)
 
+	# second pass -- don't let any classwords or stopwords through
+	if not ret:
+		for n in ngrams(s):
+			for gram in n:
+				if not isSW2(gram):
+					ret.append(gram)
+
+	# third pass -- don't let any stopwords through
+	if not ret:
+		for n in ngrams(s):
+			for gram in n:
+				if not isSW3(gram):
+					ret.append(gram)
+
+	# fourth pass -- fuck it
 	if not ret:
 		for n in ngrams(s):
 			ret += n
@@ -521,7 +598,11 @@ def addSyns(l):
 		morph = wn.morphy('_'.join(nltk.tokenize.word_tokenize(item)))
 		if morph:
 			spacedmorph = morph.replace('_', ' ')
-			if not isSW(spacedmorph):
+			if isScopeWord(spacedmorph):
+				ret += relevantScopes(spacedmorph)
+			elif isClassWord(spacedmorph):
+				ret += relevantClasses(spacedmorph)
+			elif not isSW(spacedmorph):
 				if not spacedmorph in ret and not spacedmorph in l:
 					ret.append(spacedmorph)
 				for ss in wn.synsets(morph, pos=wn.NOUN)+wn.synsets(morph, pos=wn.ADJ):
@@ -553,7 +634,7 @@ def addSyns(l):
 					continue
 				break
 
-	return l+ret
+	return l+removeRepeats(ret)
 
 def propagateSyns(d):
 	for k1 in sorted(d, key=len, reverse=False):
@@ -611,14 +692,14 @@ def synDictFromKeys(l):
 
 def removeRedundant(l):
 	ret = []
-	for i, a in enumerate(l):
+	for i in range(0, len(l)):
 		redundant = False
-		for j, b in enumerate(l):
-			if i != j and a in b:
+		for j in range(i, len(l)):
+			if i != j and l[i] in l[j]:
 				redundant = True
 				break
 		if not redundant:
-			ret.append(a)
+			ret.append(l[i])
 	return ret
 
 def removeRepeats(l):
