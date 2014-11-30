@@ -692,14 +692,24 @@ def synDictFromKeys(l):
 
 def removeRedundant(l):
 	ret = []
-	for i in range(0, len(l)):
+	i = 0
+	ln = len(l)
+	while i < ln:
 		redundant = False
-		for j in range(i, len(l)):
-			if i != j and l[i] in l[j]:
-				redundant = True
-				break
+		j = i
+		while j < ln:
+			if i != j:
+				if l[i] in l[j]:
+					redundant = True
+					break
+				elif l[j] in l[i]:
+					del l[j]
+					j -= 1
+					ln -= 1
+			j += 1
 		if not redundant:
 			ret.append(l[i])
+		i += 1
 	return ret
 
 def removeRepeats(l):
