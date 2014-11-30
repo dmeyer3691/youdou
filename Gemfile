@@ -6,6 +6,7 @@ gem 'rails', '4.0.2'
 gem 'pg'
 
 gem 'acts_as_follower'
+gem 'angularjs-rails'
 gem 'aws-sdk'
 gem 'binding_of_caller'
 gem 'feedjira' # feed parsing
@@ -35,8 +36,6 @@ gem 'haml-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-
-gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
