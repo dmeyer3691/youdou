@@ -1,4 +1,3 @@
 rpr.py		The "main" of sorts.  Calls other programs as needed.
 wapi.py		Contains the functions that directly contact Watson.
-kw.py		Contains the functions that perform various keyword analyses of the query and answers.
-nlp.py		Contains the functions that perform parsing, synonym-finding, and other such NLP tasks.
+nlp.py		Contains the functions that perform parsing, synonym-finding, keyword analyses, and other such NLP tasks.

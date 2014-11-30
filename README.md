@@ -10,7 +10,7 @@ We strive to make students’ transition to OSU as painless as possible by conne
 
 #### TODO
 
-* [ ] Allow user to edit profiles and save (interests, bio, etc.)
+* [x] Allow user to edit profiles and save (interests, bio, etc.)
 * [ ] Allow user to save recommendations and display in profile
 * [ ] Fix horizontal scrollbar on search result (and various other minute layout details)
 * [ ] Interim page while data is being returned by Watson
