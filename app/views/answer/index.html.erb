@@ -12,6 +12,90 @@
     </div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <% if @offers != [] %>
+      <div class="panel panel-default">
+        <div class="panel-heading red-info" role="tab" id="headingFour">
+          <h4 class="panel-title">
+            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Relevent Offers
+            </a>
+          </h4>
+        </div>
+        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+          <div class="panel-body">
+            <div class="row">
+              <% if @offers == [] %>
+                <div class="col-md-12 text-center">
+                  <h3>Sorry but there doesn't seem to be anything here</h3>
+                </div>
+              <% else %>
+                <% @offers.each do |offer| %>
+                  <div class="jumbotron">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h2><%= offer["name"] %></h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><%= offer["description"] %></p>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+
+      <div class="panel panel-default">
+        <div class="panel-heading red-info" role="tab" id="headingTwo">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              Related Events
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            <div class="row">
+              <% if @events == [] %>
+                <div class="col-md-12 text-center">
+                  <h3>Sorry but there doesn't seem to be anything here</h3>
+                </div>
+              <% else %>
+                <% @events.each do |event| %>
+                  <div class="jumbotron">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h2><%= event["name"] %></h2>
+                        <h4><%= event["date"] %></h4>
+                      </div>
+                      <div class="col-md-2">
+                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><%= event["description"] %></p>
+                    </div>
+                    <div class="row" >
+                      <p><strong>Related Topics</strong></p>
+                      <ul>
+                        <% event["relevantTo"].each do |topic| %>
+                          <li>
+                            <p><%= link_to topic, answer_path(:query => topic) %>
+                          </li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="panel panel-default">
         <div class="panel-heading red-info" role="tab" id="headingOne">
           <h4 class="panel-title">
@@ -60,54 +144,9 @@
           </div>
         </div>
       </div>
+      
       <div class="panel panel-default">
-        <div class="panel-heading red-info" role="tab" id="headingTwo">
-          <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-              Related Events
-            </a>
-          </h4>
-        </div>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            <div class="row">
-              <% if @events == [] %>
-                <div class="col-md-12 text-center">
-                  <h3>Sorry but there doesn't seem to be anything here</h3>
-                </div>
-              <% else %>
-                <% @events.each do |event| %>
-                  <div class="jumbotron">
-                    <div class="row">
-                      <div class="col-md-10">
-                        <h2><%= event["name"] %></h2>
-                        <h4><%= event["date"] %></h4>
-                      </div>
-                      <div class="col-md-2">
-                        <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <p><%= event["description"] %></p>
-                    </div>
-                    <div class="row" >
-                      <p><strong>Related Topics</strong></p>
-                      <ul>
-                        <% event["relevantTo"].each do |topic| %>
-                          <li>
-                            <p><%= link_to topic, answer_path(:query => topic) %>
-                          </li>
-                        <% end %>
-                      </ul>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="panel panel-default">
+        <% if @possible != [] %>
         <div class="panel-heading red-info" role="tab" id="headingThree">
           <h4 class="panel-title">
             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -152,6 +191,7 @@
             </div>
           </div>
         </div>
+        <% end %>
       </div>
     </div>
     

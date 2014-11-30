@@ -19,12 +19,14 @@ class AnswerController < ApplicationController
 				@possible = @jsonData["results"]["possible"]
 				@other = @jsonData["results"]["other"]
 				@events = @jsonData["events"]
+				@offers = @jsonData["offers"]
 				print :query
 			else
 				@recommended = []
 				@possible = []
 				@other = []
 				@events = []
+				@offers = []
 			end
 		end
 	end
