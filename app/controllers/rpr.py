@@ -13,8 +13,8 @@ j = wapi.queryWatson(query)
 ########## initialize
 
 storedInterests = ['animation', 'board games']
-currentEvents = [{'name' : 'LAN PARTY!!!', 'description' : 'Come play video games and eat Cheetos all fukken night!', 'date' : 'November 18, 2014'}, {'name' : 'Cat Fanclub Meeting', 'description' : 'Our bimonthly meeting all about our favorite pets.', 'date' : 'November 12, 2014'}]
-cheapAsFree = [{'name' : 'GameStop BOGO', 'keywords' : 'video games, computer games', 'description' : 'Say the code "You Do U is awesome" at the GameStop south of campus to buy one game and get another free!'}]
+currentEvents = [{'name' : 'LAN PARTY', 'description' : 'Come play video games and eat Cheetos all night!', 'date' : 'November 18, 2014'}, {'name' : 'Cat Fanclub Meeting', 'description' : 'Our bimonthly meeting all about our favorite pets.', 'date' : 'November 12, 2014'}]
+cheapAsFree = [{'name' : 'GameStop BOGO', 'keywords' : ['video games', 'computer games'], 'description' : 'Say the code "You Do U is awesome" at the GameStop south of campus to buy one game and get another free!'}, {'name' : '50% off the special You Do U roll', 'keywords' : ['sushi', 'roll', 'japanese', 'food', 'asian', 'restaurant'], 'description' : 'Come to Fusian sometime between now and Saturday to get half-off on our limited time only special You Do U roll!'}]
 
 title = 'Q: ' + query
 
@@ -45,7 +45,7 @@ for event in currentEvents:
 		events.append(event)
 
 for offer in cheapAsFree:
-	fullOffer = offer['name'].strip()+' '+offer['keywords'].strip()+' '+offer['description'].strip()
+	fullOffer = offer['name'].strip()+' '+(' '.join(offer['keywords'])).strip()+' '+offer['description'].strip()
 	relevantTo = nlp.removeRedundant(nlp.onlyKeywordsIn(fullOffer, syns))
 	if relevantTo:
 		offer['relevantTo'] = relevantTo
