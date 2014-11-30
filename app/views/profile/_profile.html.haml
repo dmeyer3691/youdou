@@ -1,4 +1,8 @@
-%h2 Interests
+.row
+  .col-sm-6
+    %h2 Interests
+  .col-sm-6{style: "margin-top: 15px;"}
+    = render "add_interest_form"
 
 .interests-container
   - @my_interests.each do |interest|
@@ -7,11 +11,11 @@
       .name
         = link_to interest.name.titleize, answer_path(query: interest.name)
 
-.row{style: "margin-top: 1em;"}
-  .col-sm-6.col-sm-offset-6
-    = render "add_interest_form"
-
-%h2 Involvement
+.row
+  .col-sm-6
+    %h2 Involvement
+  .col-sm-6{style: "margin-top: 15px;"}
+    = render "add_involvement_form"
 
 .involvement-container
   - @my_involvements.each do |involvement|
@@ -21,6 +25,3 @@
         = link_to involvement.name.titleize,
           answer_path(query: involvement.name)
 
-.row{style: "margin: 1em 0 1em 0;"}
-  .col-sm-6.col-sm-offset-6
-    = render "add_involvement_form"
