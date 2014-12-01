@@ -13,17 +13,33 @@
       <% end %>
     </div>
   </div>
+
   <div class="row">
-    <p><%= recommendation.content.html_safe %></p>
-  </div>
-  <div class="row" >
-    <p><strong>Related Topics</strong></p>
-    <ul>
-      <% recommendation.topics.each do |topic| %>
-        <li>
-          <p><%= link_to topic.name, answer_path(:query => topic.name) %>
-        </li>
-      <% end %>
-    </ul>
+    <div class="col-sm-12">
+      <%= recommendation.snippet.html_safe %>
+
+
+
+
+      <button type="button" class="btn btn-primary" data-toggle="collapse"
+        data-target="#<%= "recommendation-#{recommendation.id}-content" %>"
+        aria-expanded="true" aria-controls="demo">
+        See full document
+      </button>
+
+      <div id="<%= "recommendation-#{recommendation.id}-content" %>"
+        class="collapse">
+        <%= recommendation.content.html_safe %>
+      </div>
+
+      <p style="margin-top: 1em;"><strong>Related Topics</strong></p>
+      <ul>
+        <% recommendation.topics.each do |topic| %>
+          <li>
+            <p><%= link_to topic.name, answer_path(:query => topic.name) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>
