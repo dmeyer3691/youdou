@@ -36,7 +36,7 @@
         <div class="text-center">
           <%= form_tag({controller: "answer", action: "index"}, method: :get, class: "form-inline") do %>
             <%= text_field_tag :query, nil, class: "form-control"  %>
-            <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
+            <%= submit_tag 'Ask', name: nil, class: "btn btn-primary ask-watson" %>
           <% end %>
         </div>
         <br/>

@@ -1,13 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12" style="margin-top: 15%">
-
       <%= form_tag({controller: "answer", action: "index"}, method: :get) do %>
         <div class="input-group input-group-lg">
           <%= text_field_tag :query, nil, class: "form-control",
             placeholder: "Ask Watson a Question" %>
           <span class="input-group-btn">
-          <%= submit_tag 'Ask', name: nil, class: "btn btn-default" %>
+          <%= submit_tag 'Ask', name: nil, class: "btn btn-default ask-watson" %>
           </span>
         </div><!-- /.input-group -->
       <% end %>

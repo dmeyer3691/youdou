@@ -29,6 +29,23 @@ body {
   }
 }
 
+.watson-thinking {
+  @include display(flex);
+  @include align-items(center);
+  @include flex(1);
+
+  display: none;
+  margin: 100px auto 0;
+  padding: 0 20px 20px;
+
+  .loading-image {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
 .navbar { border-bottom: 0; }
 .navbar-profile-pic { height: 50px; display: none; margin-right: 15px; }
 .navbar-text { color: white !important; }

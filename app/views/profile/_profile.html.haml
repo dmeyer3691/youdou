@@ -9,7 +9,7 @@
     .interest{style: "background: url(#{interest.image.url(:medium)}); background-size: cover;"}
       = render "remove_interest_form", interest: interest
       .name
-        = link_to interest.name.titleize, answer_path(query: interest.name)
+        = link_to interest.name.titleize, answer_path(query: interest.name), class: 'ask-watson'
 
 .row
   .col-sm-6
@@ -23,5 +23,5 @@
       = render "remove_involvement_form", involvement: involvement
       .name
         = link_to involvement.name.titleize,
-          answer_path(query: involvement.name)
+          answer_path(query: involvement.name), class: 'ask-watson'
 

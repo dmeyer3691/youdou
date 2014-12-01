@@ -41,6 +41,13 @@
     <%= render "home/nav" %>
   <% end %>
 
+  <div class="watson-thinking text-center">
+    <div>
+      <%= image_tag "thinkinganimation.gif", alt: "Watson thinking", class: 'loading-image' %>
+      <h2>Please wait while Watson ponders your query&hellip;</h2>
+    </div>
+  </div>
+
   <main class="site-content
     <% if !current_page? root_path %>margin-top<% end %>
     <% if current_page? question_path or current_page? new_user_session_path %>question-wrapper<% end %>">
