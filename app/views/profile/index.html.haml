@@ -14,10 +14,18 @@
         %p.text-center
           = current_user.minor.blank? ? 'No Minor' : current_user.minor
 
-    %a{"ng-click" => "app.view='profile'", style: "margin-top: 2em;"} Profile
-    %a{"ng-click" => "app.view='recommendations'"} Recommendations
-    %a{"ng-click" => "app.view='events'"} Events
-    = link_to 'Edit Profile', edit_profile_path
+    %a{"ng-click" => "app.view='profile'", style: "margin-top: 2em;"}
+      %span.glyphicon.glyphicon-user
+        Profile
+    %a{"ng-click" => "app.view='recommendations'"}
+      %span.glyphicon.glyphicon-star
+        Recommendations
+    %a{"ng-click" => "app.view='events'"}
+      %span.glyphicon.glyphicon-calendar
+        Events
+    = link_to edit_profile_path do
+      %span.glyphicon.glyphicon-pencil
+        Edit
 
   .profile-content
     %div{"ng-show" => "app.view=='profile'"}
