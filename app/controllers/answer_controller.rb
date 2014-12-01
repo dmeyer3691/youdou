@@ -48,7 +48,9 @@ class AnswerController < ApplicationController
         end
       end
 
-      @recommendations << new_recommendation
+      unless current_user.following? new_recommendation
+        @recommendations << new_recommendation
+      end
     end
 	end
 
