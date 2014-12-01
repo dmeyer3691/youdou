@@ -34,5 +34,10 @@ ol {
   @include serif;
 }
 
+.profile-content h2,
+.jumbotron h2 {
+  font-variant: small-caps;
+}
+
 // profile
 .name { @include sans-serif-bold; }
