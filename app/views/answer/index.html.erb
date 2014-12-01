@@ -12,15 +12,21 @@
     </div>
 
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      <% if @offers != [] %>
+      <% unless @offers.empty? %>
         <%= render "offers" %>
       <% end %>
 
-      <%= render "events" %>
+      <% unless @events.empty? %>
+        <%= render "events" %>
+      <% end %>
 
-      <%= render "recommendations" %>
+      <% unless @recommendations.empty? %>
+        <%= render "recommendations" %>
+      <% end %>
       
-      <%= render "more" %>
+      <% unless @possible.empty? %>
+        <%= render "more" %>
+      <% end %>
     </div>
     
 
