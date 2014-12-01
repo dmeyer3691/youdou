@@ -22,7 +22,8 @@
   .profile-content
     %div{"ng-show" => "app.view=='profile'"}
       = render "profile"
-    <div ng-show="app.view=='recommendations'">IM A RECOMMENDATION</div>
+    %div{"ng-show" => "app.view=='recommendations'"}
+      = render "recommendations"
     %div{"ng-show" => "app.view=='events'"}
       = render "events"
 

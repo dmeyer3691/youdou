@@ -1,0 +1,29 @@
+<div class="jumbotron <%= "recommendation-#{recommendation.id}" %>">
+  <div class="row">
+    <div class="col-md-10">
+      <h2><%= recommendation.title %></h2>
+    </div>
+    <div class="col-md-2">
+      <% if user_signed_in? %>
+        <% if current_user.following? recommendation %>
+          <%= render "recommendations/unsave_recommendation_form", recommendation: recommendation %>
+        <% else %>
+          <%= render "recommendations/save_recommendation_form", recommendation: recommendation %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <p><%= recommendation.content.html_safe %></p>
+  </div>
+  <div class="row" >
+    <p><strong>Related Topics</strong></p>
+    <ul>
+      <% recommendation.topics.each do |topic| %>
+        <li>
+          <p><%= link_to topic.name, answer_path(:query => topic.name) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

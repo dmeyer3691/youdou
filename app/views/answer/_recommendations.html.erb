@@ -9,37 +9,13 @@
   <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
     <div class="panel-body">
       <div class="row">
-        <% if @recommended == [] %>
+        <% if @recommendations.empty? %>
           <div class="col-md-12 text-center">
             <h3>Sorry but there doesn't seem to be anything here</h3>
           </div>
         <% else %>
-          <% @recommended.each do |recommendation| %>
-            <div class="jumbotron">
-              <div class="row">
-                <div class="col-md-10">
-                  <h2><%= recommendation["title"] %></h2>
-                </div>
-                <div class="col-md-2">
-                  <% if user_signed_in? %>
-                    <p><a class="btn my-btn btn-lg" role="button">Save</a></p>
-                  <% end %>
-                </div>
-              </div>
-              <div class="row">
-                <p><%= recommendation["content"].html_safe %></p>
-              </div>
-              <div class="row" >
-                <p><strong>Related Topics</strong></p>
-                <ul>
-                  <% recommendation["relevantTo"].each do |topic| %>
-                    <li>
-                      <p><%= link_to topic, answer_path(:query => topic) %>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
+          <% @recommendations.each do |recommendation| %>
+            <%= render "recommendations/recommendation", recommendation: recommendation %>
           <% end %>
         <% end %>
       </div>

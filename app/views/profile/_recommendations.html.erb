@@ -1,12 +1,5 @@
-<table class="table table-hover" style="margin-top: 2em;">
-  <% @my_recommendations.each do |recommendation| %>
-    <tr>
-      <td>
+<h2>Recommendations</h2>
 
-      </td>
-      <td style="text-align: right">
-        <%= render 'save/unsave', recommendation: recommendation %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<% @my_recommendations.each do |recommendation| %>
+  <%= render "recommendations/recommendation", recommendation: recommendation %>
+<% end %>

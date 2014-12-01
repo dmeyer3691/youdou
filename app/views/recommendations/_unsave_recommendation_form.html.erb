@@ -1,0 +1,6 @@
+<%= simple_form_for recommendation,
+  url: {controller: "answer", action: "unsave", recommendation_id: recommendation.id},
+  remote: true, method: :get do |f| %>
+
+  <%= f.submit "Unsave", class: "btn btn-primary btn-lg" %>
+<% end %>

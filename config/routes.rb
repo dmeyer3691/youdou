@@ -25,6 +25,9 @@ Youdou::Application.routes.draw do
   get 'involvements/:involvement_id/remove', to: 'involvements#remove', as: 'remove_involvement'
   resources :involvements
 
+  get 'answer/:recommendation_id/save', to: 'answer#save', as: 'save_recommendation'
+  get 'answer/:recommendation_id/unsave', to: 'answer#unsave', as: 'unsave_recommendation'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
