@@ -20,9 +20,13 @@
     %a{"ng-click" => "app.view='recommendations'"}
       %span.glyphicon.glyphicon-star
         Recommendations
+      - unless @my_recommendations.empty?
+        %span.badge.pull-right= @my_recommendations.count
     %a{"ng-click" => "app.view='events'"}
       %span.glyphicon.glyphicon-calendar
         Events
+      - unless @my_events.empty?
+        %span.badge.pull-right= @my_events.count
     = link_to edit_profile_path do
       %span.glyphicon.glyphicon-pencil
         Edit
