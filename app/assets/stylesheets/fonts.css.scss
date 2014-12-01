@@ -23,6 +23,8 @@ h1, h2, h3, h4, h5, h6 { @include sans-serif-bold; }
 
 p { @include serif; }
 
+input,
+.btn,
 footer,
 footer li,
 .navbar,
